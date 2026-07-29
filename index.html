@@ -3,9 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>深圳八年级数学 → 可汗学院英文视频</title>
+<title>深圳八年级 · Khan Academy 同步课程</title>
 <style>
-/* Dark theme (default when no preference) */
 :root, [data-theme="dark"] {
   --bg-primary: #0a0a1a;
   --bg-secondary: #12122a;
@@ -13,51 +12,53 @@
   --text-primary: #e8e8ff;
   --text-secondary: #a0a0c0;
   --accent-blue: #4fc3f7;
+  --accent-purple: #b39ddb;
   --accent-green: #66bb6a;
-  --accent-orange: #ffa726;
   --border: #2a2a5a;
-  --shadow: rgba(0,0,0,0.3);
+  --shadow: rgba(0,0,0,0.4);
+  --card-math-bg: linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 50%, #0d2137 100%);
+  --card-phys-bg: linear-gradient(135deg, #1a0d2e 0%, #3d1f6e 50%, #1a0d2e 100%);
+  --card-hover-math: linear-gradient(135deg, #0f2540 0%, #1e4f7a 60%, #0f3050 100%);
+  --card-hover-phys: linear-gradient(135deg, #2a1040 0%, #5a2d96 60%, #2a1040 100%);
 }
-/* Light theme */
 [data-theme="light"] {
-  --bg-primary: #f5f5f7;
+  --bg-primary: #f0f2f5;
   --bg-secondary: #ffffff;
   --bg-card: #ffffff;
   --text-primary: #1a1a2e;
   --text-secondary: #5a5a6e;
   --accent-blue: #0066cc;
+  --accent-purple: #6a3d9a;
   --accent-green: #2e7d32;
-  --accent-orange: #ed6c02;
   --border: #e0e0e5;
   --shadow: rgba(0,0,0,0.1);
+  --card-math-bg: linear-gradient(135deg, #e8f4fd 0%, #b3d9f7 50%, #dbeeff 100%);
+  --card-phys-bg: linear-gradient(135deg, #f3e8ff 0%, #d4b8f7 50%, #ede4ff 100%);
+  --card-hover-math: linear-gradient(135deg, #d6ecfc 0%, #8ec8f5 60%, #c8e6fb 100%);
+  --card-hover-phys: linear-gradient(135deg, #eed8ff 0%, #c8a0f0 60%, #e8d4ff 100%);
 }
-/* System preference fallback */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    --bg-primary: #f5f5f7;
-    --bg-secondary: #ffffff;
-    --bg-card: #ffffff;
-    --text-primary: #1a1a2e;
-    --text-secondary: #5a5a6e;
-    --accent-blue: #0066cc;
-    --accent-green: #2e7d32;
-    --accent-orange: #ed6c02;
-    --border: #e0e0e5;
-    --shadow: rgba(0,0,0,0.1);
+    --bg-primary: #f0f2f5; --bg-secondary: #ffffff; --bg-card: #ffffff;
+    --text-primary: #1a1a2e; --text-secondary: #5a5a6e;
+    --accent-blue: #0066cc; --accent-purple: #6a3d9a; --accent-green: #2e7d32;
+    --border: #e0e0e5; --shadow: rgba(0,0,0,0.1);
+    --card-math-bg: linear-gradient(135deg, #e8f4fd 0%, #b3d9f7 50%, #dbeeff 100%);
+    --card-phys-bg: linear-gradient(135deg, #f3e8ff 0%, #d4b8f7 50%, #ede4ff 100%);
+    --card-hover-math: linear-gradient(135deg, #d6ecfc 0%, #8ec8f5 60%, #c8e6fb 100%);
+    --card-hover-phys: linear-gradient(135deg, #eed8ff 0%, #c8a0f0 60%, #e8d4ff 100%);
   }
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg-primary: #0a0a1a;
-    --bg-secondary: #12122a;
-    --bg-card: #1a1a3e;
-    --text-primary: #e8e8ff;
-    --text-secondary: #a0a0c0;
-    --accent-blue: #4fc3f7;
-    --accent-green: #66bb6a;
-    --accent-orange: #ffa726;
-    --border: #2a2a5a;
-    --shadow: rgba(0,0,0,0.3);
+    --bg-primary: #0a0a1a; --bg-secondary: #12122a; --bg-card: #1a1a3e;
+    --text-primary: #e8e8ff; --text-secondary: #a0a0c0;
+    --accent-blue: #4fc3f7; --accent-purple: #b39ddb; --accent-green: #66bb6a;
+    --border: #2a2a5a; --shadow: rgba(0,0,0,0.4);
+    --card-math-bg: linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 50%, #0d2137 100%);
+    --card-phys-bg: linear-gradient(135deg, #1a0d2e 0%, #3d1f6e 50%, #1a0d2e 100%);
+    --card-hover-math: linear-gradient(135deg, #0f2540 0%, #1e4f7a 60%, #0f3050 100%);
+    --card-hover-phys: linear-gradient(135deg, #2a1040 0%, #5a2d96 60%, #2a1040 100%);
   }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,410 +66,316 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
-  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
 }
-.container { max-width: 1000px; margin: 0 auto; }
-.header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
-.header h1 { flex: 1; text-align: center; color: var(--accent-blue); margin-bottom: 0; }
-.nav-link { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
-.nav-link:hover { color: var(--accent-blue); }
-.theme-btn {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 16px;
-  cursor: pointer;
-  line-height: 1;
-  transition: background 0.2s;
-}
-.theme-btn:hover { background: var(--bg-primary); }
-.subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 24px; }
-.chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.chapter-card {
-  background: var(--bg-card);
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 8px var(--shadow);
-}
-.chapter-card h2 { color: var(--accent-blue); margin-bottom: 4px; font-size: 18px; }
-.chapter-card .en { color: var(--text-secondary); font-size: 14px; margin-bottom: 16px; }
-.video-list { list-style: none; }
-.video-item {
-  background: var(--bg-secondary);
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 10px;
-}
-.video-title { font-size: 14px; margin-bottom: 8px; }
-.video-links { display: flex; gap: 10px; flex-wrap: wrap; }
-.btn {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 500;
-}
-.btn-watch { background: var(--accent-red); color: white; }
-.btn-yt { background: #ff0000; color: white; }
-.btn-practice {
-  display: block;
-  width: 100%;
+.container { width: 100%; max-width: 900px; }
+
+/* ── Header ── */
+.header {
   text-align: center;
-  background: var(--accent-green);
-  color: var(--bg-primary);
-  padding: 10px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  margin-top: 16px;
+  margin-bottom: 48px;
 }
-.btn:hover { opacity: 0.9; }
+.header-emoji { font-size: 48px; margin-bottom: 12px; }
+.header h1 {
+  font-size: 2rem;
+  color: var(--accent-blue);
+  margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.header .subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+.header .lang-note {
+  display: inline-block;
+  margin-top: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 16px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* ── Subject Cards ── */
+.subjects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+@media (max-width: 640px) {
+  .subjects { grid-template-columns: 1fr; }
+}
+.subject-card {
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-decoration: none;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.subject-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--card-bg);
+  z-index: 0;
+}
+.subject-card > * { position: relative; z-index: 1; }
+.subject-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px var(--shadow);
+}
+.subject-card:active {
+  transform: translateY(-2px);
+}
+.card-math { background: var(--card-math-bg); }
+.card-phys { background: var(--card-phys-bg); }
+.card-math:hover { box-shadow: 0 20px 60px rgba(79,195,247,0.25); }
+.card-phys:hover { box-shadow: 0 20px 60px rgba(179,157,219,0.25); }
+
+.card-icon { font-size: 52px; margin-bottom: 16px; }
+.card-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+.card-en {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+/* Stats row */
+.stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.stat {
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 8px 14px;
+  text-align: center;
+  min-width: 60px;
+  backdrop-filter: blur(4px);
+}
+[data-theme="light"] .stat { background: rgba(0,0,0,0.05); }
+.stat-num {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Chapters list */
+.chapters-preview {
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(4px);
+}
+[data-theme="light"] .chapters-preview { background: rgba(0,0,0,0.04); }
+.chapters-preview-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.chapters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ch-tag {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+[data-theme="light"] .ch-tag { background: rgba(0,0,0,0.06); color: var(--text-secondary); }
+.more-tag {
+  background: rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* CTA Button */
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.card-math .card-btn {
+  background: var(--accent-blue);
+  color: #000;
+}
+.card-phys .card-btn {
+  background: var(--accent-purple);
+  color: #fff;
+}
+.card-btn:hover { opacity: 0.85; transform: scale(1.02); }
+.card-btn .arrow { font-size: 1.1em; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-top: 8px;
+}
+.footer a { color: var(--text-secondary); text-decoration: underline; }
+
+/* ── Theme toggle ── */
+.theme-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  z-index: 100;
+}
+.theme-btn:hover { background: var(--bg-secondary); transform: scale(1.1); }
 </style>
 </head>
 <body>
+
+<button class="theme-btn" id="theme-btn" title="切换主题">☀️</button>
+
 <div class="container">
-<div class="header">
-<a href="physics/index.html" class="nav-link">物理 →</a>
-<h1>深圳八年级数学</h1>
-<button class="theme-btn" id="theme-btn" title="Toggle light/dark mode">☀️</button>
-</div>
-<div class="subtitle">可汗学院英文视频课程</div>
-<div class="chapter-grid">
 
-<div class="chapter-card">
-<h2>Ch01 勾股定理</h2>
-<div class="en">The Pythagorean Theorem</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Introduction to the Pythagorean Theorem 勾股定理简介</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/AA6RfgP-AHU" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=AA6RfgP-AHU" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Pythagorean Theorem Examples 勾股定理例题</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/3D8U3O6-8DA" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=3D8U3O6-8DA" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Converse of the Pythagorean Theorem 勾股定理的逆定理</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/8ud8d8K3-Uo" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=8ud8d8K3-Uo" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch01_勾股定理" class="btn-practice">Practice</a>
-</div>
+  <div class="header">
+    <div class="header-emoji">📚</div>
+    <h1>深圳八年级 · Khan Academy 同步课程</h1>
+    <div class="subtitle">可汗学院英文原版视频 + 配套练习</div>
+    <div class="lang-note">📖 英文视频 · 📝 引导式练习 · 🌙 明暗主题</div>
+  </div>
 
-<div class="chapter-card">
-<h2>Ch02 实数</h2>
-<div class="en">Real Numbers</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Introduction to Square Roots 平方根简介</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/mbc3_e5lWw0" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=mbc3_e5lWw0" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Cube Roots 立方根</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/9iZGHr7zOrw" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=9iZGHr7zOrw" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Rational and Irrational Numbers 有理数与无理数</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/KZQQhXfB8x0" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=KZQQhXfB8x0" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch02_实数" class="btn-practice">Practice</a>
-</div>
+  <div class="subjects">
 
-<div class="chapter-card">
-<h2>Ch03 位置与坐标</h2>
-<div class="en">Position and Coordinates</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Coordinate Plane 坐标平面</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/1OpAgZvYXLQ" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=1OpAgZvYXLQ" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Quadrants 象限</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/1zl2F4FfW1Y" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=1zl2F4FfW1Y" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Distance Formula 距离公式</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/nyZuite17Pc" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=nyZuite17Pc" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch03_位置与坐标" class="btn-practice">Practice</a>
-</div>
+    <!-- Math Card -->
+    <a href="index.html" class="subject-card card-math">
+      <div class="card-icon">📐</div>
+      <div class="card-title">八年级数学</div>
+      <div class="card-en">Grade 8 Mathematics · Khan Academy</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">13</div>
+          <div class="stat-label">章</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">28</div>
+          <div class="stat-label">视频</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">60</div>
+          <div class="stat-label">题</div>
+        </div>
+      </div>
+      <div class="chapters-preview">
+        <div class="chapters-preview-label">章节一览</div>
+        <div class="chapters-list">
+          <span class="ch-tag">Ch01 勾股定理</span>
+          <span class="ch-tag">Ch02 实数</span>
+          <span class="ch-tag">Ch03 位置与坐标</span>
+          <span class="ch-tag">Ch04 一次函数</span>
+          <span class="ch-tag">Ch05 数据的分析</span>
+          <span class="ch-tag">Ch06 平行线的证明</span>
+          <span class="ch-tag">Ch07 概率初步</span>
+          <span class="ch-tag">Ch08 三角形的证明</span>
+          <span class="ch-tag">Ch09 四边形</span>
+          <span class="ch-tag">Ch10 图形与变换</span>
+          <span class="ch-tag">Ch11 因式分解</span>
+          <span class="ch-tag">Ch12 分式与分式方程</span>
+          <span class="ch-tag">Ch13 反比例函数</span>
+        </div>
+      </div>
+      <div class="card-btn">
+        进入学习 <span class="arrow">→</span>
+      </div>
+    </a>
 
-<div class="chapter-card">
-<h2>Ch04 一次函数</h2>
-<div class="en">Linear Functions</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Linear Equations 线性方程</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/0T0QrPL0U1E" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=0T0QrPL0U1E" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Slope 斜率</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/R948Tsyq4vA" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=R948Tsyq4vA" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Slope-Intercept Form 斜截式</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/IL3UCuXrUzE" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=IL3UCuXrUzE" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch04_一次函数" class="btn-practice">Practice</a>
-</div>
+    <!-- Physics Card -->
+    <a href="physics/index.html" class="subject-card card-phys">
+      <div class="card-icon">🔬</div>
+      <div class="card-title">八年级物理</div>
+      <div class="card-en">Grade 8 Physics · Khan Academy</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">11</div>
+          <div class="stat-label">章</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">76</div>
+          <div class="stat-label">视频</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100</div>
+          <div class="stat-label">题</div>
+        </div>
+      </div>
+      <div class="chapters-preview">
+        <div class="chapters-preview-label">章节一览</div>
+        <div class="chapters-list">
+          <span class="ch-tag">Ch01 机械运动</span>
+          <span class="ch-tag">Ch02 声现象</span>
+          <span class="ch-tag">Ch03 物态变化</span>
+          <span class="ch-tag">Ch04 光现象</span>
+          <span class="ch-tag">Ch05 透镜</span>
+          <span class="ch-tag">Ch06 质量密度</span>
+          <span class="ch-tag">Ch07 力</span>
+          <span class="ch-tag">Ch08 压强</span>
+          <span class="ch-tag">Ch09 浮力</span>
+          <span class="ch-tag">Ch10 功和机械能</span>
+          <span class="ch-tag">Ch11 简单机械</span>
+        </div>
+      </div>
+      <div class="card-btn">
+        进入学习 <span class="arrow">→</span>
+      </div>
+    </a>
 
-<div class="chapter-card">
-<h2>Ch05 数据的分析</h2>
-<div class="en">Data Analysis</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Mean, Median, and Mode 平均数、中位数和众数</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/uhxtUt_-GyM" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=uhxtUt_-GyM" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Range and Standard Deviation 极差与标准差</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/atS4wX8I9H0" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=atS4wX8I9H0" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch05_数据的分析" class="btn-practice">Practice</a>
-</div>
+  </div>
 
-<div class="chapter-card">
-<h2>Ch06 平行线的证明</h2>
-<div class="en">Proving Parallel Lines</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Parallel Lines and Transversals 平行线与截线</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/H-E5rlpCVu4" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=H-E5rlpCVu4" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Corresponding Angles 同位角</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/K94rOqX2m8Y" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=K94rOqX2m8Y" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Proving Lines Parallel 证明直线平行</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/2D0fPqQ1-1g" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=2D0fPqQ1-1g" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch06_平行线的证明" class="btn-practice">Practice</a>
-</div>
-
-<div class="chapter-card">
-<h2>Ch07 概率初步</h2>
-<div class="en">Basic Probability</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Introduction to Probability 概率简介</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/uzkc-qNVoOk" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=uzkc-qNVoOk" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Simple Probability 简单概率</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/AY3Yea6hMyc" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=AY3Yea6hMyc" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch07_概率初步" class="btn-practice">Practice</a>
-</div>
-
-<div class="chapter-card">
-<h2>Ch08 三角形的证明</h2>
-<div class="en">Triangle Proofs</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Triangle Congruence 三角形全等</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/8N0T3E3e0tI" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=8N0T3E3e0tI" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">SSS, SAS, ASA Congruence SSS、SAS、ASA全等判定</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/0flCCE3X2w0" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=0flCCE3X2w0" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch08_三角形的证明" class="btn-practice">Practice</a>
-</div>
-
-<div class="chapter-card">
-<h2>Ch09 四边形</h2>
-<div class="en">Quadrilaterals</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Parallelograms 平行四边形</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/9IxkYfC1I8E" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=9IxkYfC1I8E" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Rectangles, Rhombuses, and Squares 矩形、菱形和正方形</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/9e1n7y2X9fE" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=9e1n7y2X9fE" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch09_四边形" class="btn-practice">Practice</a>
-</div>
-
-<div class="chapter-card">
-<h2>Ch10 图形与变换</h2>
-<div class="en">Transformations</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Translations 平移</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/BrYEuO7fwMw" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=BrYEuO7fwMw" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Reflections 反射</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/4HfB4V3vQpU" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=4HfB4V3vQpU" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch10_图形与变换" class="btn-practice">Practice</a>
-</div>
-
-<div class="chapter-card">
-<h2>Ch11 因式分解</h2>
-<div class="en">Factoring</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Greatest Common Factor 最大公因式</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/S14p-6c3_1Q" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=S14p-6c3_1Q" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Difference of Squares 平方差公式</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/4Rk4Zw9QpE0" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=4Rk4Zw9QpE0" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Factoring Quadratics 二次三项式因式分解</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/2Q4m8f5b5bE" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=2Q4m8f5b5bE" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch11_因式分解" class="btn-practice">Practice</a>
-</div>
-
-<div class="chapter-card">
-<h2>Ch12 分式与分式方程</h2>
-<div class="en">Rational Expressions and Equations</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Simplifying Rational Expressions 分式化简</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/5x4X4f4f4f4" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=5x4X4f4f4f4" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Solving Rational Equations 分式方程</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/6x5X5g5g5g5" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=6x5X5g5g5g5" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch12_分式与分式方程" class="btn-practice">Practice</a>
-</div>
-
-<div class="chapter-card">
-<h2>Ch13 反比例函数</h2>
-<div class="en">Inverse Proportion Functions</div>
-<ul class="video-list">
-<li class="video-item">
-<div class="video-title">Introduction to Inverse Variation 反比例函数简介</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/7x6X6h6h6h6" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=7x6X6h6h6h6" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-<li class="video-item">
-<div class="video-title">Graphing Inverse Variation 反比例函数图像</div>
-<div class="video-links">
-<a href="https://www.youtube.com/embed/8x7X7i7i7i7" target="_blank" class="btn btn-watch">Watch</a>
-<a href="https://www.youtube.com/watch?v=8x7X7i7i7i7" target="_blank" class="btn btn-yt">YouTube</a>
-</div>
-</li>
-</ul>
-<a href="practice.html?ch=Ch13_反比例函数" class="btn-practice">Practice</a>
-</div>
+  <div class="footer">
+    可汗学院 Khan Academy · 深圳八年级同步课程<br>
+    视频来源 <a href="https://khanacademy.org" target="_blank">khanacademy.org</a>
+  </div>
 
 </div>
-</div>
+
 <script>
 (function(){
   var btn = document.getElementById('theme-btn');
@@ -480,11 +387,11 @@ body {
     var t = document.documentElement.getAttribute('data-theme');
     var next = t === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('mathIndexTheme', next);
+    localStorage.setItem('dashTheme', next);
     updateBtn();
   }
   btn.onclick = toggle;
-  var saved = localStorage.getItem('mathIndexTheme');
+  var saved = localStorage.getItem('dashTheme');
   if(saved){
     document.documentElement.setAttribute('data-theme', saved);
   }
