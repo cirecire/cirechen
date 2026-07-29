@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physics Practice</title>
+<style>
+/* Dark theme (default when no preference) */
+:root, [data-theme="dark"] {
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #12122a;
+  --bg-card: #1a1a3e;
+  --text-primary: #e8e8ff;
+  --text-secondary: #a0a0c0;
+  --accent-blue: #4fc3f7;
+  --accent-green: #66bb6a;
+  --accent-orange: #ffa726;
+  --accent-red: #ef5350;
+  --border: #2a2a5a;
+  --shadow: rgba(0,0,0,0.3);
+  --toggle-icon: "🌙";
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --bg-primary: #f5f5f7;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #5a5a6e;
+  --accent-blue: #0066cc;
+  --accent-green: #2e7d32;
+  --accent-orange: #ed6c02;
+  --accent-red: #d32f2f;
+  --border: #e0e0e5;
+  --shadow: rgba(0,0,0,0.1);
+  --toggle-icon: "☀️";
+}
+
+/* System preference fallback (only used when no manual choice) */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg-primary: #f5f5f7;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --text-primary: #1a1a2e;
+    --text-secondary: #5a5a6e;
+    --accent-blue: #0066cc;
+    --accent-green: #2e7d32;
+    --accent-orange: #ed6c02;
+    --accent-red: #d32f2f;
+    --border: #e0e0e5;
+    --shadow: rgba(0,0,0,0.1);
+    --toggle-icon: "☀️";
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #12122a;
+    --bg-card: #1a1a3e;
+    --text-primary: #e8e8ff;
+    --text-secondary: #a0a0c0;
+    --accent-blue: #4fc3f7;
+    --accent-green: #66bb6a;
+    --accent-orange: #ffa726;
+    --accent-red: #ef5350;
+    --border: #2a2a5a;
+    --shadow: rgba(0,0,0,0.3);
+    --toggle-icon: "🌙";
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  padding: 20px;
+}
+.container { max-width: 900px; margin: 0 auto; }
+h1 { text-align: center; margin-bottom: 8px; color: var(--accent-blue); }
+.back-link { text-align: center; margin-bottom: 24px; }
+.back-link a { color: var(--text-secondary); text-decoration: none; }
+.back-link a:hover { color: var(--accent-blue); }
+
+.practice-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.practice-bar .ch-title { font-weight: 600; color: var(--accent-blue); font-size: 16px; }
+.practice-bar .ch-en { color: var(--text-secondary); font-size: 14px; }
+.practice-bar .spacer { flex: 1; }
+.practice-bar .progress { color: var(--text-secondary); font-size: 14px; }
+.practice-bar select {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.theme-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.2s;
+}
+.theme-btn:hover { background: var(--bg-primary); }
+
+.chapter-section { background: var(--bg-card); border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid var(--border); }
+.header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.header h2 { color: var(--accent-blue); margin-bottom: 4px; }
+.sub { color: var(--text-secondary); font-size: 14px; }
+.subtopic { margin-bottom: 20px; }
+.st-name {
+  font-weight: 600;
+  color: var(--accent-green);
+  cursor: pointer;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.st-name:hover { background: var(--bg-primary); }
+.st-name::before { content: "▶"; font-size: 10px; transition: transform 0.2s; }
+.st-name.open::before { transform: rotate(90deg); }
+.st-en { color: var(--text-secondary); font-weight: 400; margin-left: 8px; }
+.subtopic-content { display: none; }
+.subtopic-content.open { display: block; }
+
+.question {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+.q-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.q-num {
+  background: var(--accent-blue);
+  color: white;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 14px;
+}
+.diff { font-size: 12px; padding: 4px 10px; border-radius: 12px; font-weight: 500; }
+.diff-easy { background: var(--accent-green); color: white; }
+.diff-med { background: var(--accent-orange); color: white; }
+.diff-hard { background: var(--accent-red); color: white; }
+.q-body { color: var(--text-primary); margin-bottom: 16px; }
+
+.elicit-box { margin-top: 16px; }
+.elicit-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--accent-green);
+  font-weight: 500;
+  font-size: 14px;
+}
+.elicit-header:hover { background: var(--border); }
+.elicit-header::before { content: "▶"; font-size: 10px; transition: transform 0.2s; }
+.elicit-header.open::before { transform: rotate(90deg); }
+.elicit-content { display: none; padding: 12px 0 0 0; }
+.elicit-content.open { display: block; }
+
+.btn-step {
+  background: transparent;
+  border: 1px solid var(--accent-green);
+  color: var(--accent-green);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.btn-step:hover { background: rgba(102, 187, 106, 0.1); }
+.btn-step.done { background: var(--accent-green); color: white; border-color: var(--accent-green); }
+.answer-box {
+  background: rgba(102, 187, 106, 0.1);
+  border-left: 3px solid var(--accent-green);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 0 8px 8px 0;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Physics Practice</h1>
+<div class="back-link"><a href="index.html">← Video Index</a></div>
+
+<div class="practice-bar">
+  <span class="ch-title" id="bar-title">Loading...</span>
+  <span class="ch-en" id="bar-en"></span>
+  <span class="spacer"></span>
+  <span class="progress" id="bar-progress"></span>
+  <select id="chapter-select"><option value="">Select Chapter...</option></select>
+  <button class="theme-btn" id="theme-btn" title="Toggle light/dark mode">☀️</button>
+</div>
+
+<div id="content"><p style="color:var(--accent-blue)">Loading...</p></div>
+</div>
+
+<script>
+window.PRACTICE = {
+  "Ch01_机械运动": {
+    "title": "第1章 机械运动",
+    "titleEn": "Ch01 Mechanical Motion",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "1.1 长度和时间的测量",
+        "en": "Measurement",
+        "problems": [
+          {
+            "en": "A student measures a pencil with a ruler and obtains 15.7 cm. What is the length in meters?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：铅笔长度 15.7 cm；求：长度（m）",
+              "【知识点】长度单位换算：1 m = 100 cm，即 1 cm = 10⁻² m",
+              "【思路】小单位(cm) → 大单位(m)，除以进率100",
+              "【计算】15.7 cm = 15.7 ÷ 100 m = 0.157 m",
+              "【检验】0.157 m = 15.7 cm，m 是大单位、数值变小 ✓",
+              "Answer: 0.157 m"
+            ]
+          },
+          {
+            "en": "The period of a swinging pendulum is measured as 2.35 s. Express this time in milliseconds (ms).",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：周期 T = 2.35 s；求：T（ms）",
+              "【知识点】时间单位换算：1 s = 1000 ms，即 1 ms = 10⁻³ s",
+              "【思路】s → ms，乘以进率1000",
+              "【计算】2.35 s = 2.35 × 1000 ms = 2350 ms",
+              "【检验】1 s = 1000 ms，2.35 s → 2350 ms，数量级正确 ✓",
+              "Answer: 2350 ms"
+            ]
+          },
+          {
+            "en": "A room is 5.2 m long and 3.8 m wide. What is the area of the room in cm²?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：长 5.2 m，宽 3.8 m；求：面积（cm²）",
+              "【知识点】面积公式：S = 长 × 宽；1 m² = 10⁴ cm²",
+              "【思路】两步走：①先算 m²，②再换算成 cm²",
+              "【计算①】S = 5.2 × 3.8 = 19.76 m²",
+              "【计算②】19.76 m² = 19.76 × 10000 = 197600 cm²",
+              "【检验】19.76 × 10000，末尾加4个零 = 197600，数字无误 ✓",
+              "Answer: 197600 cm²"
+            ]
+          },
+          {
+            "en": "A student measured the length of a table five times: 1.52 m, 1.53 m, 1.51 m, 1.54 m, 1.52 m. What is the average length?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：5次测量值；求：平均值",
+              "【知识点】多次测量取平均值可减小误差",
+              "【计算】平均值 = (1.52 + 1.53 + 1.51 + 1.54 + 1.52) ÷ 5",
+              "分子相加：1.52 + 1.53 = 3.05；3.05 + 1.51 = 4.56；",
+              "4.56 + 1.54 = 6.10；6.10 + 1.52 = 7.62",
+              "7.62 ÷ 5 = 1.524 m",
+              "【易错点】⚠️ 不要把单位弄混，结果保留3位小数",
+              "Answer: 1.524 m"
+            ]
+          },
+          {
+            "en": "A stopwatch has a smallest division of 0.01 s. What is the uncertainty of a single measurement?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：分度值 0.01 s；求：测量不确定度",
+              "【知识点】仪器的分度值决定测量精度；不确定度 = ±(分度值/2)",
+              "【思路】最小分度是0.01 s，说明能读到小数点后第2位；误差范围是半格",
+              "【计算】不确定度 = 0.01 s ÷ 2 = 0.005 s",
+              "【易错点】⚠️ 不是 ±0.01 s（那是读数可能出现的最大偏差）",
+              "【检验】分度值越小，测量精度越高；0.005 s 是合理的误差范围 ✓",
+              "Answer: ± 0.005 s"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "1.2 运动的描述",
+        "en": "Reference Frame & Displacement",
+        "problems": [
+          {
+            "en": "A bus travels 20 km north, then turns and travels 15 km south. What is the total distance traveled and the displacement?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：向北20 km，再向南15 km；求：总路程 & 位移",
+              "【知识点】路程是路径总长（标量）；位移是起点到终点的直线距离（矢量）",
+              "【计算①路程】总路程 = 20 + 15 = 35 km",
+              "【计算②位移】位移 = 20 − 15 = +5 km（向北为正）",
+              "【检验】位移方向与第一次行进方向一致（向北）✓",
+              "Answer: 总路程 = 35 km；位移 = 5 km 向北"
+            ]
+          },
+          {
+            "en": "An object moves from position x = 3 m to x = −4 m along a straight line. What is the displacement?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：起点 x₁ = 3 m，终点 x₂ = −4 m；求：位移",
+              "【知识点】位移公式：Δx = x₂ − x₁（规定正方向后）",
+              "【计算】Δx = (−4) − 3 = −7 m",
+              "【易错点】⚠️ 负号表示方向与正方向相反，不是大小",
+              "【检验】起点在+3处，终点在−4处，起点→终点 = 向左7 m，−7 m 合理 ✓",
+              "Answer: −7 m（方向与正方向相反）"
+            ]
+          },
+          {
+            "en": "A runner completes one full lap around a 400-m circular track. What are the total distance and net displacement?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：绕圆形跑道完整一圈（周长400 m）；求：总路程 & 位移",
+              "【知识点】完整一圈后回到出发点，起点 = 终点",
+              "【计算①总路程】= 400 m（一圈的长度）",
+              "【计算②位移】= 0 m（起点到终点无移动）",
+              "【检验】路程是标量（总路径长），位移是矢量（起点指向终点）✓",
+              "Answer: 总路程 = 400 m；位移 = 0 m"
+            ]
+          },
+          {
+            "en": "A car moves 30 km east in 0.5 h, then 40 km west in 0.5 h. What is the average speed and average velocity?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：向东30 km（0.5h），向西40 km（0.5h）；求：平均速率 & 平均速度",
+              "【知识点】平均速率 = 总路程/总时间；平均速度 = 总位移/总时间（含方向）",
+              "【画示意图】←──40km──←──30km──→→→ 起点",
+              "总路程 = 30 + 40 = 70 km；总时间 = 1 h",
+              "【计算①平均速率】= 70 km ÷ 1 h = 70 km/h",
+              "【计算②位移】设向东为正：位移 = (+30) + (−40) = −10 km（向西）",
+              "【计算③平均速度】= (−10 km) ÷ 1 h = −10 km/h（向西）",
+              "【易错点】⚠️ 速率和速度不同：速率只看大小，速度看大小+方向",
+              "【检验】位移绝对值 < 总路程 → 速率 > 速度大小，符合题意 ✓",
+              "Answer: 平均速率 = 70 km/h；平均速度 = 10 km/h 向西"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "1.3 运动的快慢（速度）",
+        "en": "Speed and Velocity",
+        "problems": [
+          {
+            "en": "A car travels 240 km in 3 hours. What is its average speed in km/h and in m/s?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：路程240 km，时间3 h；求：平均速率（km/h 和 m/s）",
+              "【知识点】平均速率 = 路程/时间；换算：1 km/h = 1000/3600 m/s ≈ 1/3.6 m/s",
+              "【计算① km/h】v = 240 km ÷ 3 h = 80 km/h",
+              "【计算② m/s】80 km/h = 80 × (1000/3600) ≈ 80 × 0.278 ≈ 22.2 m/s",
+              "【检验】22.2 m/s × 3.6 ≈ 80 km/h，两种单位互相验证 ✓",
+              "Answer: 80 km/h 或 22.2 m/s"
+            ]
+          },
+          {
+            "en": "A cyclist rides 18 km in 45 minutes. What is the average speed in m/s?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：路程18 km，时间45 min；求：平均速率（m/s）",
+              "【知识点】单位统一：km→m（×1000），min→s（×60）",
+              "【思路】先换算单位，再求速率",
+              "【计算】18 km = 18000 m；45 min = 2700 s",
+              "v = 18000 m ÷ 2700 s ≈ 6.67 m/s",
+              "【易错点】⚠️ 45 min = 0.75 h 若转成 h 计算：18/0.75 = 24 km/h = 6.67 m/s 也可以，但要注意 m/s 要除以3.6",
+              "【检验】6.67 m/s × 3.6 ≈ 24 km/h，再 × 0.75 h = 18 km ✓",
+              "Answer: 6.67 m/s"
+            ]
+          },
+          {
+            "en": "An athlete runs 100 m in 10.2 s. What is her average speed?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：路程100 m，时间10.2 s；求：平均速率",
+              "【知识点】平均速率 = 路程 ÷ 时间",
+              "【计算】v = 100 m ÷ 10.2 s ≈ 9.80 m/s",
+              "【检验】用科学计数法：9.80 ≈ 10 m/s，符合百米世界级运动员水平 ✓",
+              "Answer: 9.80 m/s"
+            ]
+          },
+          {
+            "en": "A car accelerates from 20 m/s to 30 m/s in 5 s. What is its average acceleration?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：初速度 v₀ = 20 m/s，末速度 v = 30 m/s，时间 Δt = 5 s；求：平均加速度 a",
+              "【知识点】加速度公式：a = (v − v₀) / Δt，单位：m/s²",
+              "【计算】a = (30 − 20) / 5 = 10 / 5 = 2 m/s²",
+              "【易错点】⚠️ 加速度单位是 m/s² 不是 m/s；a = 2 m/s² 表示每秒速度增加2 m/s",
+              "【检验】速度增加了 10 m/s，时间5s，平均每秒增加2 m/s ✓",
+              "Answer: 2 m/s²"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "1.4 匀速直线运动",
+        "en": "Uniform Linear Motion",
+        "problems": [
+          {
+            "en": "An object moves at constant velocity v = 5 m/s. How far does it travel in 12 s?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：匀速 v = 5 m/s，时间 t = 12 s；求：路程 s",
+              "【知识点】匀速直线运动公式：s = v × t",
+              "【计算】s = 5 × 12 = 60 m",
+              "【检验】每秒走5 m，12秒走60 m，符合物理意义 ✓",
+              "Answer: 60 m"
+            ]
+          },
+          {
+            "en": "A train maintains a constant speed of 72 km/h. How long does it take to travel 30 km?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：速率72 km/h，路程30 km；求：时间 t",
+              "【知识点】匀速运动：t = s / v",
+              "【计算】t = 30 km ÷ 72 km/h = 0.417 h",
+              "【单位转换】0.417 h × 60 ≈ 25 min",
+              "【易错点】⚠️ 结果不要写0.417 h，要转成熟悉的分钟或秒",
+              "【检验】25 min / 60 ≈ 0.417 h；72 km/h × 0.417 h ≈ 30 km ✓",
+              "Answer: 约 25 分钟"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "1.5 速度变化规律",
+        "en": "Acceleration & Motion Graphs",
+        "problems": [
+          {
+            "en": "A car accelerates from rest uniformly at 3 m/s². What is its velocity after 8 s?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：初速度 v₀ = 0（从静止），加速度 a = 3 m/s²，时间 t = 8 s；求：末速度 v",
+              "【知识点】匀加速公式：v = v₀ + a × t",
+              "【计算】v = 0 + 3 × 8 = 24 m/s",
+              "【检验】每秒速度增加3 m/s，8秒后增加24 m/s ✓",
+              "Answer: 24 m/s"
+            ]
+          },
+          {
+            "en": "An object starts from rest and accelerates at 4 m/s². How far does it travel in the first 5 s?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：v₀ = 0，a = 4 m/s²，t = 5 s；求：路程 s",
+              "【知识点】匀加速位移公式：s = v₀t + ½at²（当 v₀=0 时，s = ½at²）",
+              "【计算】s = ½ × 4 × 5² = ½ × 4 × 25 = 50 m",
+              "【易错点】⚠️ s = ½at² 不是 s = at²；别忘了系数½",
+              "【检验】s = ½ × 4 × 25 = 50 m，数量级合理 ✓",
+              "Answer: 50 m"
+            ]
+          },
+          {
+            "en": "A ball is thrown upward with v₀ = 20 m/s. Using g = 10 m/s², how high does it rise?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：v₀ = 20 m/s 向上，g = 10 m/s²（向下）；求：最大高度",
+              "【知识点】竖直上抛：到达最高点时 v = 0；公式 v² = v₀² − 2gh",
+              "【画示意图】",
+              "  v=20↑        最高点 v=0",
+              "    ●━━━━━━━━━━━╋━━━→ 下落",
+              "  起点           h=?",
+              "【分析】g 方向向下，上升过程是减速，加速度为 −g",
+              "【计算】最高点 v = 0 → 0² = 20² − 2 × 10 × h",
+              "0 = 400 − 20h → h = 400/20 = 20 m",
+              "【易错点】⚠️ g 取正值10，但公式中有减号（因为 g 与 v₀ 方向相反）；",
+              "如果用 v² = v₀² + 2gh，h 前要加负号（位移方向与 g 相反）",
+              "【检验】初动能 = ½×1×20² = 200 J，重力势能 = mgh = m×10×20 = 200m J，能量守恒 ✓",
+              "Answer: 20 m"
+            ]
+          },
+          {
+            "en": "A position-time graph shows a straight line from (0,0) to (4,20). What is the velocity?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：s-t 图上两点 (0s, 0m) 到 (4s, 20m)；求：速度",
+              "【知识点】s-t 图像中，斜率 = 速度（大小和方向）",
+              "【画图】",
+              " s(m)",
+              "  20 ┤━━━━━━━━● (4,20)",
+              "     │        ╱",
+              "   0 ┼──●─────╱ (0,0)",
+              "     0    4  t(s)",
+              "【计算】斜率 = (20 − 0) / (4 − 0) = 20/4 = 5 m/s",
+              "【分析】斜率为正 → 速度方向为正方向；斜率恒定 → 匀速运动",
+              "【易错点】⚠️ 不要误以为是加速度！s-t 图的斜率是速度，不是加速度",
+              "【方法总结】s-t 图：斜率 = v；v-t 图：斜率 = a；v-t 图：面积 = s",
+              "Answer: 5 m/s"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch02_声现象": {
+    "title": "第2章 声现象",
+    "titleEn": "Ch02 Sound",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "2.1 声音的产生与传播",
+        "en": "Sound Production & Propagation",
+        "problems": [
+          {
+            "en": "A sound wave travels through air at 340 m/s. How long does it take to travel 1.7 km?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：声速 v = 340 m/s，路程 s = 1.7 km；求：时间 t",
+              "【知识点】声速公式：v = s / t；注意单位统一",
+              "【思路】单位统一：1.7 km = 1700 m；用 t = s / v",
+              "【计算】t = 1700 m ÷ 340 m/s = 5 s",
+              "【检验】340 × 5 = 1700，逆向验证 ✓",
+              "Answer: 5 s"
+            ]
+          },
+          {
+            "en": "A sonar pulse is sent to the seabed and returns after 0.4 s. Speed of sound in water = 1500 m/s. How deep is the seabed?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：声波在水中的速度 v = 1500 m/s，往返总时间 t = 0.4 s；求：深度",
+              "【知识点】超声波发出→海底→返回，是往返路径；单程时间 = 总时间/2",
+              "【画示意图】",
+              "  声呐发射 ●───────────────────→ 海底",
+              "  ←───── 单程距离 s ─────→",
+              "  ←──────── 2s ────────→ 总路程",
+              "【计算】单程时间 = 0.4 ÷ 2 = 0.2 s",
+              "【计算】单程距离（深度）= v × t = 1500 × 0.2 = 300 m",
+              "【易错点】⚠️ 0.4 s 是往返总时间，不能直接代入公式；要先除以2！",
+              "【检验】1500 × 0.2 = 300，往返 600 m，用时 0.4 s ✓",
+              "Answer: 300 m"
+            ]
+          },
+          {
+            "en": "In a thunderstorm, lightning is seen 3 s before thunder is heard. Sound speed 340 m/s. How far away is the lightning?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：光速 >> 声速（光速约 3×10⁸ m/s，远大于声速），故看到闪电和听到雷声的时间差 ≈ 声波传播时间；t = 3 s，声速 v = 340 m/s；求：闪电距离",
+              "【知识点】光速极快，光到达时间可忽略不计，时间差 = 声波传播时间",
+              "【计算】s = v × t = 340 × 3 = 1020 m ≈ 1.02 km",
+              "【易错点】⚠️ 不能把3秒直接当成距离，要乘以声速！",
+              "【检验】1020 m ≈ 1 km，符合「雷声在几秒后」的经验 ✓",
+              "Answer: 约 1020 m（约 1 km）"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "2.2 声音的特性",
+        "en": "Pitch, Loudness & Wave Properties",
+        "problems": [
+          {
+            "en": "A tuning fork vibrates at 440 Hz. What is its period?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：频率 f = 440 Hz；求：周期 T",
+              "【知识点】周期 T 与频率 f 互为倒数：T = 1/f",
+              "【计算】T = 1 / 440 ≈ 0.00227 s = 2.27 × 10⁻³ s = 2.27 ms",
+              "【易错点】⚠️ 周期单位是秒(s)，不是赫兹(Hz)",
+              "【检验】440 Hz 表示每秒振动440次，每次用时约 0.00227 s ✓",
+              "Answer: 2.27 ms（或 0.00227 s）"
+            ]
+          },
+          {
+            "en": "A sound wave has f = 250 Hz and wavelength λ = 1.36 m. What is the wave speed?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：频率 f = 250 Hz，波长 λ = 1.36 m；求：波速 v",
+              "【知识点】波速公式：v = f × λ（适用于所有波）",
+              "【计算】v = 250 × 1.36 = 340 m/s",
+              "【检验】声速在空气中约 340 m/s，结果合理 ✓",
+              "Answer: 340 m/s"
+            ]
+          },
+          {
+            "en": "A wave has period 0.002 s and travels at 340 m/s. What is its wavelength?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：周期 T = 0.002 s，波速 v = 340 m/s；求：波长 λ",
+              "【知识点】v = f × λ；先求 f = 1/T",
+              "【计算①】f = 1 / 0.002 = 500 Hz",
+              "【计算②】λ = v / f = 340 / 500 = 0.68 m",
+              "【易错点】⚠️ 不要跳过求 f 的步骤直接算 λ",
+              "【检验】v = fλ = 500 × 0.68 = 340 m/s ✓",
+              "Answer: 0.68 m"
+            ]
+          },
+          {
+            "en": "A sound has wavelength 0.5 m in air (v = 340 m/s). When entering water (v = 1500 m/s), what is the new wavelength?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：空气中 λ₁ = 0.5 m，v₁ = 340 m/s；水中 v₂ = 1500 m/s；求：水中的 λ₂",
+              "【知识点】频率由波源决定，不随介质改变；波速 v = f × λ",
+              "【画示意图】",
+              "  空气：v₁=340  f相同  λ₁=0.5",
+              "  ──────────────────────────────→",
+              "  水：  v₂=1500  f相同  λ₂=?",
+              "【计算①求频率】f = v₁ / λ₁ = 340 / 0.5 = 680 Hz",
+              "【计算②求水中波长】λ₂ = v₂ / f = 1500 / 680 ≈ 2.21 m",
+              "【易错点】⚠️ 频率不变！介质改变只影响 v 和 λ，波速变大则波长变大",
+              "【检验】v₂/v₁ = 1500/340 ≈ 4.41；λ₂/λ₁ ≈ 2.21/0.5 ≈ 4.41，比例相同 ✓",
+              "【方法总结】波从一介质进入另一介质：f 不变，v 和 λ 按比例变化",
+              "Answer: 约 2.21 m"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch03_物态变化": {
+    "title": "第3章 物态变化",
+    "titleEn": "Ch03 Changes of State",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "3.1 温度与物态",
+        "en": "Temperature & Phase Changes",
+        "problems": [
+          {
+            "en": "Convert 37°C to Fahrenheit. [°F = °C × 9/5 + 32]",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：温度 T = 37°C；求：华氏温度 °F",
+              "【知识点】温标换算公式（给定）：°F = °C × 9/5 + 32",
+              "【计算】°F = 37 × 9/5 + 32 = (37 × 9) ÷ 5 + 32",
+              "37 × 9 = 333；333 ÷ 5 = 66.6；66.6 + 32 = 98.6°F",
+              "【检验】人体正常体温约98.6°F，这是生理常识 ✓",
+              "Answer: 98.6°F"
+            ]
+          },
+          {
+            "en": "Water has specific heat capacity c = 4.18 J/(g·°C). Heat needed to warm 500 g water from 20°C to 70°C?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：水的比热容 c = 4.18 J/(g·°C)，质量 m = 500 g，温升 ΔT = 70−20 = 50°C；求：吸收的热量 Q",
+              "【知识点】热量公式：Q = m × c × ΔT",
+              "  - Q：吸收/放出的热量（单位：J）",
+              "  - m：质量（单位：g）",
+              "  - c：比热容（单位：J/(g·°C)）",
+              "  - ΔT：温度变化（单位：°C）",
+              "【代入数据】m = 500 g，c = 4.18 J/(g·°C)，ΔT = 50°C",
+              "【计算】Q = 500 × 4.18 × 50",
+              "先算 500 × 50 = 25000；25000 × 4.18 = 104500 J",
+              "【易错点】⚠️ c 的单位是 J/(g·°C) 不是 J/(kg·°C)；注意质量用 g",
+              "【检验】Q = 104500 J ≈ 1.05 × 10⁵ J，数量级合理 ✓",
+              "Answer: 1.05 × 10⁵ J"
+            ]
+          },
+          {
+            "en": "Convert 212°F to Celsius. [°C = (°F − 32) × 5/9]",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：T = 212°F；求：摄氏温度 °C",
+              "【知识点】温标换算（给定）：°C = (°F − 32) × 5/9",
+              "【计算】°C = (212 − 32) × 5/9 = 180 × 5/9",
+              "180 ÷ 9 = 20；20 × 5 = 100°C",
+              "【检验】水的沸点：100°C = 212°F ✓",
+              "Answer: 100°C（水的沸点）"
+            ]
+          },
+          {
+            "en": "A 200-g piece of copper (c = 0.39 J/g°C) is heated from 25°C to 100°C. How much heat is absorbed?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：铜块质量 m = 200 g，比热容 c = 0.39 J/(g·°C)，初温 25°C，末温 100°C；求：吸收热量 Q",
+              "【知识点】Q = m × c × ΔT；ΔT = T₂ − T₁",
+              "【计算】ΔT = 100 − 25 = 75°C",
+              "Q = 200 × 0.39 × 75",
+              "200 × 75 = 15000；15000 × 0.39 = 5850 J",
+              "【易错点】⚠️ 铜的比热容远小于水（0.39 vs 4.18），同等质量温升相同，铜所需热量少很多",
+              "【检验】Q = 5850 J ≈ 5.9 kJ，数量级合理 ✓",
+              "Answer: 5850 J"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "3.2 汽化和液化",
+        "en": "Evaporation & Condensation",
+        "problems": [
+          {
+            "en": "Latent heat of vaporization of water is 2260 J/g. Heat needed to evaporate 100 g water at 100°C?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：水的汽化潜热 L_v = 2260 J/g，质量 m = 100 g（温度100°C）；求：蒸发所需热量 Q",
+              "【知识点】相变热量公式：Q = m × L",
+              "  - 汽化潜热 L_v：液态水在沸点蒸发成同温度水蒸气所需热量（J/g）",
+              "【计算】Q = 100 × 2260 = 226000 J = 2.26 × 10⁵ J",
+              "【易错点】⚠️ 汽化潜热很大（2260 J/g），比升温所需热量大得多",
+              "【检验】烧开100 g水只需约 4.18×100×80 ≈ 33400 J；而蒸发同等质量需 226000 J，是升温的近7倍 ✓",
+              "Answer: 2.26 × 10⁵ J"
+            ]
+          },
+          {
+            "en": "Latent heat of fusion of ice is 334 J/g. Heat needed to melt 50 g of ice at 0°C?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：冰的熔化潜热 L_f = 334 J/g，质量 m = 50 g（温度 0°C）；求：熔化所需热量 Q",
+              "【知识点】熔化潜热：固体在熔点熔化所需热量",
+              "【计算】Q = m × L_f = 50 × 334 = 16700 J",
+              "【检验】Q = 1.67 × 10⁴ J，熔化不升温，只克服分子间作用力做功 ✓",
+              "Answer: 1.67 × 10⁴ J"
+            ]
+          },
+          {
+            "en": "A puddle of water (mass 2 kg) evaporates completely. How much heat is absorbed? (Lv = 2260 J/g)",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：水的质量 m = 2 kg = 2000 g，汽化潜热 L_v = 2260 J/g；求：蒸发所需热量 Q",
+              "【知识点】Q = m × L_v；单位统一：kg → g（×1000）",
+              "【易错点】⚠️ 汽化潜热单位是 J/g，质量必须换算成克！",
+              "【计算】m = 2 kg = 2000 g",
+              "Q = 2000 × 2260 = 4,520,000 J",
+              "【检验】1 kg 水蒸发需 2.26 × 10⁶ J，2 kg 蒸发需两倍 ≈ 4.52 × 10⁶ J ✓",
+              "Answer: 4.52 × 10⁶ J"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "3.3 熔化与凝固",
+        "en": "Melting & Freezing",
+        "problems": [
+          {
+            "en": "A 100-g block of ice at 0°C is heated until it melts completely. How much heat is absorbed? (Lf = 334 J/g)",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：冰块质量 m = 100 g，初始温度 0°C（熔点），熔化潜热 L_f = 334 J/g；求：完全熔化所需热量 Q",
+              "【知识点】熔化过程：冰→水，温度不变（维持在0°C），需要吸收熔化潜热",
+              "【易错点】⚠️ 熔化过程不升温！只吸收潜热使分子结构从固态变为液态",
+              "【计算】Q = m × L_f = 100 × 334 = 33400 J",
+              "【检验】100 g 冰完全熔化需 3.34 × 10⁴ J；若从 −10°C 加热到 0°C 再熔化，热量更大 ✓",
+              "Answer: 3.34 × 10⁴ J"
+            ]
+          },
+          {
+            "en": "To freeze 250 g of water at 0°C into ice, how much heat must be removed? (Lf = 334 J/g)",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：水的质量 m = 250 g，温度 0°C（凝固点）；求：凝固需放出的热量 Q",
+              "【知识点】凝固是熔化的逆过程，凝固放热 = 熔化吸热（等量的相反过程）",
+              "【思路】水在0°C凝固成冰，放出潜热，大小等于熔化所需热量",
+              "【计算】|Q| = m × L_f = 250 × 334 = 83500 J",
+              "【易错点】⚠️ 题目问的是「热量必须被移除」，答案是正值（被移走的热量大小）；",
+              "如果问「水放出多少热量」，则答案应为 −83500 J（负号表示放热）",
+              "【检验】凝固放热与熔化吸热数值相等、符号相反 ✓",
+              "Answer: 8.35 × 10⁴ J（热量被移除）"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch04_光现象": {
+    "title": "第4章 光现象",
+    "titleEn": "Ch04 Light",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "4.1 光的直线传播",
+        "en": "Rectilinear Propagation of Light",
+        "problems": [
+          {
+            "en": "A girl of height 1.5 m stands 2 m from a street lamp. Her shadow is 1.2 m long. How high is the lamp?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：女孩身高 1.5 m，距灯 2 m，影长 1.2 m；求：路灯高度",
+              "【画光路图】",
+              "        路灯 ⊙",
+              "         │╲",
+              "         │  ╲  影",
+              "  女孩   ●──┘   ◢",
+              "  1.5m   2m    1.2m",
+              "  ──────────────────地面",
+              "【知识点】相似三角形：光线可视为直线；",
+              "  路灯顶端→影尖 的连线，与 女孩头顶→影尖 的连线平行",
+              "  → 大三角形（灯高 / 灯影全长）与小三角形（身高 / 影长）相似",
+              "【分析】设灯高为 H，灯影总长 = 女孩到灯距离 + 影长 = 2 + 1.2 = 3.2 m",
+              "【列方程】H / 3.2 = 1.5 / 1.2",
+              "【计算】H = 3.2 × (1.5 / 1.2) = 3.2 × 1.25 = 4.0 m",
+              "【易错点】⚠️ 不要用 2m 直接除，要用灯到影尖的总距离（3.2 m）！",
+              "【检验】灯越高→影子越短；H=4 m > 女孩身高 1.5 m，且影子短（1.2 m < 身高 1.5 m）✓",
+              "Answer: 4.0 m"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "4.2 光的反射",
+        "en": "Reflection",
+        "problems": [
+          {
+            "en": "Light hits a plane mirror at incidence angle 30°. What is the angle of reflection?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：入射角 i = 30°；求：反射角 r",
+              "【知识点】光的反射定律：反射角 = 入射角（两角均是与法线的夹角，不是与镜面的夹角）",
+              "【计算】r = i = 30°",
+              "【易错点】⚠️ 入射角和反射角都是与法线（垂直于镜面的线）的夹角，不是与镜面的夹角！",
+              "【检验】反射定律：i = r，且光线可逆 ✓",
+              "Answer: 30°"
+            ]
+          },
+          {
+            "en": "An object is placed 60 cm in front of a plane mirror. Where does the image appear?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：物距 u = 60 cm（平面镜前）；求：像的位置",
+              "【知识点】平面镜成像规律：",
+              "  ① 像与物关于镜面对称（等距）",
+              "  ② 像距 = 物距",
+              "  ③ 是虚像（在镜后，无法用光屏承接）",
+              "【计算】像距 = 物距 = 60 cm",
+              "像在镜后 60 cm 处（即镜前 60 cm 的对称位置）",
+              "【易错点】⚠️ 像距≠物距+像距！物距是物体到镜面的距离，像距是像到镜面的距离",
+              "【检验】物在镜前60 cm，像在镜后60 cm → 物像间距 = 60 + 60 = 120 cm ✓",
+              "Answer: 像在镜后 60 cm 处（虚像）"
+            ]
+          },
+          {
+            "en": "Two plane mirrors are placed at 90°. How many images of an object placed between them can be seen?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：两平面镜夹角 θ = 90°，物体放在夹角内；求：可看到的像的数量",
+              "【知识点】两镜面夹角成像公式：n = (360°/θ) − 1",
+              "  推导：两镜面间的多次反射产生多个像",
+              "【计算】n = (360 ÷ 90) − 1 = 4 − 1 = 3 个像",
+              "【画图验证】",
+              "   镜A ╲",
+              "        ╲",
+              "   物 ●   ╲ 镜B",
+              "        90°",
+              "像1：物对镜A的像",
+              "像2：物对镜B的像",
+              "像3：物经过镜A反射再经镜B形成的像",
+              "【易错点】⚠️ 公式 n = 360/θ − 1 仅适用于 θ 能整除360° 的情况",
+              "【方法总结】求两镜成像：先算 360/θ，再减1；夹角越小，像越多",
+              "Answer: 3 个像"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "4.3 光的折射",
+        "en": "Refraction & Snell's Law",
+        "problems": [
+          {
+            "en": "Light travels from air (n = 1) into water (n = 1.33). Incidence angle = 45°. Find angle of refraction.",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：空气折射率 n₁ = 1，水折射率 n₂ = 1.33，入射角 i = 45°；求：折射角 r",
+              "【知识点】斯涅尔定律（斯涅耳定律）：n₁ sin i = n₂ sin r",
+              "  - n：折射率（光疏介质→光密介质时 n 增大）",
+              "  - i, r：入射角和折射角（与法线的夹角）",
+              "【思路】光从空气→水（光疏→光密），折射角 < 入射角",
+              "【计算】n₁ sin i = n₂ sin r",
+              "1 × sin 45° = 1.33 × sin r",
+              "sin 45° = 0.7071",
+              "sin r = 0.7071 / 1.33 = 0.532",
+              "r = arcsin(0.532) ≈ 32.1°",
+              "【易错点】⚠️ arcsin(0.532) ≠ 0.532；需要查表或计算器！",
+              "【检验】光疏→光密，折射角应小于入射角（32.1° < 45°）✓",
+              "Answer: 约 32°"
+            ]
+          },
+          {
+            "en": "Light enters glass (n = 1.5) from air. Refraction angle = 25°. Find the angle of incidence.",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：玻璃折射率 n₂ = 1.5，空气 n₁ = 1，折射角 r = 25°；求：入射角 i",
+              "【知识点】斯涅尔定律：n₁ sin i = n₂ sin r",
+              "【计算】n₁ sin i = n₂ sin r → 1 × sin i = 1.5 × sin 25°",
+              "sin 25° ≈ 0.4226",
+              "sin i = 1.5 × 0.4226 = 0.6339",
+              "i = arcsin(0.6339) ≈ 39.3°",
+              "【易错点】⚠️ arcsin 计算需用计算器；i ≈ 39° < 临界角（玻璃≈42°）→ 光能进入玻璃 ✓",
+              "【检验】光密→光疏（玻璃→空气）时入射角 > 折射角，39.3° > 25° ✓",
+              "Answer: 约 39°"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch05_透镜": {
+    "title": "第5章 透镜",
+    "titleEn": "Ch05 Lenses",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "5.1 透镜基础",
+        "en": "Types of Lenses & Fundamentals",
+        "problems": [
+          {
+            "en": "A convex lens has focal length f = 20 cm. Object placed 60 cm from lens. Find image distance.",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：凸透镜焦距 f = 20 cm，物距 u = 60 cm；求：像距 v",
+              "【知识点】薄透镜成像公式：1/f = 1/u + 1/v",
+              "  符号规则（几何光学常用）：u 为正（实物），f 凸透镜为正",
+              "【分析】u = 60 cm > 2f = 40 cm → 物体在 2f 之外，应成倒立、缩小、实像",
+              "【计算】1/v = 1/f − 1/u = 1/20 − 1/60",
+              "通分：1/20 = 3/60；3/60 − 1/60 = 2/60",
+              "v = 60/2 = 30 cm",
+              "【易错点】⚠️ 公式是 1/f = 1/u + 1/v，不是 1/u + 1/v = 1/f（两边互换可以，但注意符号）",
+              "【检验】v = 30 cm 满足：f < v < 2f（20 < 30 < 40），是缩小实像的条件 ✓",
+              "Answer: 30 cm（倒立缩小实像）"
+            ]
+          },
+          {
+            "en": "A convex lens with f = 15 cm. Object is 10 cm from lens. Is the image real or virtual?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：凸透镜 f = 15 cm，物距 u = 10 cm（u < f）；求：判断像的虚实",
+              "【知识点】凸透镜成像规律：",
+              "  当 u > 2f：倒立缩小实像",
+              "  当 f < u < 2f：倒立放大实像",
+              "  当 u = f：不成像（折射光线平行）",
+              "  当 u < f：正立放大虚像",
+              "【分析】u = 10 cm < f = 15 cm → 物体在焦距以内",
+              "【结论】凸透镜 u < f 时，光线发散不成交点 → 正立放大虚像",
+              "【易错点】⚠️ 虚像不是「不存在的像」，而是光线反向延长线形成的像，不能用光屏承接",
+              "【检验】放大镜就是这种情形：物体放在焦距内，通过放大镜看到正立放大的虚像 ✓",
+              "Answer: 正立放大虚像（放大镜原理）"
+            ]
+          },
+          {
+            "en": "A concave lens has focal length f = −10 cm. Object is 20 cm away. Calculate image distance.",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：凹透镜焦距 f = −10 cm（凹透镜 f 取负），物距 u = 20 cm；求：像距 v",
+              "【知识点】凹透镜成像公式：1/f = 1/u + 1/v（f 取负值）",
+              "【分析】凹透镜总是发散光线 → 只能成虚像（像距 v 为负）",
+              "【计算】1/v = 1/f − 1/u = 1/(−10) − 1/20",
+              "= −0.1 − 0.05 = −0.15",
+              "v = −1/0.15 = −6.67 cm",
+              "【易错点】⚠️ v 为负表示像在物体同侧（虚像）；凹透镜不可能成实像！",
+              "【检验】|v| < u (6.67 < 20)，且 v < 0 → 符合凹透镜成像规律 ✓",
+              "Answer: v = −6.67 cm（虚像，与物体同侧）"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "5.2 透镜成像规律",
+        "en": "Lens Imaging Rules",
+        "problems": [
+          {
+            "en": "A convex lens forms a real image 3× the size of the object. f = 12 cm. Find u and v.",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：凸透镜 f = 12 cm，像高是物高的3倍（放大率 m = 3），成实像；求：物距 u 和像距 v",
+              "【知识点】放大率 m = 3 = v/u（实像为倒立，m 取正值表示大小比）",
+              "【分析】m = v/u = 3 → v = 3u",
+              "【计算】代入成像公式：1/f = 1/u + 1/v = 1/u + 1/(3u) = 4/(3u)",
+              "1/12 = 4/(3u) → 3u = 48 → u = 16 cm",
+              "v = 3 × 16 = 48 cm",
+              "【易错点】⚠️ 实像放大率 m = |v|/|u|，但 v/u 的符号取决于像的倒/正立（实像 m 取正）",
+              "【检验】u = 16 cm 在 f 和 2f 之间（12 < 16 < 24），应成放大实像 ✓；",
+              "v = 48 cm > 2f，应在光屏上 ✓",
+              "Answer: u = 16 cm，v = 48 cm"
+            ]
+          },
+          {
+            "en": "A 2-cm tall object is placed 10 cm from a convex lens of f = 6 cm. Find image height.",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：物高 h₀ = 2 cm，u = 10 cm，f = 6 cm；求：像高 h",
+              "【知识点】①成像公式 1/f = 1/u + 1/v；②放大率 m = v/u = h/h₀",
+              "【计算①求 v】1/v = 1/f − 1/u = 1/6 − 1/10",
+              "通分：5/30 − 3/30 = 2/30 → v = 15 cm",
+              "【计算②求放大率】m = v/u = 15/10 = 1.5",
+              "【计算③求像高】h = m × h₀ = 1.5 × 2 = 3 cm",
+              "【分析】v > u → 放大像；h = 3 cm > 2 cm → 放大 ✓；",
+              "u > f → 实像 → 倒立 → 但题目只问高度大小",
+              "【易错点】⚠️ 虚像时 m = |v|/u，且像高为正但方向与物相反（放大镜正立是视觉感受）",
+              "Answer: 3 cm（倒立实像，高为 3 cm）"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch06_质量密度": {
+    "title": "第6章 质量与密度",
+    "titleEn": "Ch06 Mass and Density",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "6.1 密度计算",
+        "en": "Density Calculations",
+        "problems": [
+          {
+            "en": "A block of iron has V = 50 cm³ and ρ = 7.8 g/cm³. What is its mass?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：铁块体积 V = 50 cm³，密度 ρ = 7.8 g/cm³；求：质量 m",
+              "【知识点】密度公式：ρ = m/V → m = ρ × V",
+              "  - ρ：密度（单位 g/cm³ 或 kg/m³）",
+              "  - m：质量（g 或 kg）",
+              "  - V：体积（cm³ 或 m³）",
+              "【计算】m = 7.8 × 50 = 390 g = 0.39 kg",
+              "【易错点】⚠️ ρ = 7.8 g/cm³ 很大（铁的密度），同体积的水只有 50 g",
+              "【检验】铁密度约 7.8 g/cm³ 与常识一致（铁比水重很多）✓",
+              "Answer: 390 g（或 0.39 kg）"
+            ]
+          },
+          {
+            "en": "A metal cube of side 2 cm has mass 70 g. What is the density in kg/m³?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：立方体边长 a = 2 cm，质量 m = 70 g；求：密度 ρ（kg/m³）",
+              "【知识点】ρ = m/V；单位换算：1 g/cm³ = 1000 kg/m³",
+              "【计算①体积】V = a³ = 2³ = 8 cm³",
+              "【计算②密度（g/cm³）】ρ = 70 / 8 = 8.75 g/cm³",
+              "【计算③换算 kg/m³】8.75 × 1000 = 8750 kg/m³",
+              "【易错点】⚠️ 最终答案要换算成 kg/m³，不能只算到 g/cm³",
+              "【检验】密度 8750 kg/m³ ≈ 8.75 g/cm³，合理（介于铝2.7和铁7.8之间，可能是铜或锌）✓",
+              "Answer: 8750 kg/m³"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "6.2 密度的应用",
+        "en": "Density Applications",
+        "problems": [
+          {
+            "en": "A bottle: empty mass 120 g, filled mass 320 g, volume 200 cm³. Density of the liquid?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：空瓶质量 120 g，装满液体后质量 320 g，瓶容积 200 cm³；求：液体密度",
+              "【思路】先求液体质量 = 总质量 − 瓶质量",
+              "【计算①液体质量】m = 320 − 120 = 200 g",
+              "【计算②液体密度】ρ = m/V = 200 g / 200 cm³ = 1 g/cm³",
+              "【换算】1 g/cm³ = 1000 kg/m³",
+              "【检验】ρ = 1 g/cm³ = 水的密度，常见液体密度 ✓",
+              "Answer: 1000 kg/m³（与水密度相同）"
+            ]
+          },
+          {
+            "en": "An aluminum block (ρ = 2.7 g/cm³) has mass 540 g. What is its volume?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：铝块质量 m = 540 g，铝的密度 ρ = 2.7 g/cm³；求：体积 V",
+              "【知识点】密度公式变形：V = m/ρ",
+              "【计算】V = 540 / 2.7",
+              "540 ÷ 2.7：先扩大10倍 → 5400 ÷ 27 = 200 cm³",
+              "【检验】铝的密度约 2.7 g/cm³，质量 540 g → V ≈ 200 cm³，合理 ✓",
+              "Answer: 200 cm³"
+            ]
+          },
+          {
+            "en": "A 200-g piece of gold (ρ = 19.3 g/cm³) and a 200-g piece of lead (ρ = 11.3 g/cm³). Which has larger volume?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：金子 m₁ = 200 g，ρ₁ = 19.3 g/cm³；铅块 m₂ = 200 g，ρ₂ = 11.3 g/cm³；比较体积大小",
+              "【知识点】V = m/ρ；质量相同时，密度越大 → 体积越小",
+              "【计算①金的体积】V_gold = 200 / 19.3 ≈ 10.36 cm³",
+              "【计算②铅的体积】V_lead = 200 / 11.3 ≈ 17.70 cm³",
+              "【比较】10.36 < 17.70 → 铅块体积更大",
+              "【易错点】⚠️ 质量相同，金密度更大意味着金原子排列更紧密 → 体积更小",
+              "【检验】金密度（19.3）> 铅密度（11.3），等质量下金的体积更小 ✓",
+              "Answer: 铅的体积更大（约 17.7 cm³ vs 金的约 10.4 cm³）"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch07_力": {
+    "title": "第7章 力",
+    "titleEn": "Ch07 Force",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "7.1 力的合成",
+        "en": "Force Composition",
+        "problems": [
+          {
+            "en": "Two forces F₁ = 8 N and F₂ = 6 N act in the same direction. What is their resultant?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：两个力同向：F₁ = 8 N，F₂ = 6 N；求：合力 F",
+              "【知识点】同方向合力：F = F₁ + F₂（算术相加）",
+              "【计算】F = 8 + 6 = 14 N，方向与两力相同",
+              "【检验】合力大于任一分力，同向时合力最大 ✓",
+              "Answer: 14 N"
+            ]
+          },
+          {
+            "en": "F₁ = 8 N and F₂ = 6 N act in opposite directions. What is the resultant?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：两个力反向：F₁ = 8 N，F₂ = 6 N；求：合力 F",
+              "【知识点】反方向合力：F = |F₁ − F₂|，方向与大力方向相同",
+              "【计算】F = |8 − 6| = 2 N，方向与 F₁（8 N）方向相同",
+              "【易错点】⚠️ 不是合力为零！只有在等大反向时才为零（平衡力）",
+              "【检验】合力小于大分力，符合预期 ✓",
+              "Answer: 2 N（方向与 8 N 的力相同）"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7.2 弹力",
+        "en": "Elastic Force & Hooke's Law",
+        "problems": [
+          {
+            "en": "A spring has natural length 20 cm. A 5-N weight stretches it to 25 cm. Find k.",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：弹簧原长 20 cm，挂5 N重物后长度25 cm；求：劲度系数 k",
+              "【知识点】胡克定律：F = k × x",
+              "  - F：弹力（N）",
+              "  - k：劲度系数（N/m）",
+              "  - x：伸长量（m），不是弹簧总长度！",
+              "【找伸长量】x = 25 − 20 = 5 cm = 0.05 m",
+              "【计算】k = F/x = 5 / 0.05 = 100 N/m",
+              "【易错点】⚠️ x 是伸长量，不是弹簧总长度！很多学生误用25 cm",
+              "【检验】k = 100 N/m 表示每伸长1 m需要100 N的力，伸长5 cm需5 N ✓",
+              "Answer: 100 N/m"
+            ]
+          },
+          {
+            "en": "A spring with k = 50 N/m is stretched by 12 cm. What force is exerted?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：k = 50 N/m，伸长量 x = 12 cm；求：弹力 F",
+              "【知识点】胡克定律：F = k × x",
+              "【单位转换】x = 12 cm = 0.12 m",
+              "【计算】F = 50 × 0.12 = 6 N",
+              "【检验】k 较小（50 N/m），12 cm 伸长对应 6 N，合理 ✓",
+              "Answer: 6 N"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7.3 重力",
+        "en": "Gravity & Weight",
+        "problems": [
+          {
+            "en": "An object of mass 12 kg on Earth (g = 10 m/s²). What is its weight?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：质量 m = 12 kg，重力加速度 g = 10 m/s²；求：重量 W",
+              "【知识点】重力公式：W = m × g",
+              "  - W：重力（单位：N）",
+              "  - m：质量（kg）",
+              "  - g：重力加速度（m/s²）",
+              "【计算】W = 12 × 10 = 120 N",
+              "【易错点】⚠️ 质量（kg）和重量（N）是不同概念！质量不变，重量随 g 变化",
+              "【检验】g = 10 N/kg（等价于 m/s²），12 kg × 10 N/kg = 120 N ✓",
+              "Answer: 120 N"
+            ]
+          },
+          {
+            "en": "Same object on the Moon (g = 1.6 m/s²). What is its weight?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：同一物体 m = 12 kg，月球 g = 1.6 m/s²；求：月球上的重量",
+              "【知识点】质量不随地点改变；重力 W = m × g（月球 g ≈ 地球的1/6）",
+              "【计算】W_moon = 12 × 1.6 = 19.2 N",
+              "【对比】地球：120 N → 月球：19.2 N ≈ 120/6 ✓",
+              "【检验】月球 g 约为地球的1/6，故重量约为地球的1/6 ✓",
+              "Answer: 19.2 N"
+            ]
+          },
+          {
+            "en": "A person weighs 600 N on Earth. What is their mass? What is their weight on the Moon?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：地球表面体重 W = 600 N；求：① 质量 m；② 月球上重量",
+              "【知识点】地球 g ≈ 10 m/s²；月球 g ≈ 1.6 m/s²",
+              "【计算①质量】W = m × g → m = W/g = 600 / 10 = 60 kg",
+              "【计算②月球重量】W_moon = m × g_moon = 60 × 1.6 = 96 N",
+              "【易错点】⚠️ 质量60 kg 在月球不变；变化的只有重量",
+              "【检验】地球：600 N = 60 kg × 10 m/s² ✓；月球：60 × 1.6 = 96 N ✓",
+              "Answer: 质量 = 60 kg；月球上重量 = 96 N"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7.4 摩擦力",
+        "en": "Friction",
+        "problems": [
+          {
+            "en": "A 10-N block rests on a horizontal surface; μs = 0.4. Max static friction?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：物重 W = 10 N（竖直向下），静摩擦系数 μs = 0.4，静止在水平面上；求：最大静摩擦力",
+              "【知识点】最大静摩擦公式：f_s(max) = μs × N",
+              "  - N：支持力（水平面时 N = W）",
+              "【计算】N = W = 10 N（支持力与重力平衡）",
+              "f_s(max) = 0.4 × 10 = 4 N",
+              "【易错点】⚠️ 静摩擦力不是固定值！当外力 F < f_s(max) 时，f = F（静摩擦随外力变化）；只有最大静摩擦才等于 μsN",
+              "【检验】f_s(max) = 4 N < W = 10 N，数值合理 ✓",
+              "Answer: 4 N"
+            ]
+          },
+          {
+            "en": "The same block slides; μk = 0.3. What is the kinetic friction force?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：物重 W = 10 N，动摩擦系数 μk = 0.3，正在滑动；求：动摩擦力",
+              "【知识点】动摩擦公式：f_k = μk × N（N = W = 10 N）",
+              "【计算】f_k = 0.3 × 10 = 3 N",
+              "【易错点】⚠️ μk < μs：动摩擦系数 < 静摩擦系数；",
+              "  一旦物体开始滑动，动摩擦力小于最大静摩擦力（更小阻力）",
+              "【检验】f_k = 3 N < f_s(max) = 4 N，符合滑动后阻力变小 ✓",
+              "Answer: 3 N"
+            ]
+          },
+          {
+            "en": "A 5-kg box is pushed with 30 N. μs = 0.5, μk = 0.2. Does it move? If so, what is its acceleration?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：m = 5 kg，推力 F = 30 N，μs = 0.5，μk = 0.2；求：①是否移动；②加速度",
+              "【知识点】①判断：F > f_s(max) 则移动；②运动：F_合 = F − f_k；a = F_合/m",
+              "【计算①最大静摩擦】N = mg = 5 × 10 = 50 N；f_s(max) = 0.5 × 50 = 25 N",
+              "【判断】F = 30 N > f_s(max) = 25 N → 物体移动 ✓",
+              "【计算②动摩擦】f_k = 0.2 × 50 = 10 N",
+              "【计算③加速度】F_合 = 30 − 10 = 20 N；a = F_合/m = 20 / 5 = 4 m/s²",
+              "【易错点】⚠️ 两步判断：先比较 F 和 f_s(max) 判断是否移动，再用动摩擦算加速度",
+              "【检验】a = 4 m/s² > 0，确认在加速运动 ✓",
+              "Answer: 会移动，a = 4 m/s²"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "7.5 牛顿运动定律",
+        "en": "Newton's Laws",
+        "problems": [
+          {
+            "en": "A 5-kg object has net force 20 N. Acceleration?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：质量 m = 5 kg，合力 F = 20 N；求：加速度 a",
+              "【知识点】牛顿第二定律：F = m × a → a = F/m",
+              "【计算】a = 20 / 5 = 4 m/s²",
+              "【检验】合力方向与加速度方向相同 ✓",
+              "Answer: 4 m/s²"
+            ]
+          },
+          {
+            "en": "A 3-kg object accelerates at 5 m/s². Net force?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：m = 3 kg，a = 5 m/s²；求：合力 F",
+              "【知识点】F = m × a",
+              "【计算】F = 3 × 5 = 15 N",
+              "【检验】单位检验：kg × m/s² = N ✓",
+              "Answer: 15 N"
+            ]
+          },
+          {
+            "en": "A 2000-kg car accelerates from 0 to 20 m/s in 10 s. Average net force?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：m = 2000 kg，v₀ = 0，v = 20 m/s，Δt = 10 s；求：平均合力 F",
+              "【知识点】①先求 a = (v − v₀)/Δt；②再用 F = ma",
+              "【计算①加速度】a = (20 − 0) / 10 = 2 m/s²",
+              "【计算②合力】F = 2000 × 2 = 4000 N",
+              "【易错点】⚠️ 不能直接用速度除以质量！F = m × Δv/Δt，不是 F = Δv/m",
+              "【检验】汽车质量大（2000 kg），a = 2 m/s² 需较大力（4000 N ≈ 400 kg重物的重量）✓",
+              "Answer: 4000 N"
+            ]
+          },
+          {
+            "en": "A 50-kg person in an elevator feels weight 600 N (on a scale). Is the elevator accelerating? If so, how much?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：m = 50 kg，秤示数（视重）= 600 N；求：①是否有加速度；②加速度大小和方向",
+              "【知识点】电梯中的力分析：",
+              "  支持力 N（秤读数）≠ mg（实际重量）",
+              "  合力 F = N − mg = ma",
+              "  - N > mg → 向上加速或向下减速（a > 0）",
+              "  - N < mg → 向下加速或向上减速（a < 0）",
+              "【计算①正常重量】mg = 50 × 10 = 500 N",
+              "【计算②合力】F_net = N − mg = 600 − 500 = 100 N（向上）",
+              "【计算③加速度】a = F_net/m = 100 / 50 = 2 m/s²",
+              "【结论】电梯正在向上做加速运动（a = 2 m/s² ↑）",
+              "【易错点】⚠️ 视重600 N > 实际重量500 N，说明支持力 > 重力 → 合力向上 → 向上加速",
+              "【检验】a = 2 m/s² > 0，方向向上 ✓",
+              "Answer: 向上加速，a = 2 m/s²"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch08_压强": {
+    "title": "第8章 压强",
+    "titleEn": "Ch08 Pressure",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "8.1 压力与压强",
+        "en": "Pressure",
+        "problems": [
+          {
+            "en": "A 60-kg person stands on one foot (area = 150 cm²). Pressure on floor? (g = 10 m/s²)",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：m = 60 kg，一只脚面积 A = 150 cm²，g = 10 m/s²；求：压强 p",
+              "【知识点】压强公式：p = F/A",
+              "  - F：压力（N），通常 F = W = mg（重力）",
+              "  - A：接触面积（m²）",
+              "【计算①压力】F = mg = 60 × 10 = 600 N",
+              "【计算②面积换算】A = 150 cm² = 150 × 10⁻⁴ m² = 0.015 m²",
+              "【计算③压强】p = 600 / 0.015 = 40000 Pa = 4.0 × 10⁴ Pa",
+              "【易错点】⚠️ 面积单位要用 m²！150 cm² ≠ 150 m²（差10000倍）",
+              "【检验】单脚站立压强很大（4万 Pa），双脚面积翻倍则压强减半 ✓",
+              "Answer: 4.0 × 10⁴ Pa"
+            ]
+          },
+          {
+            "en": "A force of 500 N acts over an area of 0.25 m². Pressure in Pa?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：F = 500 N，A = 0.25 m²；求：压强 p",
+              "【知识点】p = F/A = 500 / 0.25",
+              "【计算】500 ÷ 0.25 = 500 ÷ (1/4) = 500 × 4 = 2000 Pa = 2 kPa",
+              "【检验】A = 0.25 m² 不小（比A4纸还大），F = 500 N → 压强 2 kPa 较小 ✓",
+              "Answer: 2000 Pa（2 kPa）"
+            ]
+          },
+          {
+            "en": "A knife blade applies 100 N force over a 0.2-mm-wide, 10-cm-long edge. Find pressure.",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：F = 100 N，刀刃宽度 0.2 mm = 0.0002 m，长度 10 cm = 0.1 m；求：压强",
+              "【知识点】压强公式：p = F/A；受力面积 = 刀刃宽 × 刀刃长",
+              "【易错点】⚠️ 刀刃很薄！压强极大是刀能切割的原因",
+              "【计算①面积】A = 宽 × 长 = 0.0002 × 0.1 = 2 × 10⁻⁵ m²",
+              "【计算②压强】p = 100 / (2 × 10⁻⁵) = 5 × 10⁶ Pa = 5 MPa",
+              "【检验】5 MPa = 5,000,000 Pa，非常大的压强（相当于50个大气压集中在极小面积）✓",
+              "Answer: 5 × 10⁶ Pa（5 MPa）"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "8.2 液体压强",
+        "en": "Liquid Pressure",
+        "problems": [
+          {
+            "en": "Water tank is 3 m deep. Pressure at the bottom? (ρ = 1000 kg/m³, g = 10 m/s²)",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：水深 h = 3 m，ρ = 1000 kg/m³，g = 10 m/s²；求：底部压强 p",
+              "【知识点】液体压强公式：p = ρ × g × h",
+              "  - p：液体压强（Pa）",
+              "  - ρ：液体密度（kg/m³）",
+              "  - g：重力加速度（m/s²）",
+              "  - h：深度（m），注意是竖直深度，不是斜坡长度",
+              "【计算】p = 1000 × 10 × 3 = 30000 Pa = 3.0 × 10⁴ Pa",
+              "【易错点】⚠️ h 是深度（从液面竖直向下），不是容器壁的斜边长度",
+              "【检验】p = ρgh = 1000×10×3 = 30000 Pa ✓",
+              "Answer: 3.0 × 10⁴ Pa"
+            ]
+          },
+          {
+            "en": "A diver is 8 m below the surface. What total pressure? (p_atm = 1.0 × 10⁵ Pa)",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：深度 h = 8 m，ρ = 1000 kg/m³，g = 10 m/s²，大气压 p_atm = 1.0×10⁵ Pa；求：总压强",
+              "【知识点】总压强 = 大气压 + 液体压强：p_total = p_atm + ρgh",
+              "【计算①液体压强】p_liquid = 1000 × 10 × 8 = 80000 Pa",
+              "【计算②总压强】p_total = 100000 + 80000 = 180000 Pa = 1.8 × 10⁵ Pa",
+              "【易错点】⚠️ 液体内部某点的压强是「绝对压强」（大气压 + 液体压强）；若只求液体压强，则不加大气压",
+              "【检验】每下潜10 m 增加约1个大气压（1×10⁵ Pa），8 m ≈ 0.8个大气压 + 原有大气压 ✓",
+              "Answer: 1.8 × 10⁵ Pa（绝对压强）"
+            ]
+          },
+          {
+            "en": "A U-tube contains water on one side. The other side is filled with oil (ρ = 800 kg/m³) to a height of 20 cm. What is the height difference between the water levels?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：U型管左侧装油，ρ_oil = 800 kg/m³，油柱高 h_oil = 20 cm = 0.2 m；右侧为水，ρ_water = 1000 kg/m³；求：水面高度差 Δh",
+              "【画图】",
+              "  油│水  界面等压",
+              "   ║    ║",
+              "  h_oil│h_w",
+              "  ─────┼─────",
+              "       ║",
+              "  油侧  水侧",
+              "【知识点】连通器原理：同种液体同一深度压强相等；不同液体在同一深度，密度大的压强更大",
+              "【分析】在油-水界面（同一水平面），油柱产生的压强 = 水柱产生的压强",
+              "【列方程】p_oil = p_water → ρ_oil × g × h_oil = ρ_water × g × h_water",
+              "【计算】800 × h_water = 1000 × 0.2 → h_water = 0.16 m = 16 cm",
+              "【求高度差】Δh = h_oil − h_water = 20 − 16 = 4 cm",
+              "【检验】ρ_water > ρ_oil，相同压强下水柱更矮（4 cm 差值）✓",
+              "Answer: 4 cm"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "8.3 大气压强",
+        "en": "Atmospheric Pressure",
+        "problems": [
+          {
+            "en": "A barometer uses mercury (ρ = 13600 kg/m³). p_atm = 1.0 × 10⁵ Pa. How high is the column?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：大气压 p_atm = 1.0×10⁵ Pa，水银密度 ρ = 13600 kg/m³，g = 10 m/s²；求：水银柱高 h",
+              "【知识点】托里拆利实验：水银柱高度由大气压支持",
+              "  p_atm = ρ_mercury × g × h → h = p_atm / (ρ × g)",
+              "【计算】h = 100000 / (13600 × 10)",
+              "分母 = 136000；h = 100000 / 136000 ≈ 0.735 m = 73.5 cm",
+              "【易错点】⚠️ 水银有毒，通常用水银测大气压；水柱则需约10 m高（不实用）",
+              "【检验】标准大气压下水银柱约 76 cm（本题算得 73.5 cm，接近）✓",
+              "Answer: 约 73.5 cmHg（约 0.735 m）"
+            ]
+          },
+          {
+            "en": "If water (ρ = 1000 kg/m³) were used instead of mercury, how tall would the barometer need to be?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：p_atm = 1.0×10⁵ Pa，ρ_water = 1000 kg/m³；求：等效水柱高度 h",
+              "【知识点】同上一题公式：h = p_atm / (ρ × g)",
+              "【计算】h = 100000 / (1000 × 10) = 100000 / 10000 = 10 m",
+              "【易错点】⚠️ 10 m的水柱才能支撑一个大气压！这就是为什么不用水做托里拆利实验",
+              "【检验】h = 10 m，水的密度远小于水银（1/13.6），所需高度约为水银柱的13.6倍 ✓",
+              "【方法总结】托里拆利实验：水柱高 ∝ 1/ρ；密度越小，高度越大",
+              "Answer: 约 10 m"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch09_浮力": {
+    "title": "第9章 浮力",
+    "titleEn": "Ch09 Buoyancy",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "9.1 浮力的概念",
+        "en": "Buoyant Force",
+        "problems": [
+          {
+            "en": "A stone weighs 15 N in air and 10 N in water. Buoyant force?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：空气中重力 W_air = 15 N，水中重力 W_water = 10 N；求：浮力 F_b",
+              "【知识点】浮力 = 物体在空气中重力 − 物体在液体中重力（称重法）",
+              "  F_b = W_air − W_water",
+              "【计算】F_b = 15 − 10 = 5 N",
+              "【易错点】⚠️ 浮力不等于10 N（那是水的支持力）；浮力是两者之差",
+              "【检验】浮力 5 N = 排开水的重量（F_b = ρ_water × g × V排）✓",
+              "Answer: 5 N"
+            ]
+          },
+          {
+            "en": "An object floats with 60% submerged (ρ_water = 1000 kg/m³). Density of object?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：物体漂浮，60%体积浸入水中，ρ_water = 1000 kg/m³；求：物体密度 ρ",
+              "【知识点】漂浮条件：浮力 = 重力；即 F_b = mg",
+              "  阿基米德原理：F_b = ρ_water × g × V排",
+              "  物体质量：m = ρ × V",
+              "【列方程】ρ_water × g × 0.6V = ρ × V × g",
+              "【约分】ρ_water × 0.6 = ρ",
+              "【计算】ρ = 0.6 × 1000 = 600 kg/m³",
+              "【易错点】⚠️ 漂浮时物体密度 < 液体密度；60%浸没 → 密度是液体的60%",
+              "【检验】ρ = 600 < 1000 → 物体能漂浮 ✓",
+              "Answer: 600 kg/m³"
+            ]
+          },
+          {
+            "en": "A 2-kg object floats with 80% of its volume submerged. Find the object's density.",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：质量 m = 2 kg，漂浮时 V排 = 0.8V，ρ_water = 1000 kg/m³；求：物体密度 ρ",
+              "【知识点】漂浮：F_b = mg = ρ_water × g × 0.8V",
+              "【思路】V = m/ρ，代入上式",
+              "【计算】mg = ρ_water × g × 0.8V → ρ × V × g = ρ_water × g × 0.8V",
+              "约去 V × g：ρ = 0.8 × 1000 = 800 kg/m³",
+              "【易错点】⚠️ 这里物体的体积 V 不是排开液体的体积（0.8V 才是）",
+              "【检验】ρ = 800 kg/m³ < 1000 → 漂浮 ✓；若 ρ = 1000 则悬浮 ✓",
+              "Answer: 800 kg/m³"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "9.2 阿基米德原理",
+        "en": "Archimedes' Principle",
+        "problems": [
+          {
+            "en": "A 0.5-m³ object is completely submerged in water. Buoyant force? (g = 10 m/s²)",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：物体体积 V = 0.5 m³，完全浸没（V排 = V），ρ_water = 1000 kg/m³，g = 10 m/s²；求：浮力 F_b",
+              "【知识点】阿基米德原理：F_b = ρ液 × g × V排",
+              "【计算】F_b = 1000 × 10 × 0.5 = 5000 N",
+              "【易错点】⚠️ 物体体积 V = 0.5 m³ 必须全部浸没才是 V排；悬浮时也是",
+              "【检验】F_b = 5000 N = 排开水的重量（约 500 kg 物体的重力）✓",
+              "Answer: 5000 N"
+            ]
+          },
+          {
+            "en": "A piece of wood (ρ = 600 kg/m³, V = 0.002 m³). Will it sink or float?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：木块 ρ = 600 kg/m³ < ρ_water = 1000 kg/m³；求：判断沉浮",
+              "【方法】比较物体密度与液体密度即可判断",
+              "【判断】ρ_wood = 600 kg/m³ < ρ_water = 1000 kg/m³",
+              "→ 木块密度更小 → 上浮至漂浮",
+              "【计算验证】漂浮时，F_b = ρ_water × g × V排 = mg = ρ_wood × V × g",
+              "V排 = (ρ_wood/ρ_water) × V = (600/1000) × 0.002 = 0.0012 m³",
+              "即 60% 浸没（与之前公式 ρ = fraction × ρ_water 一致）",
+              "【易错点】⚠️ 不能只看体积！要看密度比！同体积的水和木头，水更重 → 木头漂浮",
+              "Answer: 漂浮（ρ_wood < ρ_water）"
+            ]
+          },
+          {
+            "en": "A 200-g iron nail (ρ = 7.8 g/cm³) is placed in mercury (ρ = 13.6 g/cm³). Will it sink or float? What fraction is submerged?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：铁钉 m = 200 g，ρ_iron = 7.8 g/cm³，水银 ρ_Hg = 13.6 g/cm³；求：①沉浮判断；②浸没分数",
+              "【知识点】ρ_iron = 7.8 g/cm³ = 7800 kg/m³；ρ_Hg = 13.6 g/cm³ = 13600 kg/m³",
+              "【判断】ρ_iron = 7800 < ρ_Hg = 13600 → 铁钉密度更小 → 会漂浮！",
+              "【分析】这不是「铁在水里会沉」的情况，因为水银比铁更密！",
+              "【计算浸没分数】漂浮条件：ρ_iron × V = ρ_Hg × V排",
+              "V排/V = ρ_iron/ρ_Hg = 7.8/13.6 ≈ 0.574",
+              "【结论】约 57.4% 浸没在汞中，42.6% 露出汞面",
+              "【易错点】⚠️ 铁钉密度小于水银所以能漂！这是一个反直觉的经典例子",
+              "【检验】铁钉虽然很重，但水银更重——密度决定沉浮 ✓",
+              "Answer: 漂浮；约 57.4% 浸没在汞中"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch10_功和机械能": {
+    "title": "第10章 功和机械能",
+    "titleEn": "Ch10 Work and Energy",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "10.1 功的计算",
+        "en": "Work",
+        "problems": [
+          {
+            "en": "A force F = 50 N pushes a box 4 m along the floor. Work done?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：F = 50 N，位移 s = 4 m，力与位移同方向；求：做功 W",
+              "【知识点】功的公式：W = F × s × cos θ",
+              "  - θ：力与位移方向的夹角",
+              "  - θ = 0° 时 W = Fs（本题）",
+              "【计算】W = 50 × 4 = 200 J",
+              "【易错点】⚠️ 如果力与位移方向不同（如水平拉斜向上），需乘 cos θ",
+              "【检验】1 J = 1 N × 1 m = 200 J ✓",
+              "Answer: 200 J"
+            ]
+          },
+          {
+            "en": "A person lifts a 10-kg backpack 1.5 m. Work against gravity? (g = 10 m/s²)",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：m = 10 kg，举高 h = 1.5 m；求：克服重力做的功 W",
+              "【知识点】克服重力做功：W = F × s = mg × h",
+              "【计算】W = 10 × 10 × 1.5 = 150 J",
+              "【易错点】⚠️ 如果问「重力做功」则是 −150 J（重力方向向下，与位移相反）；",
+              "克服重力 = 对抗重力 = 正功",
+              "【检验】举高1.5 m的10 kg物体，相当于提升15 kg重物1 m做的功 ✓",
+              "Answer: 150 J（克服重力）"
+            ]
+          },
+          {
+            "en": "A 20-N force acts at 30° to the horizontal, moving object 6 m. Work done?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：F = 20 N，与水平方向夹角 θ = 30°，位移 s = 6 m；求：做功 W",
+              "【知识点】斜向力做功：W = F × s × cos θ",
+              "  只有沿位移方向的分力 F cos θ 做功",
+              "【画受力分析图】",
+              "  ↗ F=20N (30°)",
+              "  ╱",
+              " ─────→ s=6m",
+              "【计算】W = 20 × 6 × cos 30°",
+              "cos 30° = √3/2 ≈ 0.8660",
+              "W = 20 × 6 × 0.866 = 103.92 J ≈ 104 J",
+              "【易错点】⚠️ 不能直接用 Fs = 20×6 = 120 J！需乘 cos θ",
+              "【检验】cos30° < 1 → W < Fs（120 J），实际约 104 J ✓",
+              "Answer: 约 104 J"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "10.2 功率",
+        "en": "Power",
+        "problems": [
+          {
+            "en": "A motor lifts a 200-kg load 5 m in 10 s. Power? (g = 10 m/s²)",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：m = 200 kg，举高 h = 5 m，时间 t = 10 s；求：功率 P",
+              "【知识点】功率公式：P = W/t（平均功率）",
+              "【计算①做功】W = mgh = 200 × 10 × 5 = 10000 J",
+              "【计算②功率】P = 10000 / 10 = 1000 W = 1 kW",
+              "【易错点】⚠️ 功率单位：W（瓦），1 W = 1 J/s",
+              "【检验】1 kW = 1000 W，相当于举起200 kg物体每秒约0.5 m ✓",
+              "Answer: 1000 W（1 kW）"
+            ]
+          },
+          {
+            "en": "A car engine produces 60 kW at a speed of 20 m/s. Tractive force?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：功率 P = 60 kW = 60000 W，速度 v = 20 m/s；求：牵引力 F",
+              "【知识点】功率与力的关系：P = F × v → F = P/v",
+              "【计算】F = 60000 / 20 = 3000 N",
+              "【易错点】⚠️ 不是 F = P/v²！量纲检验：W = J/s = N·m/s → F = W/v = N",
+              "【检验】P = 3000 × 20 = 60000 W ✓；大功率汽车发动机在高速下牵引力并不很大",
+              "Answer: 3000 N"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "10.3 动能",
+        "en": "Kinetic Energy",
+        "problems": [
+          {
+            "en": "A 2-kg ball moves at 5 m/s. KE?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：m = 2 kg，v = 5 m/s；求：动能 EK",
+              "【知识点】动能公式：EK = ½mv²",
+              "【计算】EK = ½ × 2 × 5² = 1 × 25 = 25 J",
+              "【易错点】⚠️ EK = ½mv² 不是 mv²！别忘了系数½",
+              "【检验】v² = 25 很大 → EK = 25 J，合理（相当于举起2.5 kg物体1 m的功）✓",
+              "Answer: 25 J"
+            ]
+          },
+          {
+            "en": "A 1000-kg car at 20 m/s brakes to a stop. Work done by brakes?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：m = 1000 kg，初速度 v₀ = 20 m/s，末速度 v = 0；求：制动器做功 W",
+              "【知识点】功能定理：W = ΔEK = EK_末 − EK_初",
+              "【计算】EK_初 = ½ × 1000 × 20² = ½ × 1000 × 400 = 200000 J",
+              "EK_末 = 0",
+              "W = 0 − 200000 = −200000 J",
+              "【易错点】⚠️ 负号表示制动器对物体做负功（消耗能量）；如果问「系统损失多少能量」，答案是 2.0×10⁵ J",
+              "【检验】W = −200 kJ，制动力做负功使汽车停下 ✓",
+              "Answer: −2.0 × 10⁵ J（制动器做负功）"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "10.4 势能",
+        "en": "Potential Energy",
+        "problems": [
+          {
+            "en": "A 3-kg mass raised 4 m. Gravitational PE? (g = 10 m/s²)",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：m = 3 kg，高度 h = 4 m，g = 10 m/s²；求：重力势能 EP",
+              "【知识点】重力势能：EP = m × g × h（相对零势面）",
+              "【计算】EP = 3 × 10 × 4 = 120 J",
+              "【易错点】⚠️ 势能是相对量！零势面选取不同，EP 数值不同，但高度差相同时能量差相同",
+              "【检验】mgh = 3×10×4 = 120 J，与动能转换时数值相等 ✓",
+              "Answer: 120 J"
+            ]
+          },
+          {
+            "en": "A spring with k = 200 N/m compressed by 0.1 m. Elastic PE?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：k = 200 N/m，压缩量 x = 0.1 m；求：弹性势能 EP",
+              "【知识点】弹性势能：EP = ½kx²",
+              "【易错点】⚠️ EP = ½kx² 不是 kx²！别忘了系数½",
+              "【计算】EP = ½ × 200 × 0.1² = 100 × 0.01 = 1 J",
+              "【检验】弹性势能公式与弹簧振子动能公式对应 ✓",
+              "Answer: 1 J"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "10.5 机械能守恒",
+        "en": "Conservation of Mechanical Energy",
+        "problems": [
+          {
+            "en": "A 1-kg ball is dropped from 5 m. Speed just before ground? (g = 10 m/s²)",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：m = 1 kg，从 h = 5 m 高处自由下落（忽略空气阻力）；求：落地前速度 v",
+              "【知识点】机械能守恒（无摩擦/空气阻力）：EP_top = EK_bottom",
+              "【列方程】mgh = ½mv²",
+              "约去 m：gh = ½v² → v² = 2gh",
+              "【计算】v² = 2 × 10 × 5 = 100",
+              "v = √100 = 10 m/s",
+              "【易错点】⚠️ 用运动学公式 v² = v₀² + 2gh（g向下为正）同样得 v = 10 m/s",
+              "【检验】高度5 m，g = 10 m/s² → v = √(2gh) = √100 = 10 m/s，与公式 v = gt = 10×1 = 10 m/s 一致 ✓",
+              "Answer: 10 m/s"
+            ]
+          },
+          {
+            "en": "A pendulum bob of mass 0.5 kg swings from height 0.4 m to lowest point. Max KE?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：m = 0.5 kg，从 h = 0.4 m 摆到最低点（忽略摩擦）；求：最大动能 EK_max",
+              "【知识点】机械能守恒：最高点 EP_max = 最低点 EK_max",
+              "【计算】EK_max = mgh = 0.5 × 10 × 0.4 = 2 J",
+              "【易错点】⚠️ 最低点 EK 最大时，EP = 0；最高点 EK = 0 时，EP 最大",
+              "【检验】EP 全部转化为 EK，2 J 是合理的最大值 ✓",
+              "Answer: 2 J"
+            ]
+          },
+          {
+            "en": "A 0.5-kg rollercoaster car has speed 10 m/s at the top of a 20-m hill. Speed at the bottom of a 10-m valley? (ignore friction, g = 10 m/s²)",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：m = 0.5 kg，山顶速度 v₁ = 10 m/s，h₁ = 20 m；谷底高度 h₂ = 10 m；求：谷底速度 v₂",
+              "【画能量图】",
+              "  山顶 h=20m, v=10        EK₁+EP₁",
+              "   ★ v₁=10 ──────────→ 谷底 h=10, v=?  EK₂+EP₂",
+              "【知识点】机械能守恒：EK₁ + EP₁ = EK₂ + EP₂",
+              "【列方程】½mv₁² + mgh₁ = ½mv₂² + mgh₂",
+              "约去 m：½v₁² + gh₁ = ½v₂² + gh₂",
+              "【代入数据】½×10² + 10×20 = ½v₂² + 10×10",
+              "50 + 200 = ½v₂² + 100",
+              "½v₂² = 150 → v₂² = 300 → v₂ = √300 ≈ 17.32 m/s",
+              "【易错点】⚠️ 谷底高度10 m（不是0），所以不是全部势能转化为动能",
+              "【检验】速度从10 m/s 增加到约17.3 m/s，符合下山加速的物理直觉 ✓",
+              "Answer: 约 17.3 m/s"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Ch11_简单机械": {
+    "title": "第11章 简单机械",
+    "titleEn": "Ch11 Simple Machines",
+    "note": "配套视频：可汗学院 Khan Academy（英文）。先看视频理解原理，再做下面的练习。",
+    "subtopics": [
+      {
+        "name": "11.1 杠杆",
+        "en": "Levers",
+        "problems": [
+          {
+            "en": "A lever has a fulcrum at midpoint. Load = 40 N at 0.2 m from fulcrum. Force needed at 0.5 m?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：阻力 F₂ = 40 N，阻力臂 L₂ = 0.2 m，动力臂 L₁ = 0.5 m；求：动力 F₁",
+              "【画杠杆示意图】",
+              "   F₁=？          F₂=40N",
+              "     ↓              ↓",
+              "  ──────●─────────────────",
+              "  支点   ←──0.2m──→",
+              "←─0.5m─→",
+              "【知识点】杠杆平衡条件：F₁ × L₁ = F₂ × L₂",
+              "【分析】支点在中点只是说明杠杆是对称的，实际力臂由力的作用点决定",
+              "【列方程】F₁ × 0.5 = 40 × 0.2",
+              "【计算】F₁ = (40 × 0.2) / 0.5 = 8 / 0.5 = 16 N",
+              "【检验】L₁ > L₂（0.5 > 0.2）→ 省力杠杆，F₁ = 16 N < F₂ = 40 N ✓",
+              "Answer: 16 N"
+            ]
+          },
+          {
+            "en": "A wheelbarrow: load 200 N, effort distance 1.5 m, load distance 0.3 m. Mechanical advantage?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：阻力 = 200 N，动力臂 L₁ = 1.5 m，阻力臂 L₂ = 0.3 m；求：机械效益 MA",
+              "【知识点】杠杆机械效益：MA = L₁ / L₂ = 阻力臂比动力臂（越大越省力）",
+              "【计算】MA = 1.5 / 0.3 = 5",
+              "【易错点】⚠️ 独轮车是省力杠杆（LA > L₂），MA = 5 意味着 200 N 的重物只需 40 N 的力抬起",
+              "【检验】MA = 5 → F_needed = 200/5 = 40 N，合理 ✓",
+              "Answer: MA = 5（省力杠杆）"
+            ]
+          },
+          {
+            "en": "A 50-N load is 0.3 m from the fulcrum. What effort at 1.2 m is needed to balance?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：F₂ = 50 N，L₂ = 0.3 m，L₁ = 1.2 m；求：F₁",
+              "【知识点】杠杆平衡：F₁L₁ = F₂L₂",
+              "【计算】F₁ × 1.2 = 50 × 0.3 = 15",
+              "F₁ = 15 / 1.2 = 12.5 N",
+              "【检验】L₁ = 1.2 m > L₂ = 0.3 m → 省力杠杆，F₁ = 12.5 N < 50 N ✓",
+              "Answer: 12.5 N"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "11.2 滑轮",
+        "en": "Pulleys",
+        "problems": [
+          {
+            "en": "A fixed pulley has radius 10 cm. Mechanical advantage?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：定滑轮；求：机械效益 MA",
+              "【知识点】定滑轮不改变力的大小，只改变方向",
+              "【分析】实质是等臂杠杆（支点在圆心，力臂 = 轮半径）",
+              "【结论】MA = 1（既不省力也不费力）",
+              "【易错点】⚠️ 定滑轮省力吗？不省力！省力的是动滑轮和滑轮组",
+              "Answer: MA = 1"
+            ]
+          },
+          {
+            "en": "A movable pulley supports 200 N load. Effort required (neglect friction)?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：动滑轮承担 200 N 负载（人和筐，或物体）；求：所需拉力 F",
+              "【知识点】动滑轮：省一半力（MA = 2），因为动滑轮被2段绳子吊着",
+              "  - 拉力 F = 负载 / 2",
+              "  - 但需要拉起 2 倍距离",
+              "【计算】F = 200 / 2 = 100 N",
+              "【易错点】⚠️ 动滑轮省一半力，但费一半距离（功不变）",
+              "【检验】F = 100 N < 200 N，符合省力预期 ✓",
+              "Answer: 100 N"
+            ]
+          },
+          {
+            "en": "A block and tackle has 4 supporting rope segments. Ideal MA?",
+            "zh": "",
+            "diff": "med",
+            "sol": [
+              "【审题】已知：滑轮组有 4 段绳子承受负载；求：理想机械效益 IMA",
+              "【知识点】滑轮组机械效益 = 承受负载的绳子段数（IMA）",
+              "【分析】有n段绳子承受重量，每段绳子承担 1/n 的负载；",
+              "动滑轮越多，n越大，越省力",
+              "【结论】IMA = 4（如果忽略摩擦和滑轮重量）",
+              "【易错点】⚠️ IMA 是理想值；实际 MA = IMA × η（效率），总是 < IMA",
+              "【检验】4段绳 → 每段承担 1/4 的重量，拉力为 W/4 ✓",
+              "Answer: IMA = 4"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "11.3 斜面与机械效率",
+        "en": "Inclined Planes & Efficiency",
+        "problems": [
+          {
+            "en": "A ramp is 6 m long, 1.5 m high. A 300-N box is pushed. Ideal MA?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：斜面长 L = 6 m，高 h = 1.5 m；求：理想机械效益 IMA",
+              "【知识点】斜面理想机械效益 = 斜面长度 / 高度 = L/h",
+              "  理想情况：W_in = W_out，无摩擦损失",
+              "【计算】IMA = 6 / 1.5 = 4",
+              "【易错点】⚠️ IMA 描述的是省力程度（4倍），不是说只需用 1/4 的力",
+              "【检验】斜面越缓（h/L 越小）→ IMA 越大 → 越省力 ✓",
+              "Answer: IMA = 4"
+            ]
+          },
+          {
+            "en": "With the same ramp, what minimum force is needed?",
+            "zh": "",
+            "diff": "easy",
+            "sol": [
+              "【审题】已知：斜面 IMA = 4，负载 W = 300 N；求：理想最小拉力",
+              "【知识点】理想情况下：F × L = W × h → F = W / IMA",
+              "【计算】F = 300 / 4 = 75 N",
+              "【易错点】⚠️ 实际拉力 > 75 N，因为有摩擦力；理想拉力是最小的可能值",
+              "【检验】F = 75 N < W = 300 N，斜面确实省力 ✓",
+              "Answer: 75 N（理想最小值）"
+            ]
+          },
+          {
+            "en": "An actual ramp requires 100 N to push the 300-N box. What is the efficiency?",
+            "zh": "",
+            "diff": "hard",
+            "sol": [
+              "【审题】已知：实际拉力 F_actual = 100 N，理想拉力 F_ideal = 75 N；求：斜面效率 η",
+              "【知识点】机械效率：η = (W_out / W_in) × 100%",
+              "  = (理想功 / 实际功) × 100%",
+              "  = (F_ideal / F_actual) × 100%（因为距离相同）",
+              "【计算】η = (75 / 100) × 100% = 75%",
+              "【分析】有 25% 的功因摩擦损失掉了（300 N 的物体只需 75 N，但实际用了 100 N）",
+              "【易错点】⚠️ 效率总是 < 100%；只有理想机械（无摩擦）才能达到 100%",
+              "【检验】75% 效率，75 N 是理想值，100 N 是实际值，差值 25 N 用于克服摩擦 ✓",
+              "Answer: 75%"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+};
+</script>
+<script>
+var CHAPTERS = Object.keys(window.PRACTICE);
+var DEFAULT_CH = CHAPTERS[0];
+
+// Theme toggle
+function initTheme(){
+  var saved = localStorage.getItem("physicsTheme");
+  if(saved){
+    document.documentElement.setAttribute("data-theme", saved);
+    document.getElementById("theme-btn").textContent = saved === "light" ? "🌙" : "☀️";
+  }
+}
+function toggleTheme(){
+  var current = document.documentElement.getAttribute("data-theme");
+  var next = current === "light" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("physicsTheme", next);
+  document.getElementById("theme-btn").textContent = next === "light" ? "🌙" : "☀️";
+}
+document.getElementById("theme-btn").onclick = toggleTheme;
+initTheme();
+
+function getCh(){
+  var p = new URLSearchParams(location.search).get("ch");
+  if(!p) return DEFAULT_CH;
+  p = decodeURIComponent(p);
+  return CHAPTERS.indexOf(p) >= 0 ? p : DEFAULT_CH;
+}
+
+function escapeHtml(t){
+  return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function revealStep(pid, idx){
+  var ans = document.getElementById("ans-" + pid + "-" + idx);
+  var btn = document.getElementById("btn-" + pid + "-" + idx);
+  if(ans) ans.style.display = "block";
+  if(btn){
+    btn.classList.add("done");
+    btn.textContent = "Step " + (idx+1) + " Done";
+  }
+  var nextBtn = document.getElementById("btn-" + pid + "-" + (idx+1));
+  if(nextBtn) nextBtn.style.display = "block";
+}
+
+function toggleSubtopic(id){
+  var header = document.getElementById("st-header-" + id);
+  var content = document.getElementById("st-content-" + id);
+  if(header && content){
+    header.classList.toggle("open");
+    content.classList.toggle("open");
+  }
+}
+
+function toggleElicit(pid){
+  var header = document.getElementById("elicit-header-" + pid);
+  var content = document.getElementById("elicit-content-" + pid);
+  if(header && content){
+    header.classList.toggle("open");
+    content.classList.toggle("open");
+  }
+}
+
+function countProblems(ch){
+  var count = 0;
+  (ch.subtopics || []).forEach(function(st){
+    count += (st.problems || []).length;
+  });
+  return count;
+}
+
+function renderChapters(){
+  var chKey = getCh();
+  var C = window.PRACTICE[chKey];
+  if(!C){
+    document.getElementById("content").innerHTML = "<p>Chapter not found</p>";
+    return;
+  }
+  document.getElementById("bar-title").textContent = C.title;
+  document.getElementById("bar-en").textContent = C.titleEn;
+  document.getElementById("bar-progress").textContent = countProblems(C) + " problems";
+  
+  var select = document.getElementById("chapter-select");
+  select.innerHTML = '<option value="">Select Chapter...</option>';
+  CHAPTERS.forEach(function(key){
+    var ch = window.PRACTICE[key];
+    var option = document.createElement("option");
+    option.value = key;
+    option.textContent = ch.title;
+    if(key === chKey) option.selected = true;
+    select.appendChild(option);
+  });
+  select.onchange = function(){
+    if(this.value) window.location.href = "practice.html?ch=" + encodeURIComponent(this.value);
+  };
+  
+  var html = '<div class="chapter-section">';
+  html += '<div class="header"><h2>' + escapeHtml(C.title) + '</h2>';
+  html += '<div class="sub">' + escapeHtml(C.titleEn) + '</div></div>';
+  
+  (C.subtopics || []).forEach(function(st, si){
+    var stId = "st" + si;
+    html += '<div class="subtopic">';
+    html += '<div class="st-name" id="st-header-' + stId + '" onclick="toggleSubtopic(\'' + stId + '\')">' + escapeHtml(st.name);
+    if(st.en) html += ' <span class="st-en">' + escapeHtml(st.en) + '</span>';
+    html += '</div>';
+    html += '<div class="subtopic-content open" id="st-content-' + stId + '">';
+    
+    (st.problems || []).forEach(function(p, pi){
+      var pid = stId + "p" + pi;
+      var diff = p.diff || "easy";
+      var diffLabel = diff === "easy" ? "Basic" : diff === "med" ? "Medium" : "Hard";
+      var diffClass = "diff-" + diff;
+      
+      html += '<div class="question">';
+      html += '<div class="q-top"><span class="q-num">' + (pi+1) + '</span><span class="diff ' + diffClass + '">' + diffLabel + '</span></div>';
+      html += '<div class="q-body">' + escapeHtml(p.en) + '</div>';
+      
+      var elicit = p.elicit || [];
+      if(elicit.length > 0){
+        html += '<div class="elicit-box">';
+        html += '<div class="elicit-header" id="elicit-header-' + pid + '" onclick="toggleElicit(\'' + pid + '\')">';
+        html += 'Show Guidance (' + elicit.length + ' steps)';
+        html += '</div>';
+        html += '<div class="elicit-content" id="elicit-content-' + pid + '">';
+        elicit.forEach(function(e, ei){
+          var initialDisplay = ei === 0 ? "block" : "none";
+          html += '<button class="btn-step" id="btn-' + pid + '-' + ei + '" style="display:' + initialDisplay + '" onclick="revealStep(\'' + pid + '\',' + ei + ')">Step ' + (ei+1) + '</button>';
+          html += '<div class="answer-box" id="ans-' + pid + '-' + ei + '">';
+          html += '<div style="color:var(--accent-green);font-weight:600;margin-bottom:8px">' + escapeHtml(e.q) + '</div>';
+          if(e.a) html += '<div style="color:#c8e6c9;padding-left:4px">=> ' + escapeHtml(e.a) + '</div>';
+          html += '</div>';
+        });
+        html += '</div></div>';
+      }
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+  html += '</div>';
+  document.getElementById("content").innerHTML = html;
+}
+
+renderChapters();
+</script>
+</body>
+</html>
