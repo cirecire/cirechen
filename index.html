@@ -71,6 +71,8 @@ body {
 .container { max-width: 1000px; margin: 0 auto; }
 .header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
 .header h1 { flex: 1; text-align: center; color: var(--accent-blue); margin-bottom: 0; }
+.nav-link { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+.nav-link:hover { color: var(--accent-blue); }
 .theme-btn {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -130,6 +132,7 @@ body {
 <body>
 <div class="container">
 <div class="header">
+<a href="physics/index.html" class="nav-link">物理 →</a>
 <h1>深圳八年级数学</h1>
 <button class="theme-btn" id="theme-btn" title="Toggle light/dark mode">☀️</button>
 </div>
