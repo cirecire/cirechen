@@ -298,7 +298,7 @@ function getCh() {
   var d = window.PRACTICE[ch];
   if (!d) { c.innerHTML = '<p>Chapter not found.</p>'; return; }
   var h = '<div class="ch-banner"><div><div class="ch-title">' + escapeHtml(d.title) + '</div><div class="ch-titleEn">' + escapeHtml(d.titleEn) + '</div></div>';
-  h += '<a class="ch-banner-back" href="index.html">&larr; Video Index</a></div>';
+  h += '<a class="ch-banner-back" href="../index.html">&larr; Video Index</a></div>';
   h += '<a class="ch-banner-back" href="?" style="margin-bottom:16px;display:inline-block;">&larr; All Chapters</a>';
   d.subtopics.forEach(function(st, si) {
     h += '<div class="st-label">' + escapeHtml(st.name) + '</div>';
