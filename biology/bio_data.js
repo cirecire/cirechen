@@ -4,7 +4,7 @@
 // NOTE: Khan URLs are best-known (homepage Cloudflare-blocked); verify before publish.
 var BIO_DATA = [
 // ===================== UNIT 1 · 七上 =====================
-{ id:'u1c1', g:'7', unit:'UNIT 1 生物和细胞 (七上)', coverage:'b',
+{ id:'u1c1', gx:1, loc:'七上 U1', g:'7', unit:'UNIT 1 生物和细胞 (七上)', coverage:'b',
   title:'Ch1 认识生物 · What is life',
   think:'A rock, a flower and a dog are all "things". Which two are alive? List ONE sign that tells you.',
   videos:[
@@ -28,7 +28,7 @@ var BIO_DATA = [
     {q:'Fill: releasing waste is called ________ (排泄).', type:'fill', ans:'excretion'}
   ]
 },
-{ id:'u1c2', g:'7', unit:'UNIT 1 生物和细胞 (七上)', coverage:'g',
+{ id:'u1c2', gx:2, loc:'七上 U1', g:'7', unit:'UNIT 1 生物和细胞 (七上)', coverage:'g',
   title:'Ch2 认识细胞 · Cells & Microscope',
   think:'A leaf and your skin look nothing alike. They share the same TINY building block. What is it? Name ONE part a plant cell has that your skin cell does NOT.',
   videos:[
@@ -55,7 +55,7 @@ var BIO_DATA = [
     {q:'Animal cells lack a cell wall and chloroplasts — true or false?', type:'mc', opts:[{v:'A',t:'False'},{v:'B',t:'Only chloroplasts'},{v:'C',t:'True'},{v:'D',t:'Only cell wall'}], ans:'C'}
   ]
 },
-{ id:'u1c3', g:'7', unit:'UNIT 1 生物和细胞 (七上)', coverage:'g',
+{ id:'u1c3', gx:3, loc:'七上 U1', g:'7', unit:'UNIT 1 生物和细胞 (七上)', coverage:'g',
   title:'Ch3 从细胞到生物体 · Tissues & Division',
   think:'One cell becomes a whole body. How does one cell become two, then many? And how do those cells become different "jobs" like skin vs muscle?',
   videos:[
@@ -81,7 +81,7 @@ var BIO_DATA = [
   ]
 },
 // ===================== UNIT 2 · 七上 =====================
-{ id:'u2c1', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'b',
+{ id:'u2c1', gx:4, loc:'七上 U2', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'b',
   title:'Ch1 藻类与植物类群 · Algae & Plants',
   think:'Moss, ferns, pine trees and roses all make their own food. But only some make flowers and seeds. How would you sort them into groups?',
   videos:[
@@ -104,7 +104,7 @@ var BIO_DATA = [
     {q:'Fill: moss belongs to ________ (苔藓).', type:'fill', ans:'bryophytes'}
   ]
 },
-{ id:'u2c2', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'b',
+{ id:'u2c2', gx:5, loc:'七上 U2', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'b',
   title:'Ch2 动物的类群 · Animal groups',
   think:'A fish, a frog, a snake, a bird and a cat — what single body feature splits them into two big camps (those with and without a backbone)?',
   videos:[
@@ -127,7 +127,7 @@ var BIO_DATA = [
     {q:'Fill: a butterfly is an ________ (节肢动物).', type:'fill', ans:'arthropod'}
   ]
 },
-{ id:'u2c3', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'g',
+{ id:'u2c3', gx:6, loc:'七上 U2', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'g',
   title:'Ch3 微生物 · Microbes (bacteria / fungi / virus)',
   think:'You cannot see them, but they are everywhere. One kind is a whole living cell; another is NOT even a cell — just genes in a coat. Which is which?',
   videos:[
@@ -153,7 +153,7 @@ var BIO_DATA = [
     {q:'Fill: the protein coat of a virus is the ________ (衣壳).', type:'fill', ans:'capsid'}
   ]
 },
-{ id:'u2c4', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'b',
+{ id:'u2c4', gx:7, loc:'七上 U2', g:'7', unit:'UNIT 2 多种多样的生物 (七上)', coverage:'b',
   title:'Ch4 生物分类的方法 · Taxonomy',
   think:'A worm, a snake and a "slow worm" (legless lizard) look alike but are different. How do scientists decide what goes in what group — and what is the smallest unit of classification?',
   videos:[
@@ -177,7 +177,7 @@ var BIO_DATA = [
   ]
 },
 // ===================== UNIT 3 · 七下 =====================
-{ id:'u3c1', g:'7', unit:'UNIT 3 植物的生活 (七下)', coverage:'b',
+{ id:'u3c1', gx:8, loc:'七下 U3', g:'7', unit:'UNIT 3 植物的生活 (七下)', coverage:'b',
   title:'Ch1 被子植物的一生 · Seed → Fruit',
   think:'You plant a dry seed in soil. Days later a sprout appears. What did the seed need to wake up — and where did the first root come from?',
   videos:[
@@ -203,7 +203,7 @@ var BIO_DATA = [
     {q:'Fill: moving pollen to the stigma is ________ (传粉).', type:'fill', ans:'pollination'}
   ]
 },
-{ id:'u3c2', g:'7', unit:'UNIT 3 植物的生活 (七下)', coverage:'g',
+{ id:'u3c2', gx:9, loc:'七下 U3', g:'7', unit:'UNIT 3 植物的生活 (七下)', coverage:'g',
   title:'Ch2 物质与能量 · Transport / Photosynthesis / Respiration',
   think:'A plant sits in sunlight and grows without eating. Where does its "food" come from — and why does it also "breathe" like us at night? Also, how does water travel from root to leaf?',
   videos:[
@@ -230,7 +230,7 @@ var BIO_DATA = [
   ]
 },
 // ===================== UNIT 4 (一) · 七下 =====================
-{ id:'u4c1', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
+{ id:'u4c1', gx:10, loc:'七下 U4', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
   title:'七下Ch1 人的生殖和发育 · Reproduction & puberty',
   think:'A baby starts from two tiny cells from two parents. What are those cells called, and what joins them to start a new life?',
   videos:[
@@ -254,7 +254,7 @@ var BIO_DATA = [
     {q:'Fill: the early joined cell grows into an ________ (胚胎).', type:'fill', ans:'embryo'}
   ]
 },
-{ id:'u4c2', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
+{ id:'u4c2', gx:11, loc:'七下 U4', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
   title:'七下Ch2 人体的营养 · Digestion & diet',
   think:'You eat bread; hours later your cells use its energy. What tube does food travel, and what breaks big molecules into tiny ones your body can absorb?',
   videos:[
@@ -279,7 +279,7 @@ var BIO_DATA = [
     {q:'Fill: the tube from mouth to stomach is the ________ (食道).', type:'fill', ans:'esophagus'}
   ]
 },
-{ id:'u4c3', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
+{ id:'u4c3', gx:12, loc:'七下 U4', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
   title:'七下Ch3 人体的呼吸 · Lungs & gas exchange',
   think:'You breathe in air and breathe out a different gas. What gas enters your blood in the lungs, and what leaves it?',
   videos:[
@@ -302,7 +302,7 @@ var BIO_DATA = [
     {q:'Fill: breathing uses the ________ (膈肌) muscle.', type:'fill', ans:'diaphragm'}
   ]
 },
-{ id:'u4c4', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'g',
+{ id:'u4c4', gx:13, loc:'七下 U4', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'g',
   title:'七下Ch4 物质运输 · Blood & Circulation',
   think:'Blood must reach every cell. What pump pushes it, and why do we say the heart is "two pumps in one"?',
   videos:[
@@ -330,7 +330,7 @@ var BIO_DATA = [
     {q:'Fill: the safest transfusion matches the same ________ (血型).', type:'fill', ans:'blood type'}
   ]
 },
-{ id:'u4c5', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
+{ id:'u4c5', gx:14, loc:'七下 U4', g:'7', unit:'UNIT 4 人体生理与健康 (七下)', coverage:'b',
   title:'七下Ch5 废物的排出 · Kidneys & excretion',
   think:'Your blood picks up waste as it feeds cells. What pair of bean-shaped organs filters that waste into urine — and what is the tiny filter unit inside called?',
   videos:[
@@ -354,7 +354,7 @@ var BIO_DATA = [
   ]
 },
 // ===================== UNIT 4 (二) + UNIT 5 · 八上 =====================
-{ id:'u4c6', g:'8', unit:'UNIT 4 人体生理与健康 (八上)', coverage:'g',
+{ id:'u4c6', gx:1, loc:'八上 U4', g:'8', unit:'UNIT 4 人体生理与健康 (八上)', coverage:'g',
   title:'八上Ch6 生命活动的调节 · Nerves, senses & hormones',
   think:'You touch something hot and pull back before you "think". What cell carries the signal, and what is the quick no-brain path called?',
   videos:[
@@ -379,7 +379,7 @@ var BIO_DATA = [
     {q:'Fill: the signal travels down the ________ (轴突) of a neuron.', type:'fill', ans:'axon'}
   ]
 },
-{ id:'u4c7', g:'8', unit:'UNIT 4 人体生理与健康 (八上)', coverage:'g',
+{ id:'u4c7', gx:2, loc:'八上 U4', g:'8', unit:'UNIT 4 人体生理与健康 (八上)', coverage:'g',
   title:'八上Ch7 健康地生活 · Immunity, first aid & lifestyle',
   think:'After a cold, you often do not catch the same one again. What "memory" protects you — and what tiny protein does your body make to tag the germ?',
   videos:[
@@ -405,7 +405,7 @@ var BIO_DATA = [
     {q:'Fill: the germ a vaccine targets is a ________ (病原体).', type:'fill', ans:'pathogen'}
   ]
 },
-{ id:'u5c1', g:'8', unit:'UNIT 5 生物与环境 (八上)', coverage:'g',
+{ id:'u5c1', gx:3, loc:'八上 U5', g:'8', unit:'UNIT 5 生物与环境 (八上)', coverage:'g',
   title:'Ch1 生态系统 · Food webs, energy & biosphere',
   think:'Grass → rabbit → fox. If all the foxes vanish, what happens to the rabbits — and why does energy only flow one way?',
   videos:[
@@ -432,7 +432,7 @@ var BIO_DATA = [
     {q:'Fill: the largest ecosystem is the ________ (生物圈).', type:'fill', ans:'biosphere'}
   ]
 },
-{ id:'u5c2', g:'8', unit:'UNIT 5 生物与环境 (八上)', coverage:'b',
+{ id:'u5c2', gx:4, loc:'八上 U5', g:'8', unit:'UNIT 5 生物与环境 (八上)', coverage:'b',
   title:'Ch2 生态安全 · Human impact & protection',
   think:'A forest is cut down for farmland. What three big things can change for the animals, the air, and the water — and how do we protect against it?',
   videos:[
@@ -456,7 +456,7 @@ var BIO_DATA = [
   ]
 },
 // ===================== UNIT 6 · 八下 =====================
-{ id:'u6c1', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'g',
+{ id:'u6c1', gx:5, loc:'八下 U6', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'g',
   title:'Ch1 生物的生殖 · Asexual & sexual',
   think:'A starfish arm grows a whole new starfish, but a dog needs a mother and a father. What is the difference between these two ways to make a new individual?',
   videos:[
@@ -480,7 +480,7 @@ var BIO_DATA = [
     {q:'Fill: a potato sprouting is ________ (营养繁殖).', type:'fill', ans:'vegetative'}
   ]
 },
-{ id:'u6c2', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'g',
+{ id:'u6c2', gx:6, loc:'八下 U6', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'g',
   title:'Ch2 遗传与变异 · Genes, chromosomes & Punnett (中考重点)',
   think:'Brown-eyed parents can have a blue-eyed child. How can a trait "skip" a generation — and what square helps us predict the odds?',
   videos:[
@@ -507,7 +507,7 @@ var BIO_DATA = [
     {q:'Fill: genes are carried on ________ (染色体).', type:'fill', ans:'chromosomes'}
   ]
 },
-{ id:'u6c3', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'g',
+{ id:'u6c3', gx:7, loc:'八下 U6', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'g',
   title:'Ch3 生物的进化 · Origins & natural selection',
   think:'Peppered moths were light, then many turned dark during the industrial soot. What force "chose" the dark ones — and what did it act on?',
   videos:[
@@ -532,7 +532,7 @@ var BIO_DATA = [
     {q:'Fill: change in a population over time is ________ (进化).', type:'fill', ans:'evolution'}
   ]
 },
-{ id:'u6c4', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'b',
+{ id:'u6c4', gx:8, loc:'八下 U6', g:'8', unit:'UNIT 6 生命的延续和发展 (八下)', coverage:'b',
   title:'Ch4 生物多样性及其保护 · Conservation',
   think:'Why should we care if one rare species disappears? What three levels of diversity are we protecting — and how do nature reserves help?',
   videos:[
