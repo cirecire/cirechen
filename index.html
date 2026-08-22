@@ -17,13 +17,16 @@
   --text-secondary: #475569;
   --text-muted: #64748b;
   --border: #cbd5e1;
+  --border-soft: #e2e8f0;
   --blue: #3b82f6;
   --purple: #8b5cf6;
   --green: #10b981;
   --orange: #f59e0b;
+  --math: #1e40af;
+  --phys: #0f766e;
+  --bio: #7c3aed;
   --shadow: rgba(0,0,0,.08);
-  --theme-toggle-bg: rgba(255,255,255,.15);
-  --theme-toggle-border: rgba(0,0,0,.2);
+  --shadow-lg: rgba(0,0,0,.12);
 }
 
 /* Dark mode */
@@ -36,12 +39,11 @@
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
   --border: #334155;
+  --border-soft: #1f2937;
   --shadow: rgba(0,0,0,.3);
-  --theme-toggle-bg: rgba(255,255,255,.15);
-  --theme-toggle-border: rgba(255,255,255,.3);
+  --shadow-lg: rgba(0,0,0,.5);
 }
 
-/* System preference (fallback when no manual override) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0f172a;
@@ -52,9 +54,9 @@
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     --border: #334155;
+    --border-soft: #1f2937;
     --shadow: rgba(0,0,0,.3);
-    --theme-toggle-bg: rgba(255,255,255,.15);
-    --theme-toggle-border: rgba(255,255,255,.3);
+    --shadow-lg: rgba(0,0,0,.5);
   }
 }
 
@@ -64,27 +66,13 @@ body {
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
-  padding: 40px 24px;
+  padding: 40px 24px 60px;
   transition: background .3s, color .3s;
 }
 
-.container { max-width: 900px; margin: 0 auto; }
+.container { max-width: 760px; margin: 0 auto; }
 
-/* Header */
-header { text-align: center; margin-bottom: 50px; position: relative; }
-header h1 {
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #60a5fa, #a78bfa, #34d399);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-header p { font-size: 16px; color: var(--text-secondary); max-width: 500px; margin: 0 auto; }
-header .tagline { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
-
-/* Theme toggle button */
+/* Theme toggle */
 .theme-toggle {
   position: fixed;
   top: 20px;
@@ -104,224 +92,370 @@ header .tagline { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
   box-shadow: 0 2px 8px var(--shadow);
   z-index: 1000;
 }
-.theme-toggle:hover {
-  background: var(--card-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--shadow);
-}
+.theme-toggle:hover { background: var(--card-hover); transform: translateY(-1px); }
 .theme-toggle .icon { font-size: 16px; }
 
-/* Course cards */
-.courses { display: grid; gap: 20px; }
-.grade-section { margin-bottom: 30px; }
-.grade-section h2 {
-  font-size: 20px;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
-  padding-left: 4px;
-  border-left: 3px solid var(--blue);
+/* Header */
+header { text-align: center; margin-bottom: 36px; padding-top: 8px; }
+header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #60a5fa, #a78bfa, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
 }
-.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+header p { font-size: 15px; color: var(--text-secondary); max-width: 480px; margin: 0 auto; }
+header .tagline { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
 
-.course-card {
+/* Step bar */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 28px;
+  padding: 12px 16px;
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
   border-radius: 14px;
-  padding: 22px;
+  box-shadow: 0 2px 8px var(--shadow);
+  max-width: 520px;
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color .2s;
+}
+.step .num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--border-soft);
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+  transition: background .2s, color .2s;
+}
+.step.active { color: var(--text); }
+.step.active .num { background: var(--text); color: var(--bg); }
+.step.done { color: var(--green); }
+.step.done .num { background: var(--green); color: #fff; }
+.arrow { color: var(--text-muted); font-size: 14px; opacity: .5; }
+
+/* Section card (one per step) */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: opacity .2s;
+}
+.panel.locked { opacity: .4; pointer-events: none; }
+.panel-h {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.panel-h .lbl { color: var(--text); }
+
+/* Grade cards (Step 1) */
+.grade-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.grade-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
   text-decoration: none;
   color: var(--text);
-  transition: all .2s;
-  box-shadow: 0 4px 12px var(--shadow);
 }
-.course-card:hover {
-  background: var(--card-hover);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px var(--shadow);
-}
-.course-card .icon { font-size: 28px; margin-bottom: 10px; }
-.course-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-.course-card .desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5; }
-.course-card .meta { display: flex; gap: 8px; flex-wrap: wrap; }
-.course-card .tag {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: rgba(59,130,246,.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59,130,246,.3);
-}
-.course-card .tag.green { background: rgba(16,185,129,.15); color: #34d399; border-color: rgba(16,185,129,.3); }
-.course-card .tag.orange { background: rgba(245,158,11,.15); color: #fbbf24; border-color: rgba(245,158,11,.3); }
-.course-card .tag.purple { background: rgba(139,92,246,.15); color: #a78bfa; border-color: rgba(139,92,246,.3); }
+.grade-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-lg); border-color: var(--blue); }
+.grade-card.selected { border-color: var(--blue); background: rgba(59,130,246,.06); box-shadow: 0 4px 12px rgba(59,130,246,.18); }
+.grade-card .gnum { font-size: 30px; font-weight: 800; color: var(--blue); line-height: 1; }
+.grade-card .gzh { font-size: 14px; font-weight: 600; margin-top: 6px; }
+.grade-card .gen { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
-/* Coming soon */
-.coming { opacity: .5; cursor: not-allowed; }
-.coming:hover { transform: none; background: var(--card); }
-.coming .tag { background: rgba(148,163,184,.15); color: var(--text-muted); border-color: rgba(148,163,184,.3); }
+/* Subject cards (Step 2) */
+.subj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.subj-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+  color: var(--text);
+}
+.subj-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-lg); }
+.subj-card.selected { border-color: var(--blue); background: rgba(59,130,246,.06); }
+.subj-card .icon { font-size: 34px; margin-bottom: 6px; line-height: 1; }
+.subj-card .name { font-size: 15px; font-weight: 700; }
+.subj-card .meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.subj-card.locked { opacity: .45; cursor: not-allowed; }
+.subj-card.locked:hover { transform: none; box-shadow: none; }
+.subj-card.locked .icon::after { content: " 🔒"; font-size: 14px; }
+
+/* Step 3: Enter */
+.enter-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.enter-summary {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.enter-summary b { color: var(--text); font-weight: 700; }
+.enter-btn {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(59,130,246,.3);
+  transition: transform .12s, box-shadow .12s;
+}
+.enter-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(59,130,246,.45); }
+.enter-btn[aria-disabled="true"] {
+  background: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.enter-btn[aria-disabled="true"]:hover { transform: none; box-shadow: none; }
 
 /* Footer */
-footer { text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border); }
-footer p { font-size: 12px; color: var(--text-muted); }
+footer {
+  text-align: center;
+  margin-top: 36px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
 footer a { color: var(--blue); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* Mobile */
+@media (max-width: 560px) {
+  body { padding: 24px 14px 40px; }
+  header h1 { font-size: 26px; }
+  .grade-grid, .subj-grid { grid-template-columns: 1fr 1fr; }
+  .subj-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .enter-area { flex-direction: column; align-items: stretch; }
+  .enter-btn { justify-content: center; }
+  .step .lbl { display: none; }
+}
 </style>
 </head>
 <body>
-<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+
+<button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
   <span class="icon" id="themeIcon">🌙</span>
   <span id="themeText">夜间模式</span>
 </button>
 
 <div class="container">
+
   <header>
     <h1>QClaw 学习站</h1>
     <p>可汗学院本地化课程 · Think → Watch → Notes → Practice → Quiz</p>
     <div class="tagline">任何设备，任何地点，打开网页就能学</div>
   </header>
 
-  <div class="courses">
-    <!-- 八年级 -->
-    <div class="grade-section">
-      <h2>八年级</h2>
-      <div class="course-grid">
-        <a class="course-card" href="physics-v2/physics_index.html">
-          <div class="icon">🔬</div>
-          <h3>物理 Physics</h3>
-          <div class="desc">深圳公立校八年级物理（人教版）：机械运动、声现象、光现象、力、压强、浮力、功和机械能、简单机械</div>
-          <div class="meta">
-            <span class="tag green">11 章节</span>
-            <span class="tag">83 个视频</span>
-            <span class="tag purple">5 步流程</span>
-          </div>
-        </a>
-        <a class="course-card" href="math/index.html">
-          <div class="icon">📐</div>
-          <h3>数学 Math</h3>
-          <div class="desc">深圳公立校八年级数学（人教版）：勾股定理、因式分解、二次根式、一元二次方程</div>
-          <div class="meta">
-            <span class="tag green">视频课程</span>
-            <span class="tag">练习题</span>
-          </div>
-        </a>
-      </div>
+  <div class="steps">
+    <div class="step active" id="step1">
+      <div class="num">1</div>
+      <span class="lbl">年级</span>
     </div>
-
-    <!-- 七年级 -->
-    <div class="grade-section">
-      <h2>七年级</h2>
-      <div class="course-grid">
-        <a class="course-card" href="biology/index.html">
-          <div class="icon">🧬</div>
-          <h3>生物 Biology</h3>
-          <div class="desc">深圳公立校七年级生物（人教版）：细胞、生物体结构、光合作用、呼吸作用</div>
-          <div class="meta">
-            <span class="tag green">5 步流程</span>
-            <span class="tag purple">完整示例</span>
-          </div>
-        </a>
-        <a class="course-card coming" href="#">
-          <div class="icon">🔬</div>
-          <h3>物理 Physics</h3>
-          <div class="desc">深圳公立校七年级物理（人教版）：测量、机械运动、声现象</div>
-          <div class="meta">
-            <span class="tag">🚧 即将上线</span>
-          </div>
-        </a>
-      </div>
+    <span class="arrow">→</span>
+    <div class="step" id="step2">
+      <div class="num">2</div>
+      <span class="lbl">学科</span>
     </div>
+    <span class="arrow">→</span>
+    <div class="step" id="step3">
+      <div class="num">3</div>
+      <span class="lbl">进入</span>
+    </div>
+  </div>
 
-    <!-- 高年级 -->
-    <div class="grade-section">
-      <h2>其他年级</h2>
-      <div class="course-grid">
-        <a class="course-card coming" href="#">
-          <div class="icon">⚗️</div>
-          <h3>化学 Chemistry</h3>
-          <div class="desc">九年级化学课程</div>
-          <div class="meta">
-            <span class="tag">🚧 即将上线</span>
-          </div>
-        </a>
-        <a class="course-card coming" href="#">
-          <div class="icon">🌍</div>
-          <h3>地理 Geography</h3>
-          <div class="desc">七八年级地理课程</div>
-          <div class="meta">
-            <span class="tag">🚧 即将上线</span>
-          </div>
-        </a>
+  <!-- STEP 1: GRADE -->
+  <div class="panel" id="p1">
+    <div class="panel-h"><span class="lbl">第 1 步</span> · 选择年级</div>
+    <div class="grade-grid">
+      <div class="grade-card" id="g7" onclick="selectGrade(7, this)">
+        <div class="gnum">7</div>
+        <div class="gzh">七年级</div>
+        <div class="gen">Grade 7</div>
+      </div>
+      <div class="grade-card" id="g8" onclick="selectGrade(8, this)">
+        <div class="gnum">8</div>
+        <div class="gzh">八年级</div>
+        <div class="gen">Grade 8</div>
       </div>
     </div>
   </div>
 
+  <!-- STEP 2: SUBJECT -->
+  <div class="panel locked" id="p2">
+    <div class="panel-h"><span class="lbl">第 2 步</span> · 选择学科</div>
+    <div class="subj-grid" id="subjGrid"></div>
+  </div>
+
+  <!-- STEP 3: ENTER -->
+  <div class="panel locked" id="p3">
+    <div class="panel-h"><span class="lbl">第 3 步</span> · 进入课程</div>
+    <div class="enter-area">
+      <div class="enter-summary" id="enterSummary">先选年级和学科</div>
+      <a class="enter-btn" id="enterBtn" href="#" aria-disabled="true" onclick="return go(event)">进入课程 ▶</a>
+    </div>
+  </div>
+
   <footer>
-    <p>课程内容基于 <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a> 本地化改编 · 适配深圳公立校教学大纲</p>
+    <p>课程内容基于 <a href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy</a> 本地化改编 · 适配深圳公立校教学大纲</p>
   </footer>
+
 </div>
 
 <script>
-// Theme management - shared across all pages
-function getSystemTheme() {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+// ============ Course catalog ============
+// path: where to go. grade/subj are unique keys.
+// 'ready' = live, 'soon' = locked (greyed out).
+const CATALOG = {
+  7: [
+    { id:'bio',  zh:'生物',   icon:'🧬', en:'Biology',   meta:'14 章 · G7·01–14', path:'biology/grade7/index.html', state:'ready' },
+    { id:'phys', zh:'物理',   icon:'🔬', en:'Physics',   meta:'🚧 即将上线',       path:null,                         state:'soon'  },
+    { id:'math', zh:'数学',   icon:'📐', en:'Math',      meta:'🚧 即将上线',       path:null,                         state:'soon'  },
+  ],
+  8: [
+    { id:'math', zh:'数学',   icon:'📐', en:'Math',      meta:'勾股·因式分解·二次根式', path:'math/index.html',                       state:'ready' },
+    { id:'phys', zh:'物理',   icon:'🔬', en:'Physics',   meta:'11 章 · G8',        path:'physics-v2/physics_index.html',         state:'ready' },
+    { id:'bio',  zh:'生物',   icon:'🧬', en:'Biology',   meta:'8 章 · G8 会考冲刺', path:'biology/grade8/index.html',             state:'ready' },
+  ],
+};
+
+// ============ State ============
+let grade = null;
+let subject = null;
+
+function selectGrade(g, card) {
+  grade = g;
+  subject = null;
+  // visual select
+  document.querySelectorAll('.grade-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  // unlock subject panel
+  document.getElementById('p2').classList.remove('locked');
+  // build subject cards
+  buildSubjects(g);
+  // lock enter
+  document.getElementById('p3').classList.add('locked');
+  document.getElementById('enterBtn').setAttribute('aria-disabled', 'true');
+  document.getElementById('enterBtn').href = '#';
+  document.getElementById('enterSummary').innerHTML = '请选择学科';
+  // steps
+  document.getElementById('step1').classList.remove('active'); document.getElementById('step1').classList.add('done');
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('step2').classList.remove('done');
+  document.getElementById('step3').classList.remove('active','done');
+  // scroll
+  setTimeout(()=>document.getElementById('p2').scrollIntoView({behavior:'smooth', block:'center'}), 80);
 }
 
-function getStoredTheme() {
-  return localStorage.getItem('qclaw-theme');
-}
-
-function setTheme(theme) {
-  if (theme === 'system') {
-    localStorage.removeItem('qclaw-theme');
-    document.documentElement.removeAttribute('data-theme');
-  } else {
-    localStorage.setItem('qclaw-theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-  updateThemeButton();
-}
-
-function getCurrentTheme() {
-  const stored = getStoredTheme();
-  if (stored) return stored;
-  return getSystemTheme();
-}
-
-function toggleTheme() {
-  const current = getCurrentTheme();
-  const next = current === 'dark' ? 'light' : 'dark';
-  setTheme(next);
-}
-
-function updateThemeButton() {
-  const btn = document.getElementById('themeBtn');
-  const icon = document.getElementById('themeIcon');
-  const text = document.getElementById('themeText');
-  const current = getCurrentTheme();
-
-  if (current === 'dark') {
-    icon.textContent = '☀️';
-    text.textContent = '日间模式';
-  } else {
-    icon.textContent = '🌙';
-    text.textContent = '夜间模式';
-  }
-}
-
-// Initialize on page load
-(function() {
-  const stored = getStoredTheme();
-  if (stored) {
-    document.documentElement.setAttribute('data-theme', stored);
-  }
-  updateThemeButton();
-
-  // Listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-    if (!getStoredTheme()) {
-      updateThemeButton();
+function buildSubjects(g) {
+  const list = CATALOG[g];
+  const grid = document.getElementById('subjGrid');
+  grid.innerHTML = '';
+  list.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'subj-card' + (s.state === 'soon' ? ' locked' : '');
+    div.innerHTML = `<div class="icon">${s.icon}</div><div class="name">${s.zh}</div><div class="meta">${s.meta}</div>`;
+    if (s.state === 'ready') {
+      div.onclick = () => selectSubject(s, div);
+    } else {
+      div.onclick = () => { /* locked */ };
     }
+    grid.appendChild(div);
   });
+}
+
+function selectSubject(s, card) {
+  subject = s;
+  document.querySelectorAll('.subj-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  // unlock enter
+  document.getElementById('p3').classList.remove('locked');
+  document.getElementById('enterBtn').removeAttribute('aria-disabled');
+  document.getElementById('enterBtn').href = s.path;
+  const gradeZh = grade === 7 ? '七年级' : '八年级';
+  document.getElementById('enterSummary').innerHTML = `已选：<b>${gradeZh}</b> · <b>${s.zh}</b> ${s.en} <br><span style="color:var(--text-muted);font-size:12px;">${s.meta}</span>`;
+  // steps
+  document.getElementById('step2').classList.remove('active'); document.getElementById('step2').classList.add('done');
+  document.getElementById('step3').classList.add('active');
+  document.getElementById('step3').classList.remove('done');
+  // scroll
+  setTimeout(()=>document.getElementById('p3').scrollIntoView({behavior:'smooth', block:'center'}), 80);
+}
+
+function go(e) {
+  const btn = document.getElementById('enterBtn');
+  if (btn.getAttribute('aria-disabled') === 'true') { e.preventDefault(); return false; }
+  return true;
+}
+
+// ============ Theme (same logic as before) ============
+function getSystemTheme() { return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+function getStoredTheme() { return localStorage.getItem('qclaw-theme'); }
+function setTheme(theme) {
+  if (theme === 'system') { localStorage.removeItem('qclaw-theme'); document.documentElement.removeAttribute('data-theme'); }
+  else { localStorage.setItem('qclaw-theme', theme); document.documentElement.setAttribute('data-theme', theme); }
+  updateThemeButton();
+}
+function getCurrentTheme() { return getStoredTheme() || getSystemTheme(); }
+function toggleTheme() { setTheme(getCurrentTheme() === 'dark' ? 'light' : 'dark'); }
+function updateThemeButton() {
+  const cur = getCurrentTheme();
+  document.getElementById('themeIcon').textContent = cur === 'dark' ? '☀️' : '🌙';
+  document.getElementById('themeText').textContent = cur === 'dark' ? '日间模式' : '夜间模式';
+}
+(function init() {
+  const s = getStoredTheme();
+  if (s) document.documentElement.setAttribute('data-theme', s);
+  updateThemeButton();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (!getStoredTheme()) updateThemeButton(); });
 })();
 </script>
+
 </body>
 </html>
