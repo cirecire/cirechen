@@ -17,9 +17,11 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:0 0 56px;}
 
 /* Banner */
-.banner{background:var(--blue-banner);color:#fff;padding:26px 24px;text-align:center;}
+.banner{background:var(--blue-banner);color:#fff;padding:26px 24px;text-align:center;position:relative;}
 .banner h1{font-size:22px;font-weight:800;}
 .banner p{font-size:13.5px;opacity:.92;margin-top:6px;}
+.banner .home-btn{position:absolute;top:18px;left:24px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;}
+.banner .home-btn:hover{background:rgba(255,255,255,.25);}
 
 /* Container */
 .container{max-width:860px;margin:0 auto;padding:0 24px;}
@@ -78,6 +80,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <body>
 
 <div class="banner">
+  <a class="home-btn" href="../index.html">← 选学科/年级</a>
   <h1>🔬 Physics — Shenzhen Gr.8 (PEP 2024)</h1>
   <p>Think → Watch → Notes → Practice → Quiz. One chapter at a time.</p>
 </div>
