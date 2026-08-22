@@ -1,340 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Self-Study Materials</title>
+<title>QClaw 学习站 — 可汗学院本地化课程</title>
 <style>
-  :root {
-    --bg: #f0f4f8;
-    --card: #fff;
-    --text: #1e293b;
-    --text-secondary: #475569;
-    --border: #cbd5e1;
-    --shadow: rgba(0,0,0,0.08);
-    --math-bg: #1e40af;
-    --phys-bg: #0f766e;
-    --chem-bg: #7c3aed;
-    --bio-bg: #16a34a;
-  }
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --bg:#0f172a; --card:#1e293b; --card-hover:#334155;
+  --text:#f1f5f9; --text-secondary:#94a3b8; --text-muted:#64748b;
+  --border:#334155;
+  --blue:#3b82f6; --purple:#8b5cf6; --green:#10b981; --orange:#f59e0b;
+  --shadow:rgba(0,0,0,.3);
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%);
+  color:var(--text);line-height:1.6;min-height:100vh;padding:40px 24px;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+.container{max-width:900px;margin:0 auto;}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 40px 20px;
-  }
+/* Header */
+header{text-align:center;margin-bottom:50px;}
+header h1{font-size:32px;font-weight:800;margin-bottom:10px;background:linear-gradient(135deg,#60a5fa,#a78bfa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+header p{font-size:16px;color:var(--text-secondary);max-width:500px;margin:0 auto;}
+header .tagline{font-size:13px;color:var(--text-muted);margin-top:8px;}
 
-  .header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .header h1 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .header p {
-    font-size: 15px;
-    color: var(--text-secondary);
-  }
+/* Course cards */
+.courses{display:grid;gap:20px;}
+.grade-section{margin-bottom:30px;}
+.grade-section h2{font-size:20px;color:var(--text-secondary);margin-bottom:16px;padding-left:4px;border-left:3px solid var(--blue);}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
 
-  /* Step bar */
-  .steps {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 36px;
-  }
-  .step { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-secondary); }
-  .step-num {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--border); color: var(--text-secondary);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 13px;
-  }
-  .step.active .step-num { background: var(--text); color: #fff; }
-  .step.done .step-num { background: var(--text-secondary); color: #fff; }
-  .step-label { font-weight: 500; }
-  .step-arrow { color: var(--border); font-size: 18px; }
+.course-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:22px;text-decoration:none;color:var(--text);
+  transition:all .2s;box-shadow:0 4px 12px var(--shadow);
+}
+.course-card:hover{
+  background:var(--card-hover);transform:translateY(-3px);box-shadow:0 8px 20px var(--shadow);
+}
+.course-card .icon{font-size:28px;margin-bottom:10px;}
+.course-card h3{font-size:17px;font-weight:700;margin-bottom:6px;}
+.course-card .desc{font-size:13px;color:var(--text-secondary);margin-bottom:12px;line-height:1.5;}
+.course-card .meta{display:flex;gap:8px;flex-wrap:wrap;}
+.course-card .tag{
+  font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;
+  background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3);
+}
+.course-card .tag.green{background:rgba(16,185,129,.15);color:#34d399;border-color:rgba(16,185,129,.3);}
+.course-card .tag.orange{background:rgba(245,158,11,.15);color:#fbbf24;border-color:rgba(245,158,11,.3);}
+.course-card .tag.purple{background:rgba(139,92,246,.15);color:#a78bfa;border-color:rgba(139,92,246,.3);}
 
-  .section-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    text-align: center;
-    margin-bottom: 14px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
+/* Coming soon */
+.coming{opacity:.5;cursor:not-allowed;}
+.coming:hover{transform:none;background:var(--card);}
+.coming .tag{background:rgba(148,163,184,.15);color:var(--text-muted);border-color:rgba(148,163,184,.3);}
 
-  /* Grade cards */
-  .grade-grid {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-  }
-  .grade-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 20px 28px;
-    background: var(--card);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 2px 8px var(--shadow);
-    min-width: 110px;
-  }
-  .grade-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-  }
-  .grade-card.selected {
-    border-color: transparent;
-    background: var(--text);
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  }
-  .grade-num { font-size: 22px; font-weight: 800; }
-  .grade-label { font-size: 12px; opacity: 0.7; }
-  .grade-card.selected .grade-label { color: rgba(255,255,255,0.7); }
-
-  /* Subject cards */
-  .subject-grid {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-  .subject-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 24px 36px;
-    background: var(--card);
-    border: 2px solid var(--border);
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 2px 8px var(--shadow);
-    min-width: 140px;
-  }
-  .subject-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-  }
-  .subject-card.locked {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-  .subject-card.locked:hover { transform: none; box-shadow: 0 2px 8px var(--shadow); }
-  .subject-card.selected.math { background: var(--math-bg); color: #fff; border-color: var(--math-bg); }
-  .subject-card.selected.phys { background: var(--phys-bg); color: #fff; border-color: var(--phys-bg); }
-  .subject-card.selected.chem { background: var(--chem-bg); color: #fff; border-color: var(--chem-bg); }
-
-  .subject-icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
-  .subject-card.selected .subject-icon { background: rgba(255,255,255,0.2); }
-  .math .subject-icon { background: #dbeafe; }
-  .phys .subject-icon { background: #ccfbf1; }
-  .chem .subject-icon { background: #ede9fe; }
-  .bio .subject-icon { background: #dcfce7; }
-
-  .subject-name { font-size: 16px; font-weight: 700; }
-  .subject-card.selected .subject-name { color: #fff; }
-  .subject-desc { font-size: 12px; color: var(--text-secondary); }
-  .subject-card.selected .subject-desc { color: rgba(255,255,255,0.75); }
-
-  /* Enter button */
-  .action { display: flex; justify-content: center; margin-bottom: 32px; }
-  .enter-btn {
-    padding: 14px 48px;
-    background: var(--text);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: none;
-  }
-  .enter-btn.visible { display: block; }
-  .enter-btn:hover {
-    background: #0f172a;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-  }
-
-  .modules-hint { text-align: center; font-size: 13px; color: var(--text-secondary); min-height: 20px; }
-
-  .hidden { display: none; }
-
-  @media (max-width: 600px) {
-    .grade-grid { gap: 10px; }
-    .grade-card { padding: 16px 20px; min-width: 85px; }
-    .subject-grid { gap: 10px; }
-    .subject-card { padding: 18px 20px; min-width: 110px; }
-  }
+/* Footer */
+footer{text-align:center;margin-top:60px;padding-top:30px;border-top:1px solid var(--border);}
+footer p{font-size:12px;color:var(--text-muted);}
+footer a{color:var(--blue);text-decoration:none;}
 </style>
 </head>
 <body>
+<div class="container">
+  <header>
+    <h1>QClaw 学习站</h1>
+    <p>可汗学院本地化课程 · Think → Watch → Notes → Practice → Quiz</p>
+    <div class="tagline">任何设备，任何地点，打开网页就能学</div>
+  </header>
 
-<div class="header">
-  <h1>📚 Self-Study Materials</h1>
-  <p>Pick your grade and subject to start</p>
-</div>
+  <div class="courses">
+    <!-- 八年级 -->
+    <div class="grade-section">
+      <h2>八年级</h2>
+      <div class="course-grid">
+        <a class="course-card" href="physics-v2/physics_index.html">
+          <div class="icon">🔬</div>
+          <h3>物理 Physics</h3>
+          <div class="desc">深圳公立校八年级物理（人教版）：机械运动、声现象、光现象、力、压强、浮力、功和机械能、简单机械</div>
+          <div class="meta">
+            <span class="tag green">11 章节</span>
+            <span class="tag">83 个视频</span>
+            <span class="tag purple">5 步流程</span>
+          </div>
+        </a>
+        <a class="course-card" href="math/index.html">
+          <div class="icon">📐</div>
+          <h3>数学 Math</h3>
+          <div class="desc">深圳公立校八年级数学（人教版）：勾股定理、因式分解、二次根式、一元二次方程</div>
+          <div class="meta">
+            <span class="tag green">视频课程</span>
+            <span class="tag">练习题</span>
+          </div>
+        </a>
+      </div>
+    </div>
 
-<!-- Step indicator -->
-<div class="steps">
-  <div class="step active" id="step1">
-    <div class="step-num">1</div>
-    <div class="step-label">Grade</div>
+    <!-- 七年级 -->
+    <div class="grade-section">
+      <h2>七年级</h2>
+      <div class="course-grid">
+        <a class="course-card" href="biology/biology_index.html">
+          <div class="icon">🧬</div>
+          <h3>生物 Biology</h3>
+          <div class="desc">深圳公立校七年级生物（人教版）：细胞、生物体结构、光合作用、呼吸作用</div>
+          <div class="meta">
+            <span class="tag green">5 步流程</span>
+            <span class="tag purple">完整示例</span>
+          </div>
+        </a>
+        <a class="course-card coming" href="#">
+          <div class="icon">🔬</div>
+          <h3>物理 Physics</h3>
+          <div class="desc">深圳公立校七年级物理（人教版）：测量、机械运动、声现象</div>
+          <div class="meta">
+            <span class="tag">🚧 即将上线</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 高年级 -->
+    <div class="grade-section">
+      <h2>其他年级</h2>
+      <div class="course-grid">
+        <a class="course-card coming" href="#">
+          <div class="icon">⚗️</div>
+          <h3>化学 Chemistry</h3>
+          <div class="desc">九年级化学课程</div>
+          <div class="meta">
+            <span class="tag">🚧 即将上线</span>
+          </div>
+        </a>
+        <a class="course-card coming" href="#">
+          <div class="icon">🌍</div>
+          <h3>地理 Geography</h3>
+          <div class="desc">七八年级地理课程</div>
+          <div class="meta">
+            <span class="tag">🚧 即将上线</span>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
-  <div class="step-arrow">›</div>
-  <div class="step" id="step2">
-    <div class="step-num">2</div>
-    <div class="step-label">Subject</div>
-  </div>
-  <div class="step-arrow">›</div>
-  <div class="step" id="step3">
-    <div class="step-num">→</div>
-    <div class="step-label">Enter</div>
-  </div>
+
+  <footer>
+    <p>课程内容基于 <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a> 本地化改编 · 适配深圳公立校教学大纲</p>
+  </footer>
 </div>
-
-<!-- Step 1: Grade -->
-<div id="grade-section">
-  <div class="section-title">Which grade?</div>
-  <div class="grade-grid" id="grade-grid"></div>
-</div>
-
-<!-- Step 2: Subject -->
-<div id="subject-section" class="hidden">
-  <div class="section-title">Which subject?</div>
-  <div class="subject-grid" id="subject-grid"></div>
-  <div class="action">
-    <button class="enter-btn" id="enter-btn" onclick="go()">Enter →</button>
-  </div>
-  <div class="modules-hint" id="modules-hint"></div>
-</div>
-
-<script>
-  // Grade → available subjects with path
-  const ROUTES = {
-    5: {
-      label: 'Grade 5',
-      subjects: {
-        math:  { label: 'Math',      icon: '📐', path: 'math/grade5/index.html' },
-        phys:  { label: 'Physics',   icon: '⚙️', path: 'physics/grade5/index.html' },
-        chem:  { label: 'Chemistry', icon: '🧪', path: null }
-      }
-    },
-    6: {
-      label: 'Grade 6',
-      subjects: {
-        math:  { label: 'Math',      icon: '📐', path: 'math/grade6/index.html' },
-        phys:  { label: 'Physics',   icon: '⚙️', path: 'physics/grade6/index.html' },
-        chem:  { label: 'Chemistry', icon: '🧪', path: null }
-      }
-    },
-    7: {
-      label: 'Grade 7',
-      subjects: {
-        math:  { label: 'Math',      icon: '📐', path: 'math/grade7/index.html' },
-        phys:  { label: 'Physics',   icon: '⚙️', path: 'physics/grade7/index.html' },
-        bio:  { label: 'Biology',   icon: '🧬', path: 'biology/grade7/index.html' },
-        chem:  { label: 'Chemistry', icon: '🧪', path: null }
-      }
-    },
-    8: {
-      label: 'Grade 8',
-      subjects: {
-        math:  { label: 'Math',      icon: '📐', path: 'math/index.html' },
-        phys:  { label: 'Physics',   icon: '⚙️', path: 'physics/index.html' },
-        bio:  { label: 'Biology',   icon: '🧬', path: 'biology/grade8/index.html' },
-        chem:  { label: 'Chemistry', icon: '🧪', path: null }
-      }
-    }
-  };
-
-  let selectedGrade = null;
-  let selectedSubject = null;
-
-  // Build grade grid on load
-  (function initGrades() {
-    const grid = document.getElementById('grade-grid');
-    for (const [g, info] of Object.entries(ROUTES)) {
-      const card = document.createElement('div');
-      card.className = 'grade-card';
-      card.onclick = () => selectGrade(g, card);
-      card.innerHTML = `<div class="grade-num">${g}</div><div class="grade-label">${info.label.replace(/^\d+\s/, '')}</div>`;
-      grid.appendChild(card);
-    }
-  })();
-
-  function selectGrade(grade, el) {
-    document.querySelectorAll('.grade-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedGrade = grade;
-    selectedSubject = null;
-
-    // Show subject section
-    document.getElementById('subject-section').classList.remove('hidden');
-    document.getElementById('step2').classList.add('active');
-    document.getElementById('step1').classList.add('done');
-    document.getElementById('step1').querySelector('.step-num').textContent = '✓';
-    document.getElementById('enter-btn').classList.remove('visible');
-    document.getElementById('step3').classList.remove('active');
-
-    // Build subject grid
-    const gradeInfo = ROUTES[grade];
-    const grid = document.getElementById('subject-grid');
-    grid.innerHTML = '';
-    for (const [subj, info] of Object.entries(gradeInfo.subjects)) {
-      const card = document.createElement('div');
-      const locked = !info.path;
-      card.className = `subject-card ${subj}${locked ? ' locked' : ''}`;
-      card.innerHTML = `
-        <div class="subject-icon">${info.icon}</div>
-        <div class="subject-name">${info.label}</div>
-        <div class="subject-desc">${locked ? 'Coming soon…' : ''}</div>
-      `;
-      if (!locked) card.onclick = () => selectSubject(subj, card);
-      grid.appendChild(card);
-    }
-
-    document.getElementById('subject-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  function selectSubject(subj, el) {
-    document.querySelectorAll('.subject-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedSubject = subj;
-    document.getElementById('step3').classList.add('active');
-    document.getElementById('enter-btn').classList.add('visible');
-    document.getElementById('enter-btn').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  function go() {
-    if (!selectedGrade || !selectedSubject) return;
-    const path = ROUTES[selectedGrade].subjects[selectedSubject].path;
-    if (path) window.location.href = path;
-  }
-</script>
 </body>
 </html>
