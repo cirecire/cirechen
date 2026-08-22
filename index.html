@@ -3,459 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QClaw 学习站 — 可汗学院本地化课程</title>
+<title>QClaw 学习站 — 选年级</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --bg:#f6f8fb;
+  --bg-2:#eef2f7;
+  --text:#0f172a;
+  --text-2:#475569;
+  --text-3:#94a3b8;
+  --card:#ffffff;
+  --card-hover:#ffffff;
+  --border:#e2e8f0;
+  --brand:#0d9488;
+  --brand-2:#0ea5e9;
+  --brand-grad:linear-gradient(135deg,#0ea5e9 0%,#14b8a6 100%);
+  --shadow:0 1px 3px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.06);
+  --shadow-lg:0 12px 40px rgba(13,148,136,.18);
+}
+[data-theme="dark"]{
+  --bg:#0b1220;
+  --bg-2:#0e1626;
+  --text:#e8eef6;
+  --text-2:#a3b1c6;
+  --text-3:#64748b;
+  --card:#141d2e;
+  --card-hover:#1a2438;
+  --border:#233044;
+  --brand:#2dd4bf;
+  --brand-2:#38bdf8;
+  --brand-grad:linear-gradient(135deg,#38bdf8 0%,#2dd4bf 100%);
+  --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  --shadow-lg:0 12px 40px rgba(45,212,191,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s;
+}
+/* decorative blobs */
+body::before{
+  content:"";position:fixed;top:-180px;right:-120px;width:460px;height:460px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,rgba(14,184,166,.18),transparent 70%);
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:"";position:fixed;bottom:-200px;left:-140px;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle at 70% 70%,rgba(14,165,233,.16),transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 22px 64px}
 
-/* Light mode (default) */
-:root {
-  --bg: #f0f4f8;
-  --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #f0f4f8 100%);
-  --card: #fff;
-  --card-hover: #f8fafc;
-  --text: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
-  --border: #cbd5e1;
-  --border-soft: #e2e8f0;
-  --blue: #3b82f6;
-  --purple: #8b5cf6;
-  --green: #10b981;
-  --orange: #f59e0b;
-  --math: #1e40af;
-  --phys: #0f766e;
-  --bio: #7c3aed;
-  --shadow: rgba(0,0,0,.08);
-  --shadow-lg: rgba(0,0,0,.12);
-}
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0 8px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:-.3px}
+.brand .mark{width:30px;height:30px;border-radius:9px;background:var(--brand-grad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;box-shadow:var(--shadow)}
+.theme-btn{background:var(--card);border:1px solid var(--border);color:var(--text-2);border-radius:10px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow);transition:.15s}
+.theme-btn:hover{transform:translateY(-1px)}
 
-/* Dark mode */
-[data-theme="dark"] {
-  --bg: #0f172a;
-  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-  --card: #1e293b;
-  --card-hover: #334155;
-  --text: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --border: #334155;
-  --border-soft: #1f2937;
-  --shadow: rgba(0,0,0,.3);
-  --shadow-lg: rgba(0,0,0,.5);
-}
+/* hero */
+.hero{text-align:center;padding:48px 0 30px}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--brand);background:rgba(13,148,136,.1);padding:6px 14px;border-radius:999px;margin-bottom:18px}
+.hero h1{font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:14px}
+.hero h1 .grad{background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:16px;color:var(--text-2);max-width:440px;margin:0 auto}
+.hero .en{font-size:13px;color:var(--text-3);margin-top:6px}
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0f172a;
-    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-    --card: #1e293b;
-    --card-hover: #334155;
-    --text: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --border: #334155;
-    --border-soft: #1f2937;
-    --shadow: rgba(0,0,0,.3);
-    --shadow-lg: rgba(0,0,0,.5);
-  }
-}
+/* question */
+.qblock{margin:34px auto 0;max-width:520px;text-align:center}
+.qblock .qlabel{font-size:14px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.qblock .qhead{font-size:30px;font-weight:800;letter-spacing:-.5px}
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg-gradient);
-  color: var(--text);
-  line-height: 1.6;
-  min-height: 100vh;
-  padding: 40px 24px 60px;
-  transition: background .3s, color .3s;
+/* grade grid */
+.grades{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.gcard{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:38px 20px;text-decoration:none;color:var(--text);
+  box-shadow:var(--shadow);transition:transform .16s,box-shadow .16s,border-color .16s;
+  position:relative;overflow:hidden;
 }
+.gcard::after{content:"";position:absolute;inset:0;background:var(--brand-grad);opacity:0;transition:opacity .16s}
+.gcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:transparent}
+.gcard:hover::after{opacity:.06}
+.gcard .gnum{font-size:52px;font-weight:800;line-height:1;background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1}
+.gcard .gzh{font-size:18px;font-weight:700;position:relative;z-index:1}
+.gcard .gen{font-size:13px;color:var(--text-3);position:relative;z-index:1}
+.gcard .go{margin-top:10px;font-size:13px;font-weight:700;color:var(--brand);display:flex;align-items:center;gap:4px;position:relative;z-index:1}
+.gcard:hover .go{gap:8px;transition:gap .16s}
 
-.container { max-width: 760px; margin: 0 auto; }
+/* footer */
+.foot{text-align:center;margin-top:48px;font-size:13px;color:var(--text-3)}
+.foot a{color:var(--brand);text-decoration:none}
+.foot a:hover{text-decoration:underline}
 
-/* Theme toggle */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 24px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all .2s;
-  box-shadow: 0 2px 8px var(--shadow);
-  z-index: 1000;
-}
-.theme-toggle:hover { background: var(--card-hover); transform: translateY(-1px); }
-.theme-toggle .icon { font-size: 16px; }
-
-/* Header */
-header { text-align: center; margin-bottom: 36px; padding-top: 8px; }
-header h1 {
-  font-size: 34px;
-  font-weight: 800;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #60a5fa, #a78bfa, #34d399);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
-}
-header p { font-size: 15px; color: var(--text-secondary); max-width: 480px; margin: 0 auto; }
-header .tagline { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
-
-/* Step bar */
-.steps {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 0 auto 28px;
-  padding: 12px 16px;
-  background: var(--card);
-  border: 1px solid var(--border-soft);
-  border-radius: 14px;
-  box-shadow: 0 2px 8px var(--shadow);
-  max-width: 520px;
-}
-.step {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  transition: color .2s;
-}
-.step .num {
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  background: var(--border-soft);
-  color: var(--text-muted);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 800;
-  transition: background .2s, color .2s;
-}
-.step.active { color: var(--text); }
-.step.active .num { background: var(--text); color: var(--bg); }
-.step.done { color: var(--green); }
-.step.done .num { background: var(--green); color: #fff; }
-.arrow { color: var(--text-muted); font-size: 14px; opacity: .5; }
-
-/* Section card (one per step) */
-.panel {
-  background: var(--card);
-  border: 1px solid var(--border-soft);
-  border-radius: 18px;
-  padding: 24px;
-  margin-bottom: 18px;
-  box-shadow: 0 2px 8px var(--shadow);
-  transition: opacity .2s;
-}
-.panel.locked { opacity: .4; pointer-events: none; }
-.panel-h {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.panel-h .lbl { color: var(--text); }
-
-/* Grade cards (Step 1) */
-.grade-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-.grade-card {
-  background: var(--card);
-  border: 2px solid var(--border);
-  border-radius: 14px;
-  padding: 22px 18px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .15s;
-  text-decoration: none;
-  color: var(--text);
-}
-.grade-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-lg); border-color: var(--blue); }
-.grade-card.selected { border-color: var(--blue); background: rgba(59,130,246,.06); box-shadow: 0 4px 12px rgba(59,130,246,.18); }
-.grade-card .gnum { font-size: 30px; font-weight: 800; color: var(--blue); line-height: 1; }
-.grade-card .gzh { font-size: 14px; font-weight: 600; margin-top: 6px; }
-.grade-card .gen { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-
-/* Subject cards (Step 2) */
-.subj-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-.subj-card {
-  background: var(--card);
-  border: 2px solid var(--border);
-  border-radius: 14px;
-  padding: 18px 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .15s;
-  text-decoration: none;
-  color: var(--text);
-}
-.subj-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-lg); }
-.subj-card.selected { border-color: var(--blue); background: rgba(59,130,246,.06); }
-.subj-card .icon { font-size: 34px; margin-bottom: 6px; line-height: 1; }
-.subj-card .name { font-size: 15px; font-weight: 700; }
-.subj-card .meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-.subj-card.locked { opacity: .45; cursor: not-allowed; }
-.subj-card.locked:hover { transform: none; box-shadow: none; }
-.subj-card.locked .icon::after { content: " 🔒"; font-size: 14px; }
-
-/* Step 3: Enter */
-.enter-area {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.enter-summary {
-  flex: 1;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-.enter-summary b { color: var(--text); font-weight: 700; }
-.enter-btn {
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  color: #fff;
-  border: none;
-  padding: 14px 28px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(59,130,246,.3);
-  transition: transform .12s, box-shadow .12s;
-}
-.enter-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(59,130,246,.45); }
-.enter-btn[aria-disabled="true"] {
-  background: var(--border);
-  color: var(--text-muted);
-  cursor: not-allowed;
-  box-shadow: none;
-}
-.enter-btn[aria-disabled="true"]:hover { transform: none; box-shadow: none; }
-
-/* Footer */
-footer {
-  text-align: center;
-  margin-top: 36px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-footer a { color: var(--blue); text-decoration: none; }
-footer a:hover { text-decoration: underline; }
-
-/* Mobile */
-@media (max-width: 560px) {
-  body { padding: 24px 14px 40px; }
-  header h1 { font-size: 26px; }
-  .grade-grid, .subj-grid { grid-template-columns: 1fr 1fr; }
-  .subj-grid { grid-template-columns: 1fr 1fr 1fr; }
-  .enter-area { flex-direction: column; align-items: stretch; }
-  .enter-btn { justify-content: center; }
-  .step .lbl { display: none; }
+@media(max-width:560px){
+  .hero{padding:32px 0 20px}
+  .hero h1{font-size:30px}
+  .qblock .qhead{font-size:24px}
+  .grades{grid-template-columns:1fr}
+  .gcard .gnum{font-size:44px}
 }
 </style>
 </head>
 <body>
-
-<button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
-  <span class="icon" id="themeIcon">🌙</span>
-  <span id="themeText">夜间模式</span>
-</button>
-
-<div class="container">
-
-  <header>
-    <h1>QClaw 学习站</h1>
-    <p>可汗学院本地化课程 · Think → Watch → Notes → Practice → Quiz</p>
-    <div class="tagline">任何设备，任何地点，打开网页就能学</div>
-  </header>
-
-  <div class="steps">
-    <div class="step active" id="step1">
-      <div class="num">1</div>
-      <span class="lbl">年级</span>
-    </div>
-    <span class="arrow">→</span>
-    <div class="step" id="step2">
-      <div class="num">2</div>
-      <span class="lbl">学科</span>
-    </div>
-    <span class="arrow">→</span>
-    <div class="step" id="step3">
-      <div class="num">3</div>
-      <span class="lbl">进入</span>
-    </div>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand"><span class="mark">Q</span> QClaw 学习站</div>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()"><span id="themeIcon">🌙</span> <span id="themeText">夜间</span></button>
   </div>
 
-  <!-- STEP 1: GRADE -->
-  <div class="panel" id="p1">
-    <div class="panel-h"><span class="lbl">第 1 步</span> · 选择年级</div>
-    <div class="grade-grid">
-      <div class="grade-card" id="g7" onclick="selectGrade(7, this)">
-        <div class="gnum">7</div>
-        <div class="gzh">七年级</div>
-        <div class="gen">Grade 7</div>
-      </div>
-      <div class="grade-card" id="g8" onclick="selectGrade(8, this)">
-        <div class="gnum">8</div>
-        <div class="gzh">八年级</div>
-        <div class="gen">Grade 8</div>
-      </div>
-    </div>
+  <section class="hero">
+    <span class="eyebrow">可汗学院本地化课程 · 深圳公立校</span>
+    <h1>欢迎来到 <span class="grad">QClaw 学习站</span></h1>
+    <p>想学就学，随时学。</p>
+    <div class="en">Learn what you want, when you want.</div>
+  </section>
+
+  <div class="qblock">
+    <div class="qlabel">Choose your year</div>
+    <div class="qhead">你在几年级？</div>
   </div>
 
-  <!-- STEP 2: SUBJECT -->
-  <div class="panel locked" id="p2">
-    <div class="panel-h"><span class="lbl">第 2 步</span> · 选择学科</div>
-    <div class="subj-grid" id="subjGrid"></div>
-  </div>
+  <nav class="grades">
+    <a class="gcard" href="grade7/index.html">
+      <div class="gnum">7</div>
+      <div class="gzh">七年级</div>
+      <div class="gen">Grade 7</div>
+      <div class="go">进入 →</div>
+    </a>
+    <a class="gcard" href="grade8/index.html">
+      <div class="gnum">8</div>
+      <div class="gzh">八年级</div>
+      <div class="gen">Grade 8</div>
+      <div class="go">进入 →</div>
+    </a>
+  </nav>
 
-  <!-- STEP 3: ENTER -->
-  <div class="panel locked" id="p3">
-    <div class="panel-h"><span class="lbl">第 3 步</span> · 进入课程</div>
-    <div class="enter-area">
-      <div class="enter-summary" id="enterSummary">先选年级和学科</div>
-      <a class="enter-btn" id="enterBtn" href="#" aria-disabled="true" onclick="return go(event)">进入课程 ▶</a>
-    </div>
-  </div>
-
-  <footer>
-    <p>课程内容基于 <a href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy</a> 本地化改编 · 适配深圳公立校教学大纲</p>
+  <footer class="foot">
+    课程内容基于 <a href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy</a> 本地化改编 · 适配深圳公立校教学大纲
   </footer>
-
 </div>
 
 <script>
-// ============ Course catalog ============
-// path: where to go. grade/subj are unique keys.
-// 'ready' = live, 'soon' = locked (greyed out).
-const CATALOG = {
-  7: [
-    { id:'bio',  zh:'生物',   icon:'🧬', en:'Biology',   meta:'14 章 · G7·01–14', path:'biology/grade7/index.html', state:'ready' },
-    { id:'phys', zh:'物理',   icon:'🔬', en:'Physics',   meta:'🚧 即将上线',       path:null,                         state:'soon'  },
-    { id:'math', zh:'数学',   icon:'📐', en:'Math',      meta:'🚧 即将上线',       path:null,                         state:'soon'  },
-  ],
-  8: [
-    { id:'math', zh:'数学',   icon:'📐', en:'Math',      meta:'勾股·因式分解·二次根式', path:'math/index.html',                       state:'ready' },
-    { id:'phys', zh:'物理',   icon:'🔬', en:'Physics',   meta:'11 章 · G8',        path:'physics-v2/physics_index.html',         state:'ready' },
-    { id:'bio',  zh:'生物',   icon:'🧬', en:'Biology',   meta:'8 章 · G8 会考冲刺', path:'biology/grade8/index.html',             state:'ready' },
-  ],
-};
-
-// ============ State ============
-let grade = null;
-let subject = null;
-
-function selectGrade(g, card) {
-  grade = g;
-  subject = null;
-  // visual select
-  document.querySelectorAll('.grade-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  // unlock subject panel
-  document.getElementById('p2').classList.remove('locked');
-  // build subject cards
-  buildSubjects(g);
-  // lock enter
-  document.getElementById('p3').classList.add('locked');
-  document.getElementById('enterBtn').setAttribute('aria-disabled', 'true');
-  document.getElementById('enterBtn').href = '#';
-  document.getElementById('enterSummary').innerHTML = '请选择学科';
-  // steps
-  document.getElementById('step1').classList.remove('active'); document.getElementById('step1').classList.add('done');
-  document.getElementById('step2').classList.add('active');
-  document.getElementById('step2').classList.remove('done');
-  document.getElementById('step3').classList.remove('active','done');
-  // scroll
-  setTimeout(()=>document.getElementById('p2').scrollIntoView({behavior:'smooth', block:'center'}), 80);
-}
-
-function buildSubjects(g) {
-  const list = CATALOG[g];
-  const grid = document.getElementById('subjGrid');
-  grid.innerHTML = '';
-  list.forEach(s => {
-    const div = document.createElement('div');
-    div.className = 'subj-card' + (s.state === 'soon' ? ' locked' : '');
-    div.innerHTML = `<div class="icon">${s.icon}</div><div class="name">${s.zh}</div><div class="meta">${s.meta}</div>`;
-    if (s.state === 'ready') {
-      div.onclick = () => selectSubject(s, div);
-    } else {
-      div.onclick = () => { /* locked */ };
-    }
-    grid.appendChild(div);
-  });
-}
-
-function selectSubject(s, card) {
-  subject = s;
-  document.querySelectorAll('.subj-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  // unlock enter
-  document.getElementById('p3').classList.remove('locked');
-  document.getElementById('enterBtn').removeAttribute('aria-disabled');
-  document.getElementById('enterBtn').href = s.path;
-  const gradeZh = grade === 7 ? '七年级' : '八年级';
-  document.getElementById('enterSummary').innerHTML = `已选：<b>${gradeZh}</b> · <b>${s.zh}</b> ${s.en} <br><span style="color:var(--text-muted);font-size:12px;">${s.meta}</span>`;
-  // steps
-  document.getElementById('step2').classList.remove('active'); document.getElementById('step2').classList.add('done');
-  document.getElementById('step3').classList.add('active');
-  document.getElementById('step3').classList.remove('done');
-  // scroll
-  setTimeout(()=>document.getElementById('p3').scrollIntoView({behavior:'smooth', block:'center'}), 80);
-}
-
-function go(e) {
-  const btn = document.getElementById('enterBtn');
-  if (btn.getAttribute('aria-disabled') === 'true') { e.preventDefault(); return false; }
-  return true;
-}
-
-// ============ Theme (same logic as before) ============
-function getSystemTheme() { return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
-function getStoredTheme() { return localStorage.getItem('qclaw-theme'); }
-function setTheme(theme) {
-  if (theme === 'system') { localStorage.removeItem('qclaw-theme'); document.documentElement.removeAttribute('data-theme'); }
-  else { localStorage.setItem('qclaw-theme', theme); document.documentElement.setAttribute('data-theme', theme); }
-  updateThemeButton();
-}
-function getCurrentTheme() { return getStoredTheme() || getSystemTheme(); }
-function toggleTheme() { setTheme(getCurrentTheme() === 'dark' ? 'light' : 'dark'); }
-function updateThemeButton() {
-  const cur = getCurrentTheme();
-  document.getElementById('themeIcon').textContent = cur === 'dark' ? '☀️' : '🌙';
-  document.getElementById('themeText').textContent = cur === 'dark' ? '日间模式' : '夜间模式';
-}
-(function init() {
-  const s = getStoredTheme();
-  if (s) document.documentElement.setAttribute('data-theme', s);
-  updateThemeButton();
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (!getStoredTheme()) updateThemeButton(); });
-})();
+function getStored(){return localStorage.getItem('qclaw-theme');}
+function getSys(){return window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+function setTheme(t){if(t==='system'){localStorage.removeItem('qclaw-theme');document.documentElement.removeAttribute('data-theme');}else{localStorage.setItem('qclaw-theme',t);document.documentElement.setAttribute('data-theme',t);}upd();}
+function cur(){return getStored()||getSys();}
+function toggleTheme(){setTheme(cur()==='dark'?'light':'dark');}
+function upd(){var c=cur();document.getElementById('themeIcon').textContent=c==='dark'?'☀️':'🌙';document.getElementById('themeText').textContent=c==='dark'?'日间':'夜间';}
+(function(){var s=getStored();if(s)document.documentElement.setAttribute('data-theme',s);upd();window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(!getStored())upd();});})();
 </script>
-
 </body>
 </html>
