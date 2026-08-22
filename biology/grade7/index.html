@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>深圳七年级生物 · Khan Academy → Khan Academy</title>
+<title>深圳七年级生物 · Khan Academy</title>
 <style>:root, [data-theme="dark"] {
   --bg-primary:#0a0a1a; --bg-secondary:#12122a; --bg-card:#1a1a3e;
   --text-primary:#e8e8ff; --text-secondary:#a0a0c0;
-  --accent-blue:#4fc3f7; --accent-green:#66bb6a; --accent-orange:#ffa726;
+  --accent-blue:#4fc3f7; --accent-green:#66bb6a;
   --accent-purple:#b794f6; --border:#2a2a5a; --shadow:rgba(0,0,0,0.3);
 }
 [data-theme="light"] {
   --bg-primary:#f5f5f7; --bg-secondary:#ffffff; --bg-card:#ffffff;
   --text-primary:#1a1a2e; --text-secondary:#5a5a6e;
-  --accent-blue:#0066cc; --accent-green:#2e7d32; --accent-orange:#ed6c02;
+  --accent-blue:#0066cc; --accent-green:#2e7d32;
   --accent-purple:#7c3aed; --border:#e0e0e5; --shadow:rgba(0,0,0,0.1);
 }
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -27,9 +27,10 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
 .theme-btn:hover { background:var(--bg-primary); }
 .subtitle { text-align:center; color:var(--text-secondary); margin-bottom:24px; }
 .chapter-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; }
-.chapter-card { background:var(--bg-card); border-radius:12px; padding:20px; border:1px solid var(--border); box-shadow:0 2px 8px var(--shadow); display:flex; flex-direction:column; }
-.chapter-card h2 { color:var(--accent-blue); margin-bottom:4px; font-size:17px; }
-.chapter-card .en { color:var(--text-secondary); font-size:13px; margin-bottom:12px; }
+.chapter-card { background:var(--bg-card); border-radius:12px; padding:20px; border:1px solid var(--border); box-shadow:0 2px 8px var(--shadow); display:flex; flex-direction:column; position:relative; }
+.ch-no { position:absolute; top:-11px; left:18px; background:var(--accent-blue); color:#04121f; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:.5px; }
+.chapter-card h2 { color:var(--accent-blue); margin:8px 0 4px; font-size:16px; line-height:1.35; }
+.chapter-card .en { color:var(--text-secondary); font-size:12.5px; margin-bottom:14px; }
 .cov { display:inline-block; align-self:flex-start; font-size:11px; font-weight:700; padding:2px 9px; border-radius:999px; margin-bottom:14px; }
 .cov.g { background:rgba(102,187,106,.18); color:var(--accent-green); }
 .cov.b { background:rgba(160,160,192,.18); color:var(--text-secondary); }
@@ -45,94 +46,108 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
     <h1>深圳七年级生物 · Khan Academy</h1>
     <button class="theme-btn" onclick="toggleTheme()">🌓</button>
   </div>
-  <div class="subtitle">14 lessons · 七上+七下 · 人教版2024 · English videos + practice</div>
+  <div class="subtitle">14 lessons · 七上 + 七下 · 人教版2024 · English videos + practice（按 G7·01 → G7·14 顺序学）</div>
   <div class="chapter-grid">
     <div class="chapter-card">
-      <h2>Ch1 认识生物 · What is life</h2>
-      <div class="en">UNIT 1 生物和细胞</div>
+      <div class="ch-no">G7 · 01</div>
+      <h2>认识生物 · What is life</h2>
+      <div class="en">七上 U1 · Ch1</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u1c1&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u1c1&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch2 认识细胞 · Cells & Microscope</h2>
-      <div class="en">UNIT 1 生物和细胞</div>
+      <div class="ch-no">G7 · 02</div>
+      <h2>认识细胞 · Cells & Microscope</h2>
+      <div class="en">七上 U1 · Ch2</div>
       <span class="cov g">🟢 Khan video + exercise</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u1c2&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u1c2&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch3 从细胞到生物体 · Tissues & Division</h2>
-      <div class="en">UNIT 1 生物和细胞</div>
+      <div class="ch-no">G7 · 03</div>
+      <h2>从细胞到生物体 · Tissues & Division</h2>
+      <div class="en">七上 U1 · Ch3</div>
       <span class="cov g">🟢 Khan video + exercise</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u1c3&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u1c3&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch1 藻类与植物类群 · Algae & Plants</h2>
-      <div class="en">UNIT 2 多种多样的生物</div>
+      <div class="ch-no">G7 · 04</div>
+      <h2>藻类与植物类群 · Algae & Plants</h2>
+      <div class="en">七上 U2 · Ch1</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u2c1&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u2c1&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch2 动物的类群 · Animal groups</h2>
-      <div class="en">UNIT 2 多种多样的生物</div>
+      <div class="ch-no">G7 · 05</div>
+      <h2>动物的类群 · Animal groups</h2>
+      <div class="en">七上 U2 · Ch2</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u2c2&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u2c2&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch3 微生物 · Microbes (bacteria / virus)</h2>
-      <div class="en">UNIT 2 多种多样的生物</div>
+      <div class="ch-no">G7 · 06</div>
+      <h2>微生物 · Microbes (bacteria / fungi / virus)</h2>
+      <div class="en">七上 U2 · Ch3</div>
       <span class="cov g">🟢 Khan video + exercise</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u2c3&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u2c3&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch4 生物分类的方法 · Taxonomy</h2>
-      <div class="en">UNIT 2 多种多样的生物</div>
+      <div class="ch-no">G7 · 07</div>
+      <h2>生物分类的方法 · Taxonomy</h2>
+      <div class="en">七上 U2 · Ch4</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u2c4&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u2c4&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch1 被子植物的一生 · Germination → Fruit</h2>
-      <div class="en">UNIT 3 植物的生活</div>
+      <div class="ch-no">G7 · 08</div>
+      <h2>被子植物的一生 · Seed → Fruit</h2>
+      <div class="en">七下 U3 · Ch1</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u3c1&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u3c1&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>Ch2 物质与能量 · Photosynthesis & Respiration</h2>
-      <div class="en">UNIT 3 植物的生活</div>
+      <div class="ch-no">G7 · 09</div>
+      <h2>物质与能量 · Transport / Photosynthesis / Respiration</h2>
+      <div class="en">七下 U3 · Ch2</div>
       <span class="cov g">🟢 Khan video + exercise</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u3c2&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u3c2&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>七下Ch1 人的生殖和发育 · Reproduction & puberty</h2>
-      <div class="en">UNIT 4 人体生理与健康</div>
+      <div class="ch-no">G7 · 10</div>
+      <h2>人的生殖和发育 · Reproduction & puberty</h2>
+      <div class="en">七下 U4 · Ch1</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u4c1&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u4c1&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>七下Ch2 人体的营养 · Digestion</h2>
-      <div class="en">UNIT 4 人体生理与健康</div>
+      <div class="ch-no">G7 · 11</div>
+      <h2>人体的营养 · Digestion & diet</h2>
+      <div class="en">七下 U4 · Ch2</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u4c2&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u4c2&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>七下Ch3 人体的呼吸 · Lungs & gas exchange</h2>
-      <div class="en">UNIT 4 人体生理与健康</div>
+      <div class="ch-no">G7 · 12</div>
+      <h2>人体的呼吸 · Lungs & gas exchange</h2>
+      <div class="en">七下 U4 · Ch3</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u4c3&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u4c3&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>七下Ch4 物质运输 · Circulation (heart)</h2>
-      <div class="en">UNIT 4 人体生理与健康</div>
+      <div class="ch-no">G7 · 13</div>
+      <h2>物质运输 · Blood & Circulation</h2>
+      <div class="en">七下 U4 · Ch4</div>
       <span class="cov g">🟢 Khan video + exercise</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u4c4&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u4c4&amp;grade=7">Open lesson ▶</a>
     </div>
     <div class="chapter-card">
-      <h2>七下Ch5 废物的排出 · Kidneys & excretion</h2>
-      <div class="en">UNIT 4 人体生理与健康</div>
+      <div class="ch-no">G7 · 14</div>
+      <h2>废物的排出 · Kidneys & excretion</h2>
+      <div class="en">七下 U4 · Ch5</div>
       <span class="cov b">🔵 Khan video only — practice added</span>
-      <a class="btn-practice" href="../bio_chapter.html?ch=u4c5&grade=7">Open lesson ▶</a>
+      <a class="btn-practice" href="../bio_chapter.html?ch=u4c5&amp;grade=7">Open lesson ▶</a>
     </div>
   </div>
-  <div class="foot">Draft · local only · every lesson follows Think → Watch → Notes → Practice → Quiz</div>
+  <div class="foot">Draft · every lesson follows Think → Watch → Notes → Practice → Quiz · 学完一章点“Go to next chapter”自动跳下一章</div>
 </div>
 <script>
 function toggleTheme(){ const r=document.documentElement; const cur=r.getAttribute('data-theme'); r.setAttribute('data-theme', cur==='light'?'dark':'light'); }
