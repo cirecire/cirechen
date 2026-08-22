@@ -93,6 +93,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 var params=new URLSearchParams(location.search);
 var id=params.get('ch');
 var CH=null, CH_LIST=[], idx=-1, GRADE=null;
+function cleanName(t){ return t.replace(/^(七上|七下|八上|八下)?Ch\d+\s*/, '').trim(); }
+function pad(n){ return (n<10?'0'+n:''+n); }
 // build grade-filtered list
 GRADE=params.get('grade');
 for(var i=0;i<BIO_DATA.length;i++){ if(BIO_DATA[i].id===id){ CH=BIO_DATA[i]; if(!GRADE) GRADE=CH.g; break; } }
@@ -103,8 +105,8 @@ else { render(); }
 var TOTAL=5, cur=1;
 function render(){
   document.getElementById('home').href='grade'+GRADE+'/index.html';
-  document.getElementById('crumb').textContent='Grade '+GRADE+' · '+CH.unit;
-  document.getElementById('title').textContent=CH.title;
+  document.getElementById('crumb').textContent='G'+GRADE+' · '+CH.loc+' · 第'+CH.gx+'节';
+  document.getElementById('title').textContent='G'+GRADE+'·'+pad(CH.gx)+'  '+cleanName(CH.title);
   var covTxt={g:'🟢 Khan video + exercise',b:'🔵 Khan video only — practice added',p:'🟣 custom only'}[CH.coverage];
   document.getElementById('cov').textContent=covTxt;
 
@@ -182,12 +184,12 @@ function showStep(n){
 function goStep(n){ cur=n; showStep(n); }
 function next(){ if(cur<TOTAL){ cur++; showStep(cur); } }
 function finish(){
-  for(var i=1;i<=TOTAL;i++){ var b=document.querySelector('.sb[data-step="'+i+'']'); if(b){ b.classList.add('done'); b.classList.remove('active'); } }
+  for(var i=1;i<=TOTAL;i++){ var b=document.querySelector('.sb[data-step="'+i+'"]'); if(b){ b.classList.add('done'); b.classList.remove('active'); } }
   document.getElementById('done').classList.add('show');
   var nx=CH_LIST[idx+1];
   if(nx){
     document.getElementById('goNext').href='bio_chapter.html?ch='+nx.id+'&grade='+GRADE;
-    document.getElementById('doneText').textContent='Next up: '+nx.title;
+    document.getElementById('doneText').textContent='下一章：G'+GRADE+'·'+pad(nx.gx)+' '+cleanName(nx.title);
   } else {
     document.getElementById('goNext').href='grade'+GRADE+'/index.html';
     document.getElementById('doneText').textContent='That was the last Grade '+GRADE+' chapter — back to course map.';
