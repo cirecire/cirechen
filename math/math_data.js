@@ -122,48 +122,54 @@ var MATH_DATA = [
     ],
     practice: [
       {
-        q: "Simplify: $\\\sqrt{72}$.",
-        ans: "$6\\\sqrt{2}$",
-        sol: "$\\\sqrt{72} = \\\sqrt{36 \\\times 2} = \\\sqrt{36} \\\times \\\sqrt{2} = 6\\\sqrt{2}$."
+        q: "We found $5^2 = 25$. How can we be sure that $5$ is the right answer?",
+        options: ["Because $5$ is an odd number.", "Because $5$ times itself equals $25$.", "Because $5$ is half of $10$."],
+        ansIdx: 1,
+        sol: "$5^2 = 5 \\times 5 = 25$, so $5$ is indeed the correct square root. (Khan Academy: 'How can we be sure that 5 is the right answer?')"
       },
       {
-        q: "Evaluate: $\\\sqrt[3]{-27}$.",
-        ans: "$-3$",
-        sol: "Since $(-3)^3 = -27$, we have $\\\sqrt[3]{-27} = -3$."
+        q: "Two students make claims about $7^2$ and $\\sqrt{49}$. Which claim is correct?",
+        options: ["Claim 1: $7^2 = 49$ and $\\sqrt{49} = 7$", "Claim 2: $7^2 = \\sqrt{7}$"],
+        ansIdx: 0,
+        sol: "Claim 1 is correct: $7^2 = 49$ and $\\sqrt{49} = 7$. Claim 2 is wrong because $\\sqrt{7} \\neq 49$. (Khan Academy reflection question.)"
       },
       {
-        q: "Is $\\\sqrt{16}$ rational or irrational?",
-        ans: "Rational",
-        sol: "$\\\sqrt{16} = 4 = \\\frac{4}{1}$, which is a ratio of two integers."
+        q: "When you square the square root of a number, what happens?",
+        options: ["The answer is less than the original number.", "The answer is the original number.", "The answer is greater than the original number."],
+        ansIdx: 1,
+        sol: "By definition, $(\\sqrt{x})^2 = x$, so squaring a square root returns the original number. (Khan Academy: 'When you square the square root of a number...')"
       },
       {
-        q: "Between which two consecutive integers does $\\\sqrt{50}$ lie?",
-        ans: "$7$ and $8$",
-        sol: "$7^2 = 49$ and $8^2 = 64$. Since $49 < 50 < 64$, we have $7 < \\\sqrt{50} < 8$."
+        q: "To order $\\sqrt{28}$, $5$, and $6$ from least to greatest, what is the best strategy?",
+        options: ["Square just the square roots. For example: $6,\\;(\\sqrt{28})^2,\\;5$.", "Square both the square roots and the integers. For example: $6^2,\\;(\\sqrt{28})^2,\\;5^2$."],
+        ansIdx: 1,
+        sol: "Square everything: $6^2 = 36$, $(\\sqrt{28})^2 = 28$, $5^2 = 25$. So the order is $5 < \\sqrt{28} < 6$. (Khan Academy strategy question.)"
       },
       {
-        q: "Simplify: $\\\sqrt{12} \\\times \\\sqrt{3}$.",
-        ans: "$6$",
-        sol: "$\\\sqrt{12} \\\times \\\sqrt{3} = \\\sqrt{12 \\\times 3} = \\\sqrt{36} = 6$."
+        q: "Evaluate $\\sqrt{64}$.",
+        options: ["$8$", "$32$", "$16$", "$4$"],
+        ansIdx: 0,
+        sol: "$\\sqrt{64} = 8$ because $8^2 = 64$. (Khan Academy practice problem.)"
       }
     ],
     quiz: [
       {
-        q: "Which of the following is irrational?",
-        options: ["$\\\sqrt{4}$", "$\\\sqrt{9}$", "$\\\sqrt{2}$", "$\\\frac{3}{4}$"],
-        ans: "$\\\sqrt{2}$",
-        sol: "$\\\sqrt{2} \\\approx 1.414...$ cannot be written as a fraction of integers."
+        q: "Evaluate $\\sqrt[3]{125}$.",
+        options: ["$5$", "$25$", "$15$", "$3$"],
+        ansIdx: 0,
+        sol: "$\\sqrt[3]{125} = 5$ because $5^3 = 125$. (Khan Academy practice problem.)"
       },
       {
-        q: "Simplify $\\\sqrt{50}$ completely.",
-        ans: "$5\\\sqrt{2}$",
-        sol: "$\\\sqrt{50} = \\\sqrt{25 \\\times 2} = 5\\\sqrt{2}$."
+        q: "What type of number is $\\sqrt{3}$?",
+        options: ["Whole number", "Integer", "Rational", "Irrational"],
+        ansIdx: 3,
+        sol: "$\\sqrt{3} \\approx 1.732...$ is non-terminating and non-repeating, so it is irrational. Khan Academy lists $\\sqrt{3}$ as an example of an irrational number."
       },
       {
-        q: "Classify the number $0.333...$ (repeating).",
-        options: ["Integer", "Rational", "Irrational", "Natural"],
-        ans: "Rational",
-        sol: "Repeating decimals are rational. $0.\\\overline{3} = \\\frac{1}{3}$."
+        q: "Evaluate $\\sqrt[3]{-27}$.",
+        options: ["$-3$", "$3$", "$-9$", "$9$"],
+        ansIdx: 0,
+        sol: "$\\sqrt[3]{-27} = -3$ because $(-3)^3 = -27$. Unlike square roots, cube roots can be negative. (Khan Academy: $\\sqrt[3]{-8} = -2$.)"
       }
     ]
   },
