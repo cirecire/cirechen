@@ -199,48 +199,54 @@ var MATH_DATA = [
     ],
     practice: [
       {
-        q: "Plot the points $A(3, 2)$ and $B(-1, 5)$. Find the distance between them.",
-        ans: "$5$",
-        sol: "$d = \\\sqrt{(3-(-1))^2 + (2-5)^2} = \\\sqrt{16 + 9} = \\\sqrt{25} = 5$."
+        q: "What is the distance between the points $(1,2)$ and $(4,6)$?",
+        options: ["$5$", "$\\sqrt{13}$", "$\\sqrt{34}$", "$7$"],
+        ansIdx: 0,
+        sol: "Use the distance formula: $d = \\sqrt{(4-1)^2 + (6-2)^2} = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$."
       },
       {
-        q: "Find the midpoint of the segment joining $P(2, 6)$ and $Q(8, -2)$.",
-        ans: "$(5, 2)$",
-        sol: "$M = \\\left(\\\frac{2+8}{2}, \\\frac{6+(-2)}{2}\\\right) = (5, 2)$."
+        q: "In which quadrant does the point $(-3,4)$ lie?",
+        options: ["Quadrant I", "Quadrant II", "Quadrant III", "Quadrant IV"],
+        ansIdx: 1,
+        sol: "$(-3,4)$ has $x<0$ and $y>0$, which is Quadrant II."
       },
       {
-        q: "What is the reflection of point $(4, -3)$ across the x-axis?",
-        ans: "$(4, 3)$",
-        sol: "Reflection over x-axis changes the sign of the y-coordinate: $(4, -3) \\\rightarrow (4, 3)$."
+        q: "What is the midpoint of $(2,3)$ and $(4,7)$?",
+        options: ["$(3,5)$", "$(3,4)$", "$(6,10)$", "$(1,2)$"],
+        ansIdx: 0,
+        sol: "Midpoint $= \\left(\\frac{2+4}{2}, \\frac{3+7}{2}\\right) = (3,5)$."
       },
       {
-        q: "In which quadrant is the point $(-5, 2)$ located?",
-        ans: "Quadrant II",
-        sol: "Negative x, positive y → Quadrant II (upper left)."
+        q: "What is the reflection of $(2,5)$ across the $x$-axis?",
+        options: ["$(2,-5)$", "$(-2,5)$", "$(-2,-5)$", "$(5,2)$"],
+        ansIdx: 0,
+        sol: "Reflecting across the $x$-axis changes the sign of $y$: $(2,5) \\to (2,-5)$."
       },
       {
-        q: "Find the perimeter of the triangle with vertices $A(0,0)$, $B(3,0)$, and $C(0,4)$.",
-        ans: "$12$",
-        sol: "$AB = 3$, $AC = 4$, $BC = \\\sqrt{3^2+4^2} = 5$. Perimeter = $3+4+5 = 12$."
+        q: "Which point lies in Quadrant III?",
+        options: ["$(-2,-3)$", "$(2,3)$", "$(-2,3)$", "$(2,-3)$"],
+        ansIdx: 0,
+        sol: "Quadrant III has $x<0$ and $y<0$, so $(-2,-3)$ is the answer."
       }
     ],
     quiz: [
       {
-        q: "The distance from $(0,0)$ to $(6,8)$ is:",
-        options: ["$6$", "$8$", "$10$", "$14$"],
-        ans: "$10$",
-        sol: "$d = \\\sqrt{6^2 + 8^2} = \\\sqrt{36+64} = \\\sqrt{100} = 10$."
+        q: "What is the distance between $(0,0)$ and $(5,12)$?",
+        options: ["$13$", "$17$", "$7$", "$\\sqrt{119}$"],
+        ansIdx: 0,
+        sol: "$d = \\sqrt{(5-0)^2 + (12-0)^2} = \\sqrt{25+144} = \\sqrt{169} = 13$. (A 5-12-13 right triangle.)"
       },
       {
-        q: "Find the midpoint of $(-4, 6)$ and $(2, -2)$.",
-        ans: "$(-1, 2)$",
-        sol: "$\\\left(\\\frac{-4+2}{2}, \\\frac{6+(-2)}{2}\\\right) = (-1, 2)$."
+        q: "What is the slope of the line through $(1,2)$ and $(3,6)$?",
+        options: ["$2$", "$\\frac{1}{2}$", "$4$", "$-2$"],
+        ansIdx: 0,
+        sol: "Slope $= \\frac{6-2}{3-1} = \\frac{4}{2} = 2$."
       },
       {
-        q: "Which point is in Quadrant III?",
-        options: ["$(2, 3)$", "$(-2, 3)$", "$(-2, -3)$", "$(2, -3)$"],
-        ans: "$(-2, -3)$",
-        sol: "Q3 has both coordinates negative."
+        q: "What is the $y$-intercept of the line $y = 3x - 4$?",
+        options: ["$-4$", "$3$", "$4$", "$0$"],
+        ansIdx: 0,
+        sol: "In slope-intercept form $y = mx + b$, the $y$-intercept is $b = -4$ (the point $(0,-4)$)."
       }
     ]
   },
@@ -271,49 +277,54 @@ var MATH_DATA = [
     ],
     practice: [
       {
-        q: "Find the slope of the line through $(2, 5)$ and $(6, 13)$.",
-        ans: "$2$",
-        sol: "$m = \\\frac{13-5}{6-2} = \\\frac{8}{4} = 2$."
+        q: "What is the slope of the line through $(0,0)$ and $(2,6)$?",
+        options: ["$3$", "$\\frac{1}{3}$", "$6$", "$2$"],
+        ansIdx: 0,
+        sol: "Slope $= \\frac{6-0}{2-0} = \\frac{6}{2} = 3$."
       },
       {
-        q: "Write the equation of the line with slope $-3$ passing through $(0, 4)$.",
-        ans: "$y = -3x + 4$",
-        sol: "Using $y = mx + b$: $m = -3$, $b = 4$ (y-intercept)."
+        q: "What is the $y$-intercept of $y = -2x + 5$?",
+        options: ["$5$", "$-2$", "$2$", "$-5$"],
+        ansIdx: 0,
+        sol: "In $y = mx + b$, the $y$-intercept is $b = 5$."
       },
       {
-        q: "Find the x-intercept of $y = 2x - 6$.",
-        ans: "$3$",
-        sol: "Set $y=0$: $0 = 2x - 6$, so $x = 3$."
+        q: "Which equation represents a linear function?",
+        options: ["$y = 2x + 1$", "$y = x^2$", "$y = \\frac{1}{x}$", "$y = \\sqrt{x}$"],
+        ansIdx: 0,
+        sol: "$y = 2x + 1$ is linear (constant rate of change). The others are quadratic, rational, and square-root functions."
       },
       {
-        q: "Are the lines $y = 2x + 1$ and $y = 2x - 5$ parallel, perpendicular, or neither?",
-        ans: "Parallel",
-        sol: "Both have slope $m = 2$, so they are parallel."
+        q: "If $f(x) = 4x - 3$, what is $f(2)$?",
+        options: ["$5$", "$3$", "$8$", "$-5$"],
+        ansIdx: 0,
+        sol: "$f(2) = 4(2) - 3 = 8 - 3 = 5$."
       },
       {
-        q: "Find the slope of a line perpendicular to $y = \\\frac{1}{3}x + 2$.",
-        ans: "$-3$",
-        sol: "Negative reciprocal of $\\\frac{1}{3}$ is $-3$."
+        q: "What is the slope of a horizontal line?",
+        options: ["$0$", "$1$", "undefined", "$-1$"],
+        ansIdx: 0,
+        sol: "A horizontal line has no vertical change, so its slope is $0$."
       }
     ],
     quiz: [
       {
-        q: "If $f(x) = 3x - 7$, what is $f(4)$?",
-        options: ["$5$", "$12$", "$19$", "$-5$"],
-        ans: "$5$",
-        sol: "$f(4) = 3(4) - 7 = 12 - 7 = 5$."
+        q: "Which equation has slope $2$ and $y$-intercept $3$?",
+        options: ["$y = 2x + 3$", "$y = 3x + 2$", "$y = 2x - 3$", "$y = 3x$"],
+        ansIdx: 0,
+        sol: "$y = mx + b$ with $m=2$ and $b=3$ gives $y = 2x + 3$."
       },
       {
-        q: "The line $y = -2x + 5$ has slope and y-intercept:",
-        options: ["$m=2, b=5$", "$m=-2, b=5$", "$m=5, b=-2$", "$m=-5, b=2$"],
-        ans: "$m=-2, b=5$",
-        sol: "In $y = mx + b$, $m = -2$ and $b = 5$."
+        q: "What is the $x$-intercept of $y = 2x - 6$?",
+        options: ["$3$", "$-3$", "$6$", "$-6$"],
+        ansIdx: 0,
+        sol: "Set $y=0$: $0 = 2x - 6 \\Rightarrow 2x = 6 \\Rightarrow x = 3$."
       },
       {
-        q: "Which line is perpendicular to $y = 4x + 1$?",
-        options: ["$y = 4x - 3$", "$y = -4x + 2$", "$y = -\\\frac{1}{4}x + 5$", "$y = \\\frac{1}{4}x$"],
-        ans: "$y = -\\\frac{1}{4}x + 5$",
-        sol: "Perpendicular slopes are negative reciprocals: $-\\\frac{1}{4}$."
+        q: "What is the slope of $2x + 4y = 8$?",
+        options: ["$-\\frac{1}{2}$", "$2$", "$\\frac{1}{2}$", "$-2$"],
+        ansIdx: 0,
+        sol: "Solve for $y$: $4y = -2x + 8 \\Rightarrow y = -\\frac{1}{2}x + 2$, so slope is $-\\frac{1}{2}$."
       }
     ]
   },
@@ -344,48 +355,54 @@ var MATH_DATA = [
     ],
     practice: [
       {
-        q: "Solve: $x + y = 7$ and $x - y = 3$.",
-        ans: "$x = 5, y = 2$",
-        sol: "Add equations: $2x = 10$, so $x = 5$. Substitute: $5 + y = 7$, so $y = 2$."
+        q: "Solve the system: $y = x + 1$ and $y = 2x - 1$.",
+        options: ["$(2,3)$", "$(3,2)$", "$(-2,-3)$", "$(1,1)$"],
+        ansIdx: 0,
+        sol: "Set equal: $x+1 = 2x-1 \\Rightarrow x = 2$, then $y = 2+1 = 3$. Solution $(2,3)$."
       },
       {
-        q: "Solve by substitution: $y = 2x + 1$ and $3x + 2y = 12$.",
-        ans: "$x = 2, y = 5$",
-        sol: "Substitute: $3x + 2(2x+1) = 12$, so $7x + 2 = 12$, $x = 2$, then $y = 5$."
+        q: "Solve: $2x + y = 5$ and $x - y = 1$.",
+        options: ["$(2,1)$", "$(1,2)$", "$(-1,3)$", "$(3,-1)$"],
+        ansIdx: 0,
+        sol: "Add the equations: $3x = 6 \\Rightarrow x = 2$, then $2-y=1 \\Rightarrow y=1$. Solution $(2,1)$."
       },
       {
-        q: "How many solutions? $2x + y = 4$ and $4x + 2y = 8$.",
-        ans: "Infinitely many",
-        sol: "Second equation is $2 \\\times$ first. Same line → infinitely many solutions."
+        q: "Two lines are parallel and distinct. How many solutions does the system have?",
+        options: ["$0$", "$1$", "infinitely many", "$2$"],
+        ansIdx: 0,
+        sol: "Parallel distinct lines never intersect, so the system has no solution."
       },
       {
-        q: "A rectangle has perimeter 30. The length is 3 more than the width. Find dimensions.",
-        ans: "Width $= 6$, Length $= 9$",
-        sol: "$2L + 2W = 30$ and $L = W + 3$. Solve: $W = 6, L = 9$."
+        q: "Solve: $x + y = 4$ and $x - y = 2$.",
+        options: ["$(3,1)$", "$(1,3)$", "$(2,2)$", "$(4,0)$"],
+        ansIdx: 0,
+        sol: "Add: $2x = 6 \\Rightarrow x = 3$, then $3+y=4 \\Rightarrow y=1$. Solution $(3,1)$."
       },
       {
-        q: "Solve: $3x + 2y = 12$ and $5x - 2y = 4$.",
-        ans: "$x = 2, y = 3$",
-        sol: "Add to eliminate $y$: $8x = 16$, so $x = 2$. Then $3(2) + 2y = 12$, so $y = 3$."
+        q: "Solve by substitution: $y = 3x$ and $2x + y = 10$.",
+        options: ["$(2,6)$", "$(6,2)$", "$(1,3)$", "$(3,1)$"],
+        ansIdx: 0,
+        sol: "Substitute: $2x + 3x = 10 \\Rightarrow 5x = 10 \\Rightarrow x = 2$, then $y = 6$. Solution $(2,6)$."
       }
     ],
     quiz: [
       {
-        q: "The system $y = 2x + 1$ and $y = 2x - 3$ has:",
-        options: ["One solution", "No solution", "Infinitely many", "Two solutions"],
-        ans: "No solution",
-        sol: "Same slope ($2$), different intercepts → parallel lines, never intersect."
+        q: "Solve: $y = -x + 5$ and $y = x - 1$.",
+        options: ["$(3,2)$", "$(2,3)$", "$(4,1)$", "$(1,4)$"],
+        ansIdx: 0,
+        sol: "Set equal: $-x+5 = x-1 \\Rightarrow 2x = 6 \\Rightarrow x=3$, then $y = 3-1 = 2$. Solution $(3,2)$."
       },
       {
-        q: "Solve: $2x + 3y = 12$ and $x = 4$. Find $y$.",
-        ans: "$\\\frac{4}{3}$",
-        sol: "Substitute $x = 4$: $2(4) + 3y = 12$, so $3y = 4$, $y = \\\frac{4}{3}$."
+        q: "When does a system of two linear equations have infinitely many solutions?",
+        options: ["The two equations are the same line", "The lines are parallel", "The lines intersect once", "The lines are perpendicular"],
+        ansIdx: 0,
+        sol: "If both equations describe the same line, every point is a solution."
       },
       {
-        q: "A system has solution $(3, -1)$. Which equations could it be?",
-        options: ["$x+y=2$ and $x-y=4$", "$x+y=2$ and $2x+y=5$", "$x-y=4$ and $2x+y=5$", "Both first and third"],
-        ans: "Both first and third",
-        sol: "Check: $3 + (-1) = 2$ ✓, $3 - (-1) = 4$ ✓, $2(3) + (-1) = 5$ ✓."
+        q: "Solve: $3x + 2y = 12$ and $x = 2$.",
+        options: ["$(2,3)$", "$(3,2)$", "$(2,0)$", "$(0,6)$"],
+        ansIdx: 0,
+        sol: "$3(2) + 2y = 12 \\Rightarrow 6 + 2y = 12 \\Rightarrow 2y = 6 \\Rightarrow y = 3$. Solution $(2,3)$."
       }
     ]
   },
@@ -417,49 +434,54 @@ var MATH_DATA = [
     ],
     practice: [
       {
-        q: "Find the mean, median, and mode of: $5, 7, 8, 8, 10, 12$.",
-        ans: "Mean $= 8.33$, Median $= 8$, Mode $= 8$",
-        sol: "Mean = $\\\frac{50}{6} \\\approx 8.33$. Ordered: middle is $8$. Mode is $8$ (appears twice)."
+        q: "What is the mean of $2, 4, 6, 8$?",
+        options: ["$5$", "$4$", "$6$", "$5.5$"],
+        ansIdx: 0,
+        sol: "Mean $= \\frac{2+4+6+8}{4} = \\frac{20}{4} = 5$."
       },
       {
-        q: "Data: $2, 5, 7, 10, 15$. Find the range and IQR.",
-        ans: "Range $= 13$, IQR $= 5$",
-        sol: "Range = $15 - 2 = 13$. Q1 = $5$, Q3 = $10$, IQR = $10 - 5 = 5$."
+        q: "What is the median of $3, 1, 7, 5, 9$?",
+        options: ["$5$", "$3$", "$7$", "$4$"],
+        ansIdx: 0,
+        sol: "Order: $1, 3, 5, 7, 9$. The middle value is $5$."
       },
       {
-        q: "Which is more affected by an outlier: mean or median?",
-        ans: "Mean",
-        sol: "Mean uses all values; median only depends on middle position."
+        q: "What is the median of $2, 4, 6, 8$?",
+        options: ["$5$", "$4$", "$6$", "$3$"],
+        ansIdx: 0,
+        sol: "Order: $2, 4, 6, 8$. Median $= \\frac{4+6}{2} = 5$."
       },
       {
-        q: "Find the standard deviation of: $3, 5, 7$.",
-        ans: "$2$",
-        sol: "Mean = $5$. Deviations: $-2, 0, 2$. Squared: $4, 0, 4$. Variance = $\\\frac{8}{2} = 4$. SD = $\\\sqrt{4} = 2$."
+        q: "What is the mode of $1, 2, 2, 3, 4$?",
+        options: ["$2$", "$1$", "$3$", "$4$"],
+        ansIdx: 0,
+        sol: "The value $2$ appears most often (twice)."
       },
       {
-        q: "In a box plot, what does the box represent?",
-        ans: "The middle 50% of data (IQR)",
-        sol: "Box spans Q1 to Q3, containing the middle 50% of observations."
+        q: "What is the range of $5, 9, 2, 7$?",
+        options: ["$7$", "$5$", "$9$", "$4$"],
+        ansIdx: 0,
+        sol: "Range $= 9 - 2 = 7$."
       }
     ],
     quiz: [
       {
-        q: "Data: $12, 15, 18, 20, 100$. Which measure of center is least affected by the outlier 100?",
-        options: ["Mean", "Median", "Mode", "Range"],
-        ans: "Median",
-        sol: "Median = $18$ (middle value). Mean would be pulled up by 100."
+        q: "A data set has one very large outlier. Which measure of center is least affected?",
+        options: ["Median", "Mean", "Range", "Maximum"],
+        ansIdx: 0,
+        sol: "The median is resistant to outliers; the mean is pulled toward them."
       },
       {
-        q: "If all values in a dataset increase by 5, what happens to the standard deviation?",
-        options: ["Increases by 5", "Stays the same", "Decreases by 5", "Becomes 0"],
-        ans: "Stays the same",
-        sol: "Adding a constant shifts all data but doesn't change spread."
+        q: "For the data $1, 2, 3, 4, 5, 6, 7$, what is the interquartile range (IQR)?",
+        options: ["$4$", "$3$", "$6$", "$2$"],
+        ansIdx: 0,
+        sol: "Lower half $1,2,3$ gives $Q_1 = 2$; upper half $5,6,7$ gives $Q_3 = 6$. IQR $= 6 - 2 = 4$."
       },
       {
-        q: "In a symmetric distribution, mean and median are:",
-        options: ["Always equal", "Always different", "Sometimes equal", "Cannot determine"],
-        ans: "Always equal",
-        sol: "Symmetry ensures mean = median = mode."
+        q: "A box plot shows min $= 2$, $Q_1 = 4$, median $= 6$, $Q_3 = 8$, max $= 10$. What is the IQR?",
+        options: ["$4$", "$6$", "$8$", "$2$"],
+        ansIdx: 0,
+        sol: "IQR $= Q_3 - Q_1 = 8 - 4 = 4$."
       }
     ]
   },
@@ -493,48 +515,54 @@ var MATH_DATA = [
     ],
     practice: [
       {
-        q: "Two parallel lines are cut by a transversal. If one angle is $70°$, find its corresponding angle.",
-        ans: "$70°$",
-        sol: "Corresponding angles are equal when lines are parallel."
+        q: "Which criterion proves two triangles congruent when all three sides are equal?",
+        options: ["SSS", "SAS", "ASA", "AAS"],
+        ansIdx: 0,
+        sol: "SSS (Side-Side-Side): three pairs of equal sides imply congruent triangles."
       },
       {
-        q: "In $\\\triangle ABC$, $\\\angle A = 50°$ and $\\\angle B = 60°$. Find $\\\angle C$.",
-        ans: "$70°$",
-        sol: "$\\\angle C = 180° - 50° - 60° = 70°$."
+        q: "In SAS, the angle must be ____ the two sides.",
+        options: ["the included angle", "any angle", "the longest side", "a right angle"],
+        ansIdx: 0,
+        sol: "SAS requires the angle to be between the two known sides (the included angle)."
       },
       {
-        q: "Which congruence criterion applies? Two sides and the included angle are equal.",
-        ans: "SAS",
-        sol: "Side-Angle-Side: two sides and the included angle determine a unique triangle."
+        q: "Which criterion uses two angles and the included side?",
+        options: ["ASA", "SAS", "SSS", "HL"],
+        ansIdx: 0,
+        sol: "ASA (Angle-Side-Angle): two angles and the side between them."
       },
       {
-        q: "In isosceles $\\\triangle XYZ$ with $XY = XZ$, if $\\\angle Y = 40°$, find $\\\angle Z$ and $\\\angle X$.",
-        ans: "$\\\angle Z = 40°$, $\\\angle X = 100°$",
-        sol: "Base angles equal: $\\\angle Z = 40°$. Then $\\\angle X = 180° - 40° - 40° = 100°$."
+        q: "Vertical angles are always ____.",
+        options: ["equal", "supplementary", "complementary", "perpendicular"],
+        ansIdx: 0,
+        sol: "Vertical angles are always equal in measure."
       },
       {
-        q: "Prove: If two angles of a triangle are equal, then the sides opposite them are equal.",
-        ans: "Isosceles Triangle Theorem (Converse)",
-        sol: "This is the converse of the base angles theorem. Can be proven by drawing an angle bisector and using AAS congruence."
+        q: "What does CPCTC stand for?",
+        options: ["Corresponding Parts of Congruent Triangles are Congruent", "Congruent Parts of Congruent Triangles are Corresponding", "Center Points of Congruent Triangles are Congruent", "Corresponding Proofs of Congruent Triangles are Complete"],
+        ansIdx: 0,
+        sol: "CPCTC = Corresponding Parts of Congruent Triangles are Congruent."
       }
     ],
     quiz: [
       {
-        q: "Which of the following is NOT a valid triangle congruence criterion?",
-        options: ["SSS", "SAS", "AAA", "HL"],
-        ans: "AAA",
-        sol: "AAA proves similarity, not congruence (triangles can have same angles but different sizes)."
+        q: "If $\\triangle ABC \\cong \\triangle DEF$, then $AB =$ ____.",
+        options: ["$DE$", "$EF$", "$DF$", "$BC$"],
+        ansIdx: 0,
+        sol: "Corresponding sides of congruent triangles are equal, so $AB$ corresponds to $DE$."
       },
       {
-        q: "In the diagram, $l \\\parallel m$ and $\\\angle 1 = 110°$. Find $\\\angle 2$ (alternate interior angle).",
-        ans: "$110°$",
-        sol: "Alternate interior angles are equal when lines are parallel."
+        q: "The HL (Hypotenuse-Leg) theorem applies to which triangles?",
+        options: ["Right triangles", "All triangles", "Isosceles triangles", "Equilateral triangles"],
+        ansIdx: 0,
+        sol: "HL is a congruence shortcut that works only for right triangles."
       },
       {
-        q: "$\\\triangle ABC \\\cong \\\triangle DEF$ by SAS. If $AB = 5$ and $BC = 7$, which side in $\\\triangle DEF$ equals $7$?",
-        options: ["$DE$", "$EF$", "$DF$", "Cannot determine"],
-        ans: "$EF$",
-        sol: "Corresponding to $BC$ is $EF$. CPCTC: corresponding parts of congruent triangles are congruent."
+        q: "If two angles of one triangle equal two angles of another, the third angles must be ____.",
+        options: ["equal", "supplementary", "unrelated", "double"],
+        ansIdx: 0,
+        sol: "Angles in a triangle sum to $180^\\circ$, so matching two angles forces the third to match (AA similarity)."
       }
     ]
   }
