@@ -11,7 +11,7 @@ var MATH_DATA = [
     think: "A right triangle has legs $a$ and $b$, and hypotenuse $c$. What relationship connects them? Try a 3-4-5 triangle: does $3^2 + 4^2 = 5^2$?",
     videos: [
       { yt: "LrS5_l-gk94", t: "Pythagorean Theorem Proof Using Similarity", m: "English \\u00b7 Khan Academy", duration: "~10 min",
-        local: "videos/Ch01_\\u52a8\\u80a1\\u5b9a\\u7406/09_Pythagorean theorem proof using similarity.mp4",
+        local: "../videos/Ch01_\\u52a8\\u80a1\\u5b9a\\u7406/09_Pythagorean theorem proof using similarity.mp4",
         ka: "https://www.khanacademy.org/math/geometry/hs-geo-trig/hs-geo-pythagorean-proofs/v/pythagorean-theorem-proof-using-similarity" }
     ],
     notes: [
@@ -108,7 +108,7 @@ var MATH_DATA = [
     think: "$\\\sqrt{2} \\\approx 1.41421356...$ — can you write it as a fraction of two integers? What does this tell us about $\\\sqrt{2}$?",
     videos: [
       { yt: "SH_6A-K5bjY", t: "Introduction to Square Roots", m: "English · Khan Academy", duration: "~5 min",
-        local: "videos/Ch02_实数/07_Introduction to square roots.mp4",
+        local: "../videos/Ch02_实数/07_Introduction to square roots.mp4",
         ka: "https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:rational-exponents-radicals/x2f8bb11595b61c86:radicals/v/introduction-to-square-roots" }
     ],
     notes: [
@@ -181,7 +181,7 @@ var MATH_DATA = [
     think: "If you walk 3 blocks east and 4 blocks north, how far are you from your starting point? Can you draw this on a grid?",
     videos: [
       { yt: "Q7NEzE6R5yg", t: "Introduction to the Coordinate Plane", m: "English · Khan Academy", duration: "~7 min",
-        local: "videos/Ch03_位置与坐标/01_Introduction to the coordinate plane.mp4",
+        local: "../videos/Ch03_位置与坐标/01_Introduction to the coordinate plane.mp4",
         ka: "https://www.khanacademy.org/math/in-in-grade-9-ncert/xfd53e0255cd302f8:coordinate-geometry/xfd53e0255cd302f8:cartesian-system/v/introduction-to-the-coordinate-plane" }
     ],
     notes: [
@@ -252,7 +252,7 @@ var MATH_DATA = [
     think: "A taxi charges $\\$3$ base fare plus $\\$2$ per km. Write an equation for the total cost $y$ in terms of distance $x$. Is this a function?",
     videos: [
       { yt: "M0E1Pb3bHjw", t: "What is a Function?", m: "English · Khan Academy", duration: "~8 min",
-        local: "videos/Ch04_一次函数/01_What is a function-.mp4",
+        local: "../videos/Ch04_一次函数/01_What is a function-.mp4",
         ka: "https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:functions/introduction-to-functions/v/what-is-a-function" }
     ],
     notes: [
@@ -325,7 +325,7 @@ var MATH_DATA = [
     think: "You buy 3 apples and 2 bananas for $\\$11$. Your friend buys 2 apples and 3 bananas for $\\$9$. Can you find the price of each fruit?",
     videos: [
       { yt: "OcNt-ikp4xA", t: "Solving Linear Systems by Graphing (Intro)", m: "English · Khan Academy", duration: "~8 min",
-        local: "videos/Ch05_二元一次方程组/01_Solving linear systems by graphing (intro).mp4",
+        local: "../videos/Ch05_二元一次方程组/01_Solving linear systems by graphing (intro).mp4",
         ka: "https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:systems-of-equations/x2f8bb11595b61c86:systems-of-equations-intro/v/solving-linear-systems-by-graphing" }
     ],
     notes: [
@@ -397,7 +397,7 @@ var MATH_DATA = [
     think: "Five students scored: 72, 85, 85, 90, 98. Which number best represents 'typical' performance? Why might you choose a different one?",
     videos: [
       { yt: "k3aKKasOmIw", t: "Statistics Intro: Mean, Median, & Mode", m: "English · Khan Academy", duration: "~9 min",
-        local: "videos/Ch06_数据的分析/01_Finding mean, median, and mode.mp4",
+        local: "../videos/Ch06_数据的分析/01_Finding mean, median, and mode.mp4",
         ka: "https://www.khanacademy.org/math/statistics-probability/xa9c5124c69e541e2:introduction-to-statistics/xa9c5124c69e541e2:statistics-intro/v/statistics-intro-mean-median-and-mode" }
     ],
     notes: [
@@ -472,7 +472,7 @@ var MATH_DATA = [
     think: "How can you be absolutely sure that the angles in every triangle add to 180°? Is measuring one triangle enough?",
     videos: [
       { yt: "gRKZaojKeP0", t: "Angles Formed by Parallel Lines and Transversals", m: "English · Khan Academy", duration: "~7 min",
-        local: "videos/Ch07_平行线的证明/01_Angles formed by parallel lines and transversals.mp4",
+        local: "../videos/Ch07_平行线的证明/01_Angles formed by parallel lines and transversals.mp4",
         ka: "https://www.khanacademy.org/math/geometry-home/geometry-angles/old-angles/v/angles-formed-by-parallel-lines-and-transversals" }
     ],
     notes: [
