@@ -53,6 +53,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .q{display:block;border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:13px;background:var(--card2)}
 .qnum{font-size:12px;color:var(--text3);margin-bottom:6px}
 .qtext{font-weight:600;margin-bottom:10px;font-size:15px}
+.options{margin:10px 0;display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:default;background:var(--card)}
+.opt-l{width:24px;height:24px;border-radius:50%;background:#e2e8f0;color:#475569;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.opt-t{font-size:14px}
+.opt-correct{border-color:var(--green);background:#f0fdf4}
+.opt-correct .opt-l{background:var(--green);color:#fff}
 
 /* ── Answer area ── */
 .ans-area{margin-top:10px}
@@ -379,6 +385,16 @@ function renderGraphie(cfg) {
     // axes
     lines += '<line x1="'+PL+'" y1="'+oy+'" x2="'+(W-PR)+'" y2="'+oy+'" stroke="#94a3b8" stroke-width="1.5"/>';
     lines += '<line x1="'+ox+'" y1="'+PT+'" x2="'+ox+'" y2="'+(H-PB)+'" stroke="#94a3b8" stroke-width="1.5"/>';
+    // plot points if provided
+    if (cfg.points) {
+      cfg.points.forEach(function(pt){
+        var px = ox + pt[0]*sx, py = oy - pt[1]*sy;
+        lines += '<circle cx="'+px+'" cy="'+py+'" r="4" fill="'+("fill" in pt ? pt.fill : "#3b82f6")+'"/>';
+        if (pt.label) {
+          lines += '<text x="'+(px + (pt.lx||6))+'" y="'+(py + (pt.ly||-6))+'" font-family="sans-serif" font-size="12" fill="#1e40af" font-weight="700">'+esc(pt.label)+'</text>';
+        }
+      });
+    }
     // arrows
     lines += '<polygon points="'+(W-PR)+','+oy+','+(W-PR-8)+','+(oy-4)+','+(W-PR-8)+','+(oy+4)+'" fill="#94a3b8"/>';
     lines += '<polygon points="'+ox+','+PT+','+(ox-4)+','+(PT+8)+','+(ox+4)+','+(PT+8)+'" fill="#94a3b8"/>';
@@ -619,20 +635,49 @@ function renderPanel(step) {
   var p = document.getElementById("p" + step);
   if (!p || !CH) return;
   if (step === 1) {
-    p.innerHTML = '<h2>Step 1 · Think</h2><div class="elicit">' + esc(CH.think || "") + '</div>' + nextBtn();
+    p.innerHTML = '<h2>Step 1 · Think</h2><div class="elicit" id="thinkBox"></div>' + nextBtn();
+    var tb = document.getElementById("thinkBox"); tb.textContent = CH.think || ""; renderMath(tb);
   } else if (step === 2) {
     var v = '<h2>Step 2 · Watch</h2>';
     (CH.videos || []).forEach(function(vid){
-      v += '<div class="video-wrap"><iframe class="bili" src="https://www.youtube-nocookie.com/embed/' + esc(vid.yt) + '?rel=0" allowfullscreen="true"></iframe>' +
-           '<div class="video-meta">' + esc(vid.t || "Khan Academy video") + ' · ' + esc(vid.m || "English") +
-           ' <a class="vlink" href="https://www.youtube.com/watch?v=' + esc(vid.yt) + '" target="_blank">Open on YouTube ↗</a></div></div>';
+      var ytId = esc(vid.yt || '');
+      var ytPageUrl = 'https://www.youtube.com/watch?v=' + ytId;
+      var khanPageUrl = vid.ka || 'https://www.khanacademy.org';
+      var localSrc = vid.local ? encodeURI(vid.local) : '';
+      if (localSrc) {
+        // 本地视频直接播放（无需外网/YouTube）
+        v += '<div class="video-wrap" style="background:#000;">' +
+             '<video controls preload="metadata" playsinline style="width:100%;max-width:640px;display:block;margin:0 auto;background:#000;" src="' + localSrc + '"></video>' +
+             '<div class="video-meta">' +
+             '<strong>' + esc(vid.t || 'Khan Academy video') + '</strong><br>' +
+             '<span style="color:#666;">' + esc(vid.m || 'English') + ' · ' + esc(vid.duration || '~10 min') + '</span><br>' +
+             '<a href="' + khanPageUrl + '" target="_blank" class="vlink">Open on Khan Academy ↗</a>' +
+             (ytId ? ' &nbsp;|&nbsp; <a href="' + ytPageUrl + '" target="_blank" class="vlink">Watch on YouTube ↗</a>' : '') +
+             '</div></div>';
+      } else {
+        // 无本地文件：封面图 + 外链方案
+        var ytThumb = 'https://img.youtube.com/vi/' + ytId + '/maxresdefault.jpg';
+        v += '<div class="video-wrap">' +
+             '<a href="' + ytPageUrl + '" target="_blank" class="video-thumb-link" style="display:block;position:relative;">' +
+             '<img src="' + ytThumb + '" alt="Video thumbnail" style="width:100%;max-width:640px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.15);" onerror="this.src=\'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg\';">' +
+             '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.75);border-radius:50%;width:64px;height:64px;display:flex;align-items:center;justify-content:center;pointer-events:none;">' +
+             '<svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></a>' +
+             '<div class="video-meta">' +
+             '<strong>' + esc(vid.t || 'Khan Academy video') + '</strong><br>' +
+             '<span style="color:#666;">' + esc(vid.m || 'English') + ' · ' + esc(vid.duration || '~10 min') + '</span><br>' +
+             '<a href="' + ytPageUrl + '" target="_blank" class="vlink">▶ Watch on YouTube ↗</a> &nbsp;|&nbsp; ' +
+             '<a href="' + khanPageUrl + '" target="_blank" class="vlink">Open on Khan Academy ↗</a>' +
+             '</div></div>';
+      }
     });
     p.innerHTML = v + nextBtn();
   } else if (step === 3) {
-    var n = '<h2>Step 3 · Notes</h2><ul class="notes-list">';
-    (CH.notes || []).forEach(function(nt){ n += '<li>' + esc(nt) + '</li>'; });
-    n += '</ul>';
+    var n = '<h2>Step 3 · Notes</h2><ul class="notes-list" id="notesList"></ul>';
     p.innerHTML = n + nextBtn();
+    var nl = document.getElementById("notesList");
+    (CH.notes || []).forEach(function(nt){
+      var li = document.createElement("li"); li.textContent = nt; renderMath(li); nl.appendChild(li);
+    });
   } else if (step === 4) {
     document.getElementById("paperNote").style.display = 'block';
     p.innerHTML = '<h2>Step 4 · Practice</h2><div id="practiceBox"></div>' + nextBtn("Finish practice, next ›");
@@ -649,11 +694,20 @@ function renderQs(boxId, questions, kind) {
   if (!questions.length) { c.innerHTML = '<p style="color:var(--text2)">No questions for this step yet.</p>'; return; }
   var html = "";
   questions.forEach(function(item, i){
-    html += '<div class="q" id="' + kind + 'q' + i + '">';
+    html += '<div class="q" id="' + kind + 'q' + i + '"' + (item.ansIdx !== undefined ? ' data-ansidx="' + item.ansIdx + '"' : (item.ans ? ' data-ans="' + esc(item.ans) + '"' : '')) + '>';
     html += '<div class="qnum">Question ' + (i+1) + '</div>';
     html += '<div class="qtext">' + esc(item.q) + '</div>';
     // Render diagram if present
     if (item.dia) html += (typeof item.dia === 'string') ? item.dia : renderGraphie(item.dia);
+    // Render options if multiple choice
+    if (item.options && item.options.length) {
+      html += '<div class="options" id="' + kind + 'opt' + i + '">';
+      var letters = ['A','B','C','D','E','F'];
+      item.options.forEach(function(opt, oi){
+        html += '<div class="opt" data-opt="' + oi + '"><span class="opt-l">' + letters[oi] + '</span><span class="opt-t">' + esc(opt) + '</span></div>';
+      });
+      html += '</div>';
+    }
     // Answer area (show answer button → answer reveal)
     html += '<div class="ans-area">';
     html += '<button class="show-ans-btn" id="' + kind + 'sh' + i + '" onclick="showAns(\'' + kind + '\',' + i + ')">Show answer &amp; solution</button>';
@@ -664,14 +718,14 @@ function renderQs(boxId, questions, kind) {
     // Solution / explanation
     if (item.sol) {
       html += '<div class="sol" id="' + kind + 'sol' + i + '">';
-      html += '<div class="sol-header">📝 Solution</div>' + esc(item.sol) + '</div>';
+      html += '<div class="sol-header">📝 Solution</div><div class="sol-body">' + esc(item.sol) + '</div></div>';
     }
     html += '</div>';
   });
   c.innerHTML = html;
   // Render KaTeX math after DOM insertion
   setTimeout(function(){
-    document.querySelectorAll('#' + boxId + ' .qtext, #' + boxId + ' .ans-display').forEach(renderMath);
+    document.querySelectorAll('#' + boxId + ' .qtext, #' + boxId + ' .ans-display, #' + boxId + ' .opt-t').forEach(renderMath);
   }, 100);
 }
 
@@ -682,8 +736,18 @@ function showAns(kind, i) {
   ansEl.style.display = 'block';
   solEl.style.display = 'block';
   btn.style.display = 'none';
-  // render math in answer
+  // highlight correct option if multiple choice
+  var qEl = document.getElementById(kind + 'q' + i);
+  var ansIdx = qEl ? qEl.getAttribute('data-ansidx') : null;
+  var optWrap = document.getElementById(kind + 'opt' + i);
+  if (optWrap && ansIdx !== null) {
+    var correctOpt = optWrap.querySelector('.opt[data-opt="' + ansIdx + '"]');
+    if (correctOpt) correctOpt.classList.add('opt-correct');
+  }
+  // render math in answer and solution
   renderMath(ansEl);
+  var solBody = solEl.querySelector('.sol-body');
+  if (solBody) renderMath(solBody);
 }
 
 function nextStep() {
