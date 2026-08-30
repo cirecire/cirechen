@@ -712,6 +712,7 @@ else { render(); }
 function pad(n){ return (n<10?"0":"") + n; }
 
 function pad(n){ return (n<10?'0':'')+n; }
+function nextBtn(label){ return '<button class="next-btn big" onclick="nextStep()">' + (label || 'Next ›') + '</button>'; }
 var TOTAL = 1, cur = 1, STEPS = [];
 
 function buildSteps() {
