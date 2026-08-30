@@ -699,6 +699,8 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 var GRADE = params.get("grade") || "8";
 var TOTAL = 5, cur = 1;
+var JS_VERSION = 'v2026-08-30-NEW';
+console.log('[MATH] JS version:', JS_VERSION);
 var CH = null, CH_LIST = [], idx = -1;
 for (var i = 0; i < MATH_DATA.length; i++) {
   if (MATH_DATA[i].id === CH_ID) { CH = MATH_DATA[i]; if (!GRADE) GRADE = CH.g || "8"; break; }
