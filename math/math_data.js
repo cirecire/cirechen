@@ -7,7 +7,24 @@ var MATH_DATA = [
       coverage: "g",
       think: "A right triangle has legs $a$ and $b$, and hypotenuse $c$. What relationship connects them? Try a 3-4-5 triangle: does $3^2 + 4^2 = 5^2$?",
       videos: [
-        { yt: "LrS5_l-gk94", t: "Pythagorean Theorem Proof Using Similarity", m: "English · Khan Academy", duration: "~10 min", local: "../videos/Ch01_勾股定理/09_Pythagorean theorem proof using similarity.mp4", ka: "https://www.khanacademy.org/math/geometry/hs-geo-trig/hs-geo-pythagorean-proofs/v/pythagorean-theorem-proof-using-similarity" }
+        { yt: "AA6RfgP-AHU", t: "Intro to the Pythagorean theorem" },
+        { yt: "O64YFlX1_aI", t: "Pythagorean theorem example" },
+        { yt: "TjOlZr_2uW4", t: "Pythagorean theorem with isosceles triangle" },
+        { yt: "T0IOrRETWhI", t: "Pythagorean theorem word problem: carpet" },
+        { yt: "JVrkLIcA2qw", t: "Pythagorean theorem word problem: fishing boat" },
+        { yt: "1UQ5IbihJNI", t: "Pythagorean theorem in 3D" },
+        { yt: "yZ4CbopnVBg", t: "Find area of isosceles triangle" },
+        { yt: "nyZuite17Pc", t: "Distance formula" },
+        { yt: "EINpkcphsPQ", t: "Garfield's proof of the Pythagorean theorem" },
+        { yt: "1ul8g55dYA4", t: "Bhaskara's proof of the Pythagorean theorem" },
+        { yt: "LrS5_l-gk94", t: "Pythagorean theorem proof using similarity" },
+        { yt: "rcBaqkGp7CA", t: "Another Pythagorean theorem proof" }
+            ],
+      subtopics: [
+        { name: "勾股定理本身", vids: [0,1,2], pq: [0,1,2,3,4,5,6,7,8,9,10] },
+        { name: "勾股应用", vids: [3,4,5,6], pq: [11,12,13,14,15,16] },
+        { name: "距离公式", vids: [7], pq: [17,18] },
+        { name: "勾股证明与勾股数", vids: [8,9,10,11], pq: [19,20] },
       ],
       notes: [
     "In a right triangle (直角三角形): $a^2 + b^2 = c^2$, where $c$ is the hypotenuse (斜边, opposite the right angle).",
@@ -71,7 +88,106 @@ var MATH_DATA = [
             hint: "Hypotenuse c=15, leg a=9. x² = 15² − 9² = 225 − 81 = 144. x = 12. (9-12-15 = 3×3-4-5.)",
             ansIdx: 1,
             sol: "The hypotenuse is $15$, one leg is $9$. $x^2 = 15^2 - 9^2 = 225 - 81 = 144$, so $x = \\sqrt{144} = 12$. (9-12-15 is a multiple of 3-4-5.)",
-          }
+          },
+          {
+            q: "A triangle has sides of length 8, 15, and 17. Which statement is true?",
+            options: ["It is a right triangle, because $8^2 + 15^2 = 17^2$.", "It is a right triangle, because $8^2 + 17^2 = 15^2$.", "It is not a right triangle.", "It is a right triangle, because $15^2 + 17^2 = 8^2$."],
+          dia: {type:"triangle",w:"5",h:"3",A:"17",B:"15",C:"8",a:"8",b:"15",c:"17"},
+            hint: "For the converse, check if the longest side squared equals the sum of the squares of the other two.\n$8^2 + 15^2 = 64 + 225 = 289 = 17^2$. Yes!",
+            ansIdx: 0,
+            sol: "The longest side is 17. Check: $8^2 + 15^2 = 64 + 225 = 289 = 17^2$. By the converse of the Pythagorean theorem, it IS a right triangle.",
+          },
+          {
+            q: "Which of the following sets of side lengths cannot form a right triangle?",
+            options: ["$6, 8, 10$", "$5, 12, 13$", "$7, 24, 25$", "$9, 10, 11$"],
+            hint: "Check $a^2 + b^2 = c^2$ (largest = c).\n(A) $6^2+8^2=100=10^2$ OK\n(B) $5^2+12^2=169=13^2$ OK\n(C) $7^2+24^2=625=25^2$ OK\n(D) $9^2+10^2=181$ does NOT equal $121$",
+            ansIdx: 3,
+            sol: "(A) $6^2+8^2=100=10^2$ OK, (B) $5^2+12^2=169=13^2$ OK, (C) $7^2+24^2=625=25^2$ OK, (D) $9^2+10^2=181$ does not equal $121$. Only (D) fails.",
+          },
+          {
+            q: "A triangle has sides 9 and 12. What must the third side be for it to be a right triangle?",
+            options: ["The third side must be $15$, because $9^2 + 12^2 = 15^2$.", "The third side must be $21$, because $9 + 12 = 21$.", "The third side must be $3$, because $12 - 9 = 3$.", "The third side could be $15$ or $3$, depending on which side is the hypotenuse."],
+            hint: "Case 1: third side is the hypotenuse: $9^2+12^2=c^2$, so $c=\\sqrt{225}=15$.\nCase 2: 9 is the hypotenuse: impossible ($c^2+12^2=9^2$ gives negative). So only 15 works.",
+            ansIdx: 0,
+            sol: "The only possible right triangle with sides 9 and 12 has the third side as the hypotenuse: $9^2+12^2=c^2\\Rightarrow c=15$.",
+          },
+          {
+            q: "In $\\triangle ABC$, side lengths are $AB=7$, $BC=24$, $AC=25$. Which angle is the right angle?",
+            options: ["$\\angle B$, because $7^2 + 24^2 = 25^2$.", "$\\angle A$, because $7^2 + 25^2 = 24^2$.", "$\\angle C$, because $24^2 + 25^2 = 7^2$.", "$\\angle A$, because $AB$ is the longest side."],
+            hint: "The hypotenuse is opposite the right angle. The longest side is AC=25, so the hypotenuse is opposite $\\angle B$. Thus $\\angle B$ is the right angle.",
+            ansIdx: 0,
+            sol: "The longest side is AC=25 (hypotenuse), opposite $\\angle B$. Check: $7^2+24^2=49+576=625=25^2$, so $\\angle B$ is the right angle.",
+          },
+          {
+            q: "A boat travels 8 km due north and then 6 km due east. How far is the boat from its starting point?",
+            options: ["$10$ km", "$14$ km", "$\\sqrt{28}$ km", "$48$ km"],
+            hint: "The north and east legs form a right angle.\nDistance = $\\sqrt{8^2 + 6^2} = \\sqrt{64+36} = \\sqrt{100} = 10$ km.",
+            ansIdx: 0,
+            sol: "The path forms a right triangle with legs 8 and 6. $d^2 = 8^2 + 6^2 = 64 + 36 = 100$, so $d = 10$ km.",
+          },
+          {
+            q: "A flagpole casts a shadow 12 m long. The sun's rays hit the ground at a $60^\\circ$ angle. How tall is the flagpole?",
+            options: ["$12\\sqrt{3}$ m", "$6$ m", "$12$ m", "$4\\sqrt{3}$ m"],
+            hint: "Right triangle: $\\tan(60^\\circ) = \\frac{height}{shadow} = \\frac{h}{12}$. Since $\\tan(60^\\circ) = \\sqrt{3}$, we get $h = 12\\sqrt{3}$ m.",
+            ansIdx: 0,
+            sol: "$\\tan(60^\\circ) = \\frac{opp}{adj} = \\frac{height}{12}$. Since $\\tan(60^\\circ)=\\sqrt{3}$, height $= 12\\sqrt{3}$ m.",
+          },
+          {
+            q: "A rectangular box has length 3 cm, width 4 cm, and height 12 cm. What is the length of the space diagonal?",
+            options: ["$13$ cm", "$\\sqrt{169}$ cm", "$19$ cm", "$\\sqrt{73}$ cm"],
+            hint: "Two-step: base diagonal $= \\sqrt{3^2+4^2}=\\sqrt{25}=5$. Then diagonal $= \\sqrt{5^2+12^2}=\\sqrt{25+144}=\\sqrt{169}=13$ cm.",
+            ansIdx: 0,
+            sol: "Space diagonal $d^2 = 3^2 + 4^2 + 12^2 = 9 + 16 + 144 = 169$, so $d = \\sqrt{169} = 13$ cm.",
+          },
+          {
+            q: "A cube has edge length 5. Find the length of the body diagonal connecting two opposite corners.",
+            options: ["$5\\sqrt{3}$", "$25\\sqrt{3}$", "$5\\sqrt{2}$", "$15$"],
+            hint: "Body diagonal of a cube: $d^2 = a^2 + a^2 + a^2 = 3a^2$. So $d = a\\sqrt{3} = 5\\sqrt{3}$.",
+            ansIdx: 0,
+            sol: "Body diagonal $d^2 = 5^2 + 5^2 + 5^2 = 75 = (5\\sqrt{3})^2$, so $d = 5\\sqrt{3}$.",
+          },
+          {
+            q: "An isosceles triangle has two equal sides of length 10 and a base of 12. What is its area?",
+            options: ["$48$", "$24$", "$60$", "$10\\sqrt{91}$"],
+            hint: "Drop a perpendicular from the apex to the base — it bisects the base (isosceles triangle).\nHeight $h = \\sqrt{10^2 - 6^2} = \\sqrt{64} = 8$.\nArea $= \\frac{1}{2} \\times 12 \\times 8 = 48$.",
+            ansIdx: 0,
+            sol: "Height bisects the base: $h = \\sqrt{10^2 - 6^2} = \\sqrt{64} = 8$. Area $= \\frac{1}{2}(12)(8) = 48$.",
+          },
+          {
+            q: "An isosceles right triangle has a hypotenuse of length $6\\sqrt{2}$. What is its area?",
+            options: ["$18$", "$36$", "$12\\sqrt{2}$", "$9$"],
+            hint: "In an isosceles right triangle, legs are equal. If leg = $x$: $x^2 + x^2 = (6\\sqrt{2})^2 = 72$.\nSo $2x^2 = 72 \\Rightarrow x^2 = 36 \\Rightarrow x = 6$.\nArea $= \\frac{1}{2}(6)(6) = 18$.",
+            ansIdx: 0,
+            sol: "Legs $x$: $2x^2 = (6\\sqrt{2})^2 = 72$, so $x^2 = 36$, $x = 6$. Area $= \\frac{1}{2}(6)(6) = 18$.",
+          },
+          {
+            q: "Find the distance between points $P(1, 3)$ and $Q(5, 10)$.",
+            options: ["$\\sqrt{65}$", "$10$", "$\\sqrt{53}$", "$8$"],
+            hint: "Distance formula: $d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$.\n$\\Delta x = 4$, $\\Delta y = 7$. $d = \\sqrt{16+49} = \\sqrt{65}$.",
+            ansIdx: 0,
+            sol: "$d = \\sqrt{(5-1)^2 + (10-3)^2} = \\sqrt{16 + 49} = \\sqrt{65}$.",
+          },
+          {
+            q: "Which two points are exactly 13 units apart?",
+            options: ["$(0, 0)$ and $(5, 12)$", "$(0, 0)$ and $(8, 8)$", "$(1, 1)$ and $(6, 7)$", "$(0, 0)$ and $(3, 10)$"],
+            hint: "Check each: $\\sqrt{(\\Delta x)^2 + (\\Delta y)^2}$.\n(A) $\\sqrt{5^2+12^2}=\\sqrt{169}=13$ OK\n(B) $\\sqrt{8^2+8^2}=\\sqrt{128}$ approx 11.3 NOT\n(C) $\\sqrt{5^2+6^2}=\\sqrt{61}$ approx 7.8 NOT\n(D) $\\sqrt{109}$ approx 10.4 NOT",
+            ansIdx: 0,
+            sol: "Only (A): $\\sqrt{5^2+12^2}=\\sqrt{169}=13$. All others give different distances.",
+          },
+          {
+            q: "Which of the following is a Pythagorean triple?",
+            options: ["$(8, 15, 17)$", "$(9, 9, 12)$", "$(11, 12, 15)$", "$(6, 7, 9)$"],
+            hint: "Check $a^2 + b^2 = c^2$ (c = largest).\n(A) $8^2+15^2=64+225=289=17^2$ OK\n(B) $9^2+9^2=162$ does NOT equal $144$\n(C) $11^2+12^2=265$ does NOT equal $225$\n(D) $6^2+7^2=85$ does NOT equal $81$",
+            ansIdx: 0,
+            sol: "Only $(8,15,17)$ satisfies $8^2+15^2=17^2$.",
+          },
+          {
+            q: "If $(a, 20, 25)$ is a Pythagorean triple, what is the value of $a$?",
+            options: ["$15$", "$7$", "$12$", "$24$"],
+            hint: "We need $a^2 + 20^2 = 25^2$.\n$a^2 = 25^2 - 20^2 = 625 - 400 = 225$. So $a = \\sqrt{225} = 15$.",
+            ansIdx: 0,
+            sol: "$a^2 = 25^2 - 20^2 = 625 - 400 = 225$, so $a = \\sqrt{225} = 15$. Note: $(15,20,25) = 5 \\times (3,4,5)$.",
+          },
     ],
               quiz: [
           {
@@ -94,7 +210,21 @@ var MATH_DATA = [
             hint: "Check a² + b² = c² (largest = hypotenuse).\n(a) 4²+5²=41≠13²\n(b) 5²+12²=169=13² ✓ 5-12-13!\n(c) 6²+7²=85≠10²\n(d) 8²+8²=128≠11²\nAnswer: B.",
             ansIdx: 0,
             sol: "Check $3^2 + 4^2 = 9 + 16 = 25 = 5^2$. The others fail the Pythagorean theorem, so only $(3,4,5)$ works.",
-          }
+          },
+          {
+            q: "A triangle has sides 9, 40, and 41. Which statement is correct?",
+            options: ["It is a right triangle, because $9^2 + 40^2 = 41^2$.", "It is not a right triangle.", "It is a right triangle, but the right angle is not between the sides of length 9 and 40.", "More information is needed to determine."],
+            hint: "Check: $9^2+40^2 = 81+1600 = 1681 = 41^2$. By the converse of the Pythagorean theorem, it is right with hypotenuse 41.",
+            ansIdx: 0,
+            sol: "$9^2 + 40^2 = 81 + 1600 = 1681 = 41^2$. By the converse, the triangle is right with hypotenuse 41.",
+          },
+          {
+            q: "A rectangular prism has length 6 cm, width 8 cm, and height 24 cm. What is the length of its space diagonal?",
+            options: ["$26$ cm", "$24$ cm", "$\\sqrt{676}$ cm", "$\\sqrt{24}$ cm"],
+            hint: "Base diagonal $= \\sqrt{6^2+8^2} = \\sqrt{100} = 10$. Then $d = \\sqrt{10^2 + 24^2} = \\sqrt{676} = 26$ cm.",
+            ansIdx: 0,
+            sol: "$d^2 = 6^2 + 8^2 + 24^2 = 36 + 64 + 576 = 676$, so $d = \\sqrt{676} = 26$ cm.",
+          },
     ]
   },
 
@@ -106,7 +236,13 @@ var MATH_DATA = [
       coverage: "g",
       think: "$\\sqrt{2} \\approx 1.41421356...$ — can you write it as a fraction of two integers? What does this tell us about $\\sqrt{2}$?",
       videos: [
-        { yt: "SH_6A-K5bjY", t: "Introduction to Square Roots", m: "English · Khan Academy", duration: "~5 min", local: "../videos/Ch02_实数/07_Introduction to square roots.mp4", ka: "https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:rational-exponents-radicals/x2f8bb11595b61c86:radicals/v/introduction-to-square-roots" }
+        { yt: "mbc3_e5lWw0", t: "Intro to square roots" },
+        { yt: "EFVrAk61xjE", t: "Approximating square roots to hundredths" },
+        { yt: "KibTbfkoPTs", t: "Comparing irrational numbers with radicals" },
+        { yt: "87_qIofPwhg", t: "Intro to cube roots" },
+        { yt: "DKh16Th8x6o", t: "Worked example: Cube root of a negative number" },
+        { yt: "cLP7INqs3JM", t: "Intro to rational & irrational numbers" },
+        { yt: "-QHff5pRdM8", t: "Classifying numbers" }
       ],
       notes: [
     "Square root（平方根）: $sqrt{a}$ is the number whose square is $a$. Default = principal (non-negative) root.",
@@ -154,6 +290,91 @@ var MATH_DATA = [
           sol: "$\\sqrt{72}\\times\\sqrt{3}=\\sqrt{72\\cdot3}=\\sqrt{216}=6\\sqrt{6}$.",
         hint: "Find the number that times itself equals 64. $8\\times 8 = 64$.",
         }
+,
+        { q: "$12^2=144$. What is the positive square root of 144?",
+          options: ["$12$", "$-12$", "$\\pm 12$", "$72$"],
+          hint: "$12^2=144$, so $\\sqrt{144}=12$.",
+          ansIdx: 0,
+          sol: "$\\sqrt{144}=12$.",
+        },
+        { q: "Which expression represents the NEGATIVE square root of 49?",
+          options: ["$-\\sqrt{49}$", "$\\sqrt{-49}$", "$\\pm\\sqrt{49}$", "$-\\sqrt{7}$"],
+          hint: "$-\\sqrt{49}=-7$. The NEGATIVE root is $-7$.",
+          ansIdx: 0,
+          sol: "The negative root is $-\\sqrt{49}=-7$.",
+        },
+        { q: "Between which two consecutive integers does $\\sqrt{60}$ lie?",
+          options: ["7 and 8", "6 and 7", "8 and 9", "5 and 6"],
+          hint: "$7^2=49<60<64=8^2$. So $\\sqrt{60}$ is between 7 and 8.",
+          ansIdx: 0,
+          sol: "$7^2=49<60<64=8^2$; $\\sqrt{60}$ is between 7 and 8.",
+        },
+        { q: "Which integer is closest to $\\sqrt{150}$?",
+          options: ["12", "13", "11", "15"],
+          hint: "$12^2=144<150<169=13^2$. 150 is closer to 144 than to 169.",
+          ansIdx: 0,
+          sol: "$12^2=144$, $13^2=169$. 150-144=6, 169-150=19. Closest: 12.",
+        },
+        { q: "What is $\\sqrt[3]{216}$?",
+          options: ["$6$", "$\\pm 6$", "$-6$", "$72$"],
+          hint: "$6^3=6\\times6\\times6=216$. So $\\sqrt[3]{216}=6$.",
+          ansIdx: 0,
+          sol: "$\\sqrt[3]{216}=6$ because $6^3=216$.",
+        },
+        { q: "Evaluate $\\sqrt[3]{-8}\\times\\sqrt{64}$.",
+          options: ["$-16$", "$16$", "$-8$", "$8$"],
+          hint: "$\\sqrt[3]{-8}=-2$ (negative cube root). $\\sqrt{64}=8$. Product: $-2\\times8=-16$.",
+          ansIdx: 0,
+          sol: "$-2\\times8=-16$.",
+        },
+        { q: "Evaluate $16^{\\frac32}$ (that is, $16^{1.5}$).",
+          options: ["$64$", "$32$", "$48$", "$24$"],
+          hint: "$16^{3/2}=\\big(\\sqrt{16}\\big)^3=4^3=64$.",
+          ansIdx: 0,
+          sol: "$\\sqrt{16}=4$, $4^3=64$.",
+        },
+        { q: "Which expression equals $\\sqrt[3]{x^5}$ for $x>0$?",
+          options: ["$x^{5/3}$", "$x^{3/5}$", "$x^{15}$", "$x^8$"],
+          hint: "$\\sqrt[3]{x^5}=(x^5)^{1/3}=x^{5\\times\\frac13}=x^{5/3}$.",
+          ansIdx: 0,
+          sol: "$(x^5)^{1/3}=x^{5/3}$.",
+        },
+        { q: "Which of the following is an IRRATIONAL number?",
+          options: ["$\\sqrt{7}$", "$\\sqrt{9}$", "$0.\\overline{3}$", "$\\frac37$"],
+          hint: "(A) $\\sqrt{7}$ cannot be written as a ratio of integers. (B) $\\sqrt{9}=3$ rational. (C) $0.\\overline{3}=\\frac13$ rational. (D) $\\frac37$ rational.",
+          ansIdx: 0,
+          sol: "$\\sqrt{7}$ is irrational.",
+        },
+        { q: "In a proof that $\\sqrt2$ is irrational, assuming $\\sqrt2=\\frac ab$ in lowest terms, what contradiction arises?",
+          options: ["Both $a$ and $b$ are even, contradicting lowest terms.", "$\\sqrt2$ is between 1 and 2.", "$a^2$ is odd.", "$b$ is divisible by 2."],
+          hint: "If $a^2=2b^2$, then $a^2$ is even so $a$ is even. Write $a=2k$, then $4k^2=2b^2$, so $b^2$ is even, so $b$ is even. But $a/b$ was in lowest terms.",
+          ansIdx: 0,
+          sol: "$a$ and $b$ are both even — contradiction.",
+        },
+        { q: "Arrange $\\sqrt3$, $1.7$, and $\\frac53$ from smallest to largest.",
+          options: ["$\\frac53$, $1.7$, $\\sqrt3$", "$\\sqrt3$, $\\frac53$, $1.7$", "$1.7$, $\\sqrt3$, $\\frac53$", "$\\frac53$, $\\sqrt3$, $1.7$"],
+          hint: "$\\sqrt3\\approx1.732$, $\\frac53=1.666...$, $1.7=1.700$.",
+          ansIdx: 0,
+          sol: "$\\frac53=1.666...<1.7<\\sqrt3\\approx1.732$.",
+        },
+        { q: "Which inequality correctly compares $-\\sqrt{11}$ and $-\\sqrt7$?",
+          options: ["$-\\sqrt{11}<-\\sqrt7$", "$-\\sqrt{11}>-\\sqrt7$", "$-\\sqrt{11}=-\\sqrt7$", "Cannot compare."],
+          hint: "$11>7\\Rightarrow\\sqrt{11}>\\sqrt7\\Rightarrow-\\sqrt{11}<-\\sqrt7$.",
+          ansIdx: 0,
+          sol: "$-\\sqrt{11}<-\\sqrt7$ because 11>7.",
+        },
+        { q: "Express $0.00000038$ in scientific notation.",
+          options: ["$3.8\\times10^{-7}$", "$3.8\\times10^{-6}$", "$3.8\\times10^{-8}$", "$38\\times10^{-8}$"],
+          hint: "Move decimal point 7 places left: $3.8\\times10^{-7}$.",
+          ansIdx: 0,
+          sol: "$0.00000038=3.8\\times10^{-7}$.",
+        },
+        { q: "A proton has mass $1.67\\times10^{-24}$ g. How many protons in $1$ gram?",
+          options: ["$\\approx6.0\\times10^{23}$", "$\\approx6.0\\times10^{22}$", "$\\approx1.67\\times10^{24}$", "$\\approx1.67\\times10^{-24}$"],
+          hint: "$n\\times1.67\\times10^{-24}=1$, so $n=\\frac{10^{24}}{1.67}\\approx5.98\\times10^{23}$.",
+          ansIdx: 0,
+          sol: "$\\frac{10^{24}}{1.67}\\approx6.0\\times10^{23}$ protons.",
+        },
       ],
       quiz: [
         {
@@ -177,6 +398,19 @@ var MATH_DATA = [
           sol: "Repeating decimals are rational. $0.\\overline{3}=\\frac{1}{3}$.",
         hint: "Find the number whose cube is $-27$. Since $(-3)^3=-27$, the cube root is $-3$.",
         }
+,
+        { q: "Which of the following is NOT an irrational number?",
+          options: ["$\\sqrt{16}$", "$\\sqrt{3}$", "$\\sqrt{5}$", "$\\sqrt{2}$"],
+          hint: "$\\sqrt{16}=4$ is a perfect square. All others are irrational.",
+          ansIdx: 0,
+          sol: "$\\sqrt{16}=4$ is rational.",
+        },
+        { q: "Simplify: $\\sqrt{75}+\\sqrt{48}-\\sqrt{27}$.",
+          options: ["$6\\sqrt3$", "$8\\sqrt3$", "$4\\sqrt3$", "$10\\sqrt3$"],
+          hint: "$\\sqrt{75}=\\sqrt{25\\times3}=5\\sqrt3$, $\\sqrt{48}=\\sqrt{16\\times3}=4\\sqrt3$, $\\sqrt{27}=\\sqrt{9\\times3}=3\\sqrt3$.",
+          ansIdx: 0,
+          sol: "$\\sqrt{75}+\\sqrt{48}-\\sqrt{27}=5\\sqrt3+4\\sqrt3-3\\sqrt3=6\\sqrt3$.",
+        },
       ]
   },
 
@@ -188,7 +422,10 @@ var MATH_DATA = [
       coverage: "g",
       think: "If you walk 3 blocks east and 4 blocks north, how far are you from your starting point? Can you draw this on a grid?",
       videos: [
-        { yt: "Q7NEzE6R5yg", t: "Introduction to the Coordinate Plane", m: "English · Khan Academy", duration: "~7 min", local: "../videos/Ch03_位置与坐标/01_Introduction to the coordinate plane.mp4", ka: "https://www.khanacademy.org/math/in-in-grade-9-ncert/xfd53e0255cd302f8:coordinate-geometry/xfd53e0255cd302f8:cartesian-system/v/introduction-to-the-coordinate-plane" }
+        { yt: "VhNkWdLGpmA", t: "Points on the coordinate plane examples" },
+        { yt: "1op92ojA6q0", t: "Quadrants of the coordinate plane" },
+        { yt: "b9H22F0Qbgw", t: "Finding the point not graphed" },
+        { yt: "nyZuite17Pc", t: "Distance formula" }
       ],
       notes: [
     "Cartesian coordinate system（平面直角坐标系）: x-axis (horizontal) and y-axis (vertical), intersect at the origin $(0,0)$.",
@@ -277,7 +514,14 @@ var MATH_DATA = [
       coverage: "g",
       think: "A taxi charges $\\$3$ base fare plus $\\$2$ per km. Write an equation for the total cost $y$ in terms of distance $x$. Is this a function?",
       videos: [
-        { yt: "M0E1Pb3bHjw", t: "What is a Function?", m: "English · Khan Academy", duration: "~8 min", local: "../videos/Ch04_一次函数/01_What is a function-.mp4", ka: "https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:functions/introduction-to-functions/v/what-is-a-function" }
+        { yt: "kvGsIo1TmsM", t: "What is a function?" },
+        { yt: "Id6UovYjd-M", t: "Worked example: Evaluating functions from equation" },
+        { yt: "3SO1BQQ9_1E", t: "Testing if a relationship is a function" },
+        { yt: "AZroE4fJqtQ", t: "Recognizing linear functions" },
+        { yt: "MeU-KzdCBps", t: "Intro to slope" },
+        { yt: "IL3UCuXrUzE", t: "Intro to slope-intercept form (y=mx+b)" },
+        { yt: "uk7gS3cZVp4", t: "Graph from slope-intercept equation" },
+        { yt: "xR9r38mZjK4", t: "Linear graphs word problems" }
       ],
       notes: [
     "Function（函数）: each input $x$ gives exactly one output $f(x)$. Written as $y = f(x)$.",
@@ -365,7 +609,12 @@ var MATH_DATA = [
       coverage: "g",
       think: "You buy 3 apples and 2 bananas for $\\$11$. Your friend buys 2 apples and 3 bananas for $\\$9$. Can you find the price of each fruit?",
       videos: [
-        { yt: "OcNt-ikp4xA", t: "Solving Linear Systems by Graphing (Intro)", m: "English · Khan Academy", duration: "~8 min", local: "../videos/Ch05_二元一次方程组/01_Solving linear systems by graphing (intro).mp4", ka: "https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:systems-of-equations/x2f8bb11595b61c86:systems-of-equations-intro/v/solving-linear-systems-by-graphing" }
+        { yt: "OcNt-36QKu8", t: "Intro to systems of equations" },
+        { yt: "5a6zpfl50go", t: "Systems of equations with graphing" },
+        { yt: "2EwPpga_XPw", t: "Systems of equations with substitution: potato chips" },
+        { yt: "z1hz8-Kri1E", t: "Systems of equations with elimination: TV & DVD" },
+        { yt: "Q0tTfe2lKIc", t: "System of equations word problem: walk & ride" },
+        { yt: "KyHvVJWjW6Y", t: "Number of solutions to systems of equations" }
       ],
       notes: [
     "System of two linear equations（ 二元一次方程组）: two lines, find their intersection.",
@@ -378,7 +627,6 @@ var MATH_DATA = [
       practice: [
         {
           q: "Solve by substitution: $y = x + 3$, $2x + y = 9$.",
-            dia: {"type":"coord_plane","range":[[0,4],[0,5]],"step":1,"line":{"m":1,"b":1},"line2":{"m":2,"b":-1},"points":[{"0":2,"1":3,"label":"(2,3)"}]},
           options: ["$(2,5)$","$(3,6)$","$(1,4)$","$(5,2)$"],
           ansIdx: 0,
           sol: "Substitute $y=x+3$ into $2x+(x+3)=9$: $3x=6$, $x=2$, $y=2+3=5$. Solution $(2,5)$.",
@@ -386,7 +634,6 @@ var MATH_DATA = [
         },
         {
           q: "Solve: $x + y = 7$ and $x - y = 3$.",
-            dia: {"type":"coord_plane","range":[[0,4],[0,6]],"step":1,"line":{"m":-2,"b":5},"line2":{"m":1,"b":-1},"points":[{"0":2,"1":1,"label":"(2,1)"}]},
           options: ["$(5,2)$","$(2,5)$","$(3,4)$","$(4,3)$"],
           ansIdx: 0,
           sol: "Add equations: $2x=10$, $x=5$. Then $y=7-5=2$. Solution $(5,2)$.",
@@ -401,7 +648,6 @@ var MATH_DATA = [
         },
         {
           q: "How many solutions does $y=3x+1$ and $6x-2y=4$ have?",
-            dia: {"type":"coord_plane","range":[[0,5],[0,5]],"step":1,"line":{"m":-1,"b":4},"line2":{"m":1,"b":-2},"points":[{"0":3,"1":1,"label":"(3,1)"}]},
           options: ["One solution","No solution","Infinitely many","Cannot determine"],
           ansIdx: 1,
           sol: "Rewrite second as $y=3x-2$. Same slope (3), different intercepts — parallel, no intersection.",
@@ -409,7 +655,6 @@ var MATH_DATA = [
         },
         {
           q: "Solve by elimination: $2x + 3y = 12$ and $4x - 3y = 6$.",
-            dia: {"type":"coord_plane","range":[[0,4],[0,8]],"step":1,"line":{"m":3,"b":0},"line2":{"m":-2,"b":10},"points":[{"0":2,"1":6,"label":"(2,6)"}]},
           options: ["$(3,2)$","$(2,3)$","$(4,0)$","$(1,3)$"],
           ansIdx: 0,
           sol: "Add equations: $6x=18$, $x=3$. Then $2(3)+3y=12$, $3y=6$, $y=2$. Solution $(3,2)$.",
@@ -419,7 +664,6 @@ var MATH_DATA = [
       quiz: [
         {
           q: "A phone plan charges \\$0.10 per minute and \\$15 monthly fee. Another charges \\$0.05 per minute and \\$25 fee. When are costs equal?",
-            dia: {"type":"coord_plane","range":[[0,5],[0,6]],"step":1,"line":{"m":-1,"b":5},"line2":{"m":1,"b":-1},"points":[{"0":3,"1":2,"label":"(3,2)"}]},
           options: ["200 minutes","150 minutes","300 minutes","100 minutes"],
           ansIdx: 0,
           sol: "$15+0.10m = 25+0.05m \\Rightarrow 0.05m=10 \\Rightarrow m=200$ minutes.",
@@ -450,7 +694,11 @@ var MATH_DATA = [
       coverage: "g",
       think: "Five students scored: 72, 85, 85, 90, 98. Which number best represents 'typical' performance? Why might you choose a different one?",
       videos: [
-        { yt: "k3aKKasOmIw", t: "Statistics Intro: Mean, Median, & Mode", m: "English · Khan Academy", duration: "~9 min", local: "../videos/Ch06_数据的分析/01_Finding mean, median, and mode.mp4", ka: "https://www.khanacademy.org/math/statistics-probability/xa9c5124c69e541e2:introduction-to-statistics/xa9c5124c69e541e2:statistics-intro/v/statistics-intro-mean-median-and-mode" }
+        { yt: "h8EYEJ32oQ8", t: "Statistics intro: Mean, median, & mode" },
+        { yt: "k3aKKasOmIw", t: "Mean, median, & mode example" },
+        { yt: "0ZKtsUkrgFQ", t: "Representing data" },
+        { yt: "gSEYtAjuZ-Y", t: "How to make a histogram" },
+        { yt: "09Cx7xuIXig", t: "Constructing a box and whisker plot" }
       ],
       notes: [
     "Mean（平均数）: sum of all values divided by the count. Sensitive to outliers.",
@@ -464,7 +712,6 @@ var MATH_DATA = [
       practice: [
         {
           q: "Find the mean of: 4, 8, 6, 5, 7.",
-            dia: {"type":"dot_plot","data":[2,4,6,8]},
           options: ["$6$","$5$","$7$","$6.5$"],
           ansIdx: 0,
           sol: "$(4+8+6+5+7)/5=30/5=6$.",
@@ -472,7 +719,6 @@ var MATH_DATA = [
         },
         {
           q: "Find the median of: 3, 7, 2, 9, 4, 6.",
-            dia: {"type":"dot_plot","data":[3,1,7,5,9]},
           options: ["$5$","$5.5$","$6$","$4$"],
           ansIdx: 1,
           sol: "Ordered: 2,3,4,6,7,9. Median = average of middle two = $(4+6)/2=5$.",
@@ -480,7 +726,6 @@ var MATH_DATA = [
         },
         {
           q: "A dataset has values: 2, 3, 3, 3, 4, 5, 8. What is the mode?",
-            dia: {"type":"dot_plot","data":[2,4,6,8]},
           options: ["$3$","$2$","$4$","No mode"],
           ansIdx: 0,
           sol: "3 appears 3 times — more than any other value. Mode = 3.",
@@ -488,7 +733,6 @@ var MATH_DATA = [
         },
         {
           q: "Find the range of: 12, 18, 9, 22, 15.",
-            dia: {"type":"dot_plot","data":[1,2,2,3,4]},
           options: ["$13$","$11$","$15$","$9$"],
           ansIdx: 0,
           sol: "Range = max − min = $22 - 9 = 13$.",
@@ -496,7 +740,6 @@ var MATH_DATA = [
         },
         {
           q: "Which measure of central tendency is most affected by outliers?",
-            dia: {"type":"dot_plot","data":[5,9,2,7]},
           options: ["Mean","Median","Mode","Range"],
           ansIdx: 0,
           sol: "Mean uses all values, so extreme outliers pull it toward them. Median is robust to outliers.",
@@ -513,7 +756,6 @@ var MATH_DATA = [
         },
         {
           q: "In a class of 20 students, 8 scored above 80. What percent scored 80 or below?",
-            dia: {"type":"dot_plot","data":[1,2,3,4,5,6,7]},
           options: ["$60\\%$","$40\\%$","$55\\%$","$70\\%$"],
           ansIdx: 0,
           sol: "$(20-8)/20 = 12/20 = 0.60 = 60\\%$ scored 80 or below.",
@@ -521,7 +763,6 @@ var MATH_DATA = [
         },
         {
           q: "Find the mean of: 15, 20, 15, 10, 20.",
-            dia: {"type":"box_plot","values":[2,4,6,8,10]},
           options: ["$16$","$15$","$17.5$","$20$"],
           ansIdx: 0,
           sol: "$(15+20+15+10+20)/5 = 80/5 = 16$.",
@@ -538,7 +779,13 @@ var MATH_DATA = [
       coverage: "g",
       think: "How can you be absolutely sure that the angles in every triangle add to 180°? Is measuring one triangle enough?",
       videos: [
-        { yt: "gRKZaojKeP0", t: "Angles Formed by Parallel Lines and Transversals", m: "English · Khan Academy", duration: "~7 min", local: "../videos/Ch07_平行线的证明/01_Angles formed by parallel lines and transversals.mp4", ka: "https://www.khanacademy.org/math/geometry-home/geometry-angles/old-angles/v/angles-formed-by-parallel-lines-and-transversals" }
+        { yt: "aq_XL6FrmGs", t: "Parallel & perpendicular lines" },
+        { yt: "H-E5rlpCVu4", t: "Angles, parallel lines, & transversals" },
+        { yt: "2WjGD3LZEWo", t: "Missing angles with a transversal" },
+        { yt: "6s1CI3uuhko", t: "Angles in a triangle sum to 180 degrees proof" },
+        { yt: "hmj3_zbz2eg", t: "Triangle exterior angle example" },
+        { yt: "7FTNWE7RTfQ", t: "Isosceles & equilateral triangles problems" },
+        { yt: "yp49bc4TT-s", t: "Corresponding parts of congruent triangles are congruent" }
       ],
       notes: [
     "Parallel lines（平行线）: never intersect. If two lines are cut by a transversal, corresponding angles are equal.",
