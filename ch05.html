@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chapter 5 · Systems of linear equations</title>
+<style>
+:root{
+ --bg:#fafafa; --card:#fff; --line:#e5e7eb; --text:#1f2937; --muted:#5b6472;
+ --accent:#7c3aed; --ok:#15803d; --err:#b91c1c; --warn:#b45309;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.wrap{display:grid;grid-template-columns:240px 1fr;gap:18px;max-width:1200px;margin:0 auto;padding:18px}
+header{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:22px 26px;border-radius:14px;margin-bottom:14px;grid-column:1/-1}
+header h1{font-size:22px;margin-bottom:4px}
+header p{opacity:.92;font-size:13px}
+nav{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;height:fit-content;position:sticky;top:14px}
+.nav-i{padding:10px 12px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.nav-i:hover{background:#f5f3ff}
+.nav-i.on{background:var(--accent);color:#fff}
+.nav-i .st{font-size:11px;opacity:.85}
+.nav-i .st.ok{color:var(--ok)}
+.nav-i .st.err{color:var(--err)}
+.nav-i.on .st.ok,.nav-i.on .st.err{color:#fff}
+main{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 26px;min-height:80vh}
+h2{font-size:18px;margin-bottom:6px}
+.lesson-id{color:var(--muted);font-size:13px;margin-bottom:14px}
+.box{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0}
+.box h3{font-size:15px;margin-bottom:8px;color:var(--accent)}
+.box .cn{font-size:12px;color:var(--muted);font-style:italic}
+.step{padding:10px 14px;background:var(--accent);color:#fff;border-radius:8px;margin-bottom:14px;font-size:15px}
+.note{background:#fffbeb;border-left:3px solid var(--warn);padding:10px 14px;border-radius:6px;margin:10px 0;font-size:14px}
+.note strong{color:var(--warn)}
+.vid{margin:14px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.vid-h{padding:10px 14px;background:#f5f3ff;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.vid-h .meta{display:flex;gap:8px;align-items:center;font-size:11px}
+.tag{background:#e5e7eb;padding:2px 8px;border-radius:10px;font-size:11px}
+.tag.core{background:#dcfce7;color:#166534}
+.tag.ext{background:#fef3c7;color:#92400e}
+.vid-h .cn{font-size:12px;color:var(--muted);margin-right:auto}
+.vid-h .title{font-size:13px;font-weight:600}
+button{font-family:inherit;border:none;cursor:pointer;border-radius:8px;padding:8px 14px;font-size:14px;background:var(--accent);color:#fff}
+button.secondary{background:#e5e7eb;color:var(--text)}
+button:hover{opacity:.92}
+input[type=text],input[type=number]{padding:10px 12px;font-size:15px;border:1px solid var(--line);border-radius:8px;width:120px;font-family:inherit}
+input:focus{outline:none;border-color:var(--accent)}
+.q{margin:12px 0;padding:14px;background:#f9fafb;border-radius:8px;border-left:3px solid var(--accent)}
+.q .q-text{font-size:15px;margin-bottom:8px}
+.q .q-cn{font-size:12px;color:var(--muted);margin-bottom:8px}
+.q .feedback{margin-top:8px;font-size:13px;padding:6px 10px;border-radius:6px;display:none}
+.q .feedback.show{display:block}
+.q .feedback.ok{background:#dcfce7;color:#166534}
+.q .feedback.err{background:#fee2e2;color:#991b1b}
+.hint{background:#fef3c7;border-left:3px solid var(--warn);padding:10px 12px;border-radius:6px;margin:8px 0;font-size:13px;display:none}
+.hint.show{display:block}
+.progress{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin:8px 0}
+.progress div{height:100%;background:var(--accent);transition:width .3s}
+svg{max-width:100%;display:block;margin:0 auto}
+.num{color:var(--accent);font-weight:600}
+.eq{font-family:"Courier New",monospace;background:#1f2937;color:#a5f3fc;padding:10px 14px;border-radius:6px;margin:10px 0;font-size:14px;overflow-x:auto}
+
+.intro-h{font-size:21px;font-weight:700;margin:0 0 4px}
+.intro-sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+.kp{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:14px 0}
+.kp-c{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#f9fafb}
+.kp-c .n{font-size:12px;color:var(--accent);font-weight:700}
+.kp-c .t{font-size:15px;font-weight:600;margin:2px 0 5px;line-height:1.4}
+.kp-c .d{font-size:12px;color:var(--muted);line-height:1.55}
+.why{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14px;line-height:1.85}
+.why b{color:var(--accent)}
+.how{font-size:14px;line-height:2.1;margin:8px 0 2px}
+.how b{color:var(--accent)}
+.big-start{margin-top:20px;text-align:center}
+.big-start button{font-size:16px;padding:13px 30px;border-radius:10px}
+.trytip{font-size:12px;color:var(--muted);margin:10px 0 2px}
+
+/* ===== Language tiers (en / mix / zh) ===== */
+.zh{display:none}
+body.lang-en .zh{display:none}
+body.lang-mix .zh{display:inline;font-size:.82em;margin-left:6px;font-weight:400}
+body.lang-zh .en{display:inline;font-size:.78em;margin-left:6px;font-weight:400}
+body.lang-zh .zh{display:inline}
+/* Colored backgrounds always show white text, regardless of the language tier.
+   Without this, inherit + lang rules can leave Chinese/English subtitles invisible on the
+   purple gradient header and the colored chapter cards. */
+header, header h1, header p, header .en, header .zh, header .src, header .sub, header .t, header .no{ color:#fff; }
+header p, header .en, header .zh{ opacity:1; }
+.ch .top, .ch .top .en, .ch .top .zh, .ch .top .no, .ch .top .t{ color:#fff; opacity:1; }
+
+.langbar{position:fixed;top:8px;right:10px;z-index:300;display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.langseg{display:inline-flex}
+.langseg button{background:transparent;color:#374151;border:none;padding:6px 11px;font-size:12px;cursor:pointer;font-family:inherit;border-radius:999px;white-space:nowrap}
+.langseg button.on{background:var(--accent);color:#fff}
+@media(max-width:680px){.langbar{top:6px;right:6px}.langseg button{padding:5px 8px;font-size:11px}}
+
+</style>
+</head>
+<body>
+<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:8px 16px;font-size:13px;display:flex;gap:18px;align-items:center;position:sticky;top:0;z-index:99">
+ <a href="home.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">← Overview</span><span class="zh">← 总览</span></a>
+ <a href="unittests.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">Unit tests</span><span class="zh">单元测试</span></a>
+ <span style="font-size:11px;color:#5b6472"><span class="en">Content from Khan Academy · CC BY-NC-SA</span><span class="zh">内容来自 Khan Academy · CC BY-NC-SA</span></span>
+</div>
+
+<div class="langbar" title="显示语言 · Language display — 随时可改 · change anytime">
+ <span class="langseg">
+  <button data-lang="en" onclick="setLang('en')">English</button>
+  <button data-lang="mix" onclick="setLang('mix')">English + 中文</button>
+  <button data-lang="zh" onclick="setLang('zh')">中文 + English</button>
+ </span>
+</div>
+
+<div class="wrap">
+<header>
+ <h1><span class="en">Chapter 5 · Systems of Linear Equations</span><span class="zh">第 5 章 · 二元一次方程组</span></h1>
+ <p><span class="en">Grade 8 · 9 class periods · chickens and rabbits, sales and costs, milestone numbers</span><span class="zh">八年级 · 9 课时 · 鸡兔同笼、增收节支、里程碑上的数</span></p>
+ </header>
+<nav id="nav"></nav>
+<main id="main"></main>
+</div>
+
+<script>
+const VDIR='videos/Ch05_二元一次方程组/';
+const KEY='bnu8_ch05_state';
+let S=load();
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return{};}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const LESSONS=[
+ {id:'intro',t:'Intro',cn:'Start here · What this chapter covers',n:'🏠'},
+ {id:'k1',t:'What is a system?',cn:'What is a system?',n:'5.1'},
+ {id:'k2',t:'Substitution method',cn:'Substitution',n:'5.2'},
+ {id:'k3',t:'Elimination method',cn:'Elimination',n:'5.3'},
+ {id:'k4',t:'Word problems',cn:'Word problems',n:'5.4'},
+ {id:'k5',t:'Systems & graphs',cn:'Systems and graphs',n:'5.5'},
+ {id:'k6',t:'Find the line from two points',cn:'Find the line from two points',n:'5.6'},
+ {id:'ext',t:'Three variables (optional)',cn:'Three variables (optional)',n:'5.7'},
+ {id:'test',t:'Chapter check',cn:'Chapter check',n:''}
+];
+let cur='intro';
+function st(id){return S[id]||(S[id]={diag:null,prac:{ok:0,tot:0},vid:{},done:false});}
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(a){return a[ri(0,a.length-1)];}
+function L(a,b){ return '<span class="en">'+a+'</span><span class="zh">'+(b==null?a:b)+'</span>'; }
+
+/* ===== Video list ===== */
+const VIDEOS={
+k1:[
+ {f:'01_Solving linear systems by graphing (intro).mp4',t:'Solving systems by graphing',c:'core'},
+ {f:'02_Checking solutions to systems of equations example.mp4',t:'Checking solutions',c:'core'},
+ {f:'18_Constructing solutions to systems of equations.mp4',t:'Constructing solutions',c:'core'},
+],
+k2:[
+ {f:'03_The substitution method.mp4',t:'Substitution method',c:'core'},
+ {f:'04_Substitution method 2.mp4',t:'Substitution method 2',c:'core'},
+ {f:'05_Solving systems by substitution — Example 3.mp4',t:'Substitution example 3',c:'core'},
+ {f:'06_Solving systems by substitution — Example 2.mp4',t:'Substitution example 2',c:'core'},
+ {f:'07_Linear systems word problem with substitution.mp4',t:'Word problem: substitution',c:'core'},
+ {f:'24_Systems of equations with substitution - 2y=x+7 & x=y-4.mp4',t:'Substitution worked 1',c:'ext'},
+ {f:'25_Systems of equations with substitution - -3x-4y=-2 & y=2x-5.mp4',t:'Substitution worked 2',c:'ext'},
+ {f:'26_Systems of equations with substitution - 9x+3y=15 & y-x=5.mp4',t:'Substitution worked 3',c:'ext'},
+ {f:'27_Systems of equations with substitution - y=-5x+8 & 10x+2y=-2.mp4',t:'Substitution worked 4',c:'ext'},
+ {f:'28_Systems of equations with substitution - y=4x-17.5 & y+2x=6.5.mp4',t:'Substitution worked 5',c:'ext'},
+ {f:'29_Systems of equations with substitution - y=-1-4x+100 & y=-1-4.mp4',t:'Substitution worked 6',c:'ext'},
+],
+k3:[
+ {f:'08_Addition elimination method 1.mp4',t:'Elimination 1',c:'core'},
+ {f:'09_Addition elimination method 2.mp4',t:'Elimination 2',c:'core'},
+ {f:'10_Addition elimination method 3.mp4',t:'Elimination 3',c:'core'},
+ {f:'11_Addition elimination method 4.mp4',t:'Elimination 4',c:'core'},
+ {f:'12_Solving systems by elimination — Example 2.mp4',t:'Elimination example 2',c:'core'},
+ {f:'13_Solving systems by elimination — Example 3.mp4',t:'Elimination example 3',c:'core'},
+],
+k4:[
+ {f:'14_Systems of equations word problems — Example 1.mp4',t:'Word problem 1',c:'core'},
+ {f:'15_Systems of equations word problems — Example 2.mp4',t:'Word problem 2',c:'core'},
+ {f:'16_Systems of equations word problems — Example 4.mp4',t:'Word problem 4',c:'core'},
+ {f:'33_Age word problem - Imran.mp4',t:'Age: Imran',c:'core'},
+ {f:'34_Age word problem - Ben & William.mp4',t:'Age: Ben & William',c:'core'},
+ {f:'35_Age word problem - Arman & Diya.mp4',t:'Age: Arman & Diya',c:'core'},
+],
+k5:[
+ {f:'17_Graphical systems application problem.mp4',t:'Graphical application',c:'core'},
+ {f:'19_Graphing systems of equations.mp4',t:'Graphing systems',c:'core'},
+ {f:'20_Graphically solving systems — Example 3.mp4',t:'Graphing example',c:'core'},
+ {f:'30_Systems of equations number of solutions - fruit prices (1 of.mp4',t:'Solutions: fruit prices 1',c:'core'},
+ {f:'32_How many solutions does a system of linear equations have if.mp4',t:'How many solutions?',c:'core'},
+ {f:'21_Systems of equations with graphing - chores.mp4',t:'Graphing worked: chores',c:'ext'},
+ {f:'22_Systems of equations with graphing - 5x+3y=7 & 3x-2y=8.mp4',t:'Graphing worked 1',c:'ext'},
+ {f:'23_Systems of equations with graphing - exact & approximate solu.mp4',t:'Graphing: exact & approx',c:'ext'},
+ {f:'31_Systems of equations number of solutions - fruit prices (2 of.mp4',t:'Solutions: fruit prices 2',c:'ext'},
+],
+k6:[
+ {f:'18_Constructing solutions to systems of equations.mp4',t:'Constructing solutions',c:'core'},
+ {f:'17_Graphical systems application problem.mp4',t:'Graphical application',c:'core'},
+ {f:'19_Graphing systems of equations.mp4',t:'Graphing systems',c:'core'},
+],
+};
+
+/* ============ Lesson K1: what is a system? ============ */
+function microK1(el){
+ el.innerHTML=`
+  <div class="step">${L('Systems of two linear equations','二元一次方程组')}</div>
+  <div class="box">
+   <h3>${L('A single equation','一个方程')}</h3>
+   <p>${L('One equation in two unknowns (say <span class="num">x + y = 5</span>) has <strong>infinitely many</strong> solutions: (0, 5), (1, 4), (2, 3), (5, 0)…','一个方程含两个未知数（比如 <span class="num">x + y = 5</span>）有<strong>无数组</strong>解：(0, 5)、(1, 4)、(2, 3)、(5, 0)……')}</p>
+  </div>
+  <div class="box">
+   <h3>${L('Two equations, one solution','两个方程，一个解')}</h3>
+   <p>${L('Add a second equation (say <span class="num">x − y = 1</span>) and the two lines cross at one point — <strong>that point satisfies both equations at once</strong>.','再加一个方程（比如 <span class="num">x − y = 1</span>），两条直线交于一点 —— <strong>这个点同时满足两个方程</strong>。')}</p>
+   <div class="eq">x + y = 5<br>x − y = 1<br>━━━━━<br>x = 3, y = 2  ✓</div>
+  </div>
+  <div class="box">
+   <h3>${L('Three possibilities','三种情况')}</h3>
+   <ul style="margin-left:20px;font-size:14px;line-height:1.8">
+    <li>${L('The lines cross at one point → <strong>exactly one solution</strong> (most common)','两线交于一点 → <strong>唯一解</strong>（最常见）')}</li>
+    <li>${L('The lines are parallel (same k, different b) → <strong>no solution</strong>','两线平行（k 相同、b 不同）→ <strong>无解</strong>')}</li>
+    <li>${L('The lines coincide (same k and b) → <strong>infinitely many solutions</strong>','两线重合（k、b 都相同）→ <strong>无数组解</strong>')}</li>
+   </ul>
+  </div>
+  ${L('Substitute both answers back into <b>both</b> equations — only count it right if both hold.','把求出的两个值代回<b>两个</b>方程检验 —— 两个都成立才算对。')}`;
+}
+
+/* ============ Lesson K2: substitution ============ */
+function microK2(el){
+ let phase=0;
+ const eqs=[
+  {a:'x + y = 7',b:'2x − y = 5',hint:'from the first equation, y = 7 − x'},
+  {a:'3x + 2y = 16',b:'y = x + 1',hint:'the second equation is already y = …'},
+  {a:'2x + y = 11',b:'x + 3y = 18',hint:'from the second equation, x = 18 − 3y'},
+ ];
+ const e=eqs[ri(0,eqs.length-1)];
+ const X=x=>340+x*30, Y=y=>280-y*30;
+ const render=()=>{
+  el.innerHTML=`
+   <div class="step">${L('Substitution','代入消元法')}</div>
+   <div class="box">
+    <h3>${L('The steps','步骤')}</h3>
+    <ol style="margin-left:20px;font-size:15px;line-height:1.9">
+     <li>${L('<b>Rearrange</b> one equation into <span class="num">y = …</span> or <span class="num">x = …</span>','<b>变形</b>：把一个方程写成 <span class="num">y = …</span> 或 <span class="num">x = …</span>')}</li>
+     <li>${L('<b>Substitute</b> that expression into the other equation','<b>代入</b>：把这个式子代进另一个方程')}</li>
+     <li>${L('<b>Solve</b> the resulting one-unknown equation','<b>求解</b>：解这个只含一个未知数的方程')}</li>
+     <li>${L('<b>Back-substitute</b> to get the other unknown','<b>回代</b>：求出另一个未知数')}</li>
+    </ol>
+   </div>
+   <div class="box">
+    <h3>${L('Sample problem','例题')}</h3>
+    <div class="eq">${e.a}<br>${e.b}</div>
+    <p style="font-size:14px;color:var(--muted)">${e.hint}</p>
+   </div>
+   <div class="box" style="background:#dbeafe">
+    <h3>${L('Why it works','为什么这样做')}</h3>
+    <p style="font-size:14px">${L('The whole point of substitution: <b>turn two unknowns into one</b>. After substituting, only x is left and you can solve it, then back-substitute for y.','代入法的核心就是<b>把两个未知数变成一个</b>。代进去之后只剩 x，可以先解出来，再回代求 y。')}</p>
+    <p style="font-size:14px;color:var(--muted);margin-top:6px">${L('Videos 03–07 walk through substitution; watch 03 for the idea, then 04–06 for worked examples.','视频 03–07 讲代入法；先看 03 懂思路，再看 04–06 学例题。')}</p>
+   </div>`;
+ };
+ render();
+}
+
+/* ============ Lesson K3: elimination ============ */
+function microK3(el){
+ el.innerHTML=`
+  <div class="step">${L('Elimination','加减消元法')}</div>
+  <div class="box">
+   <h3>${L('When to use it','什么时候用')}</h3>
+   <p>${L('When a coefficient is <strong>the same or opposite</strong> in the two equations, adding or subtracting cancels one unknown.','当两个方程里某个未知数的系数<strong>相同或互为相反数</strong>时，把两式相加或相减就能消掉这个未知数。')}</p>
+  </div>
+  <div class="box">
+   <h3>${L('Worked example','例题')}</h3>
+   <div class="eq">3x + 2y = 12  ... (1)<br>2x − 2y =  4  ... (2)</div>
+   <p style="font-size:14px;margin-top:8px">${L('(1) + (2): the y coefficients +2 and −2 sum to 0, so y disappears:','(1) + (2)：y 的系数 +2 和 −2 相加得 0，y 就被消掉了：')}</p>
+   <div class="eq">5x = 16  →  <span class="num">x = 16/5 = 3.2</span></p>
+   <p style="font-size:14px">${L('Back into (2): 2(3.2) − 2y = 4 → 6.4 − 2y = 4 → 2y = 2.4 → <span class="num">y = 1.2</span>','代回 (2)：2(3.2) − 2y = 4 → 6.4 − 2y = 4 → 2y = 2.4 → <span class="num">y = 1.2</span>')}</p>
+   <p style="font-size:14px;margin-top:6px">${L('Check in (1): 3(3.2) + 2(1.2) = 9.6 + 2.4 = 12 ✓','代入 (1) 检验：3(3.2) + 2(1.2) = 9.6 + 2.4 = 12 ✓')}</p>
+  </div>
+  <div class="box" style="background:#dbeafe">
+   <h3>${L('What if the coefficients do not match?','系数对不上怎么办？')}</h3>
+   <p style="font-size:14px">${L('<strong>Multiply</strong> one (or both) equations by a number so the coefficients match or oppose.','把其中一个（或两个）方程<strong>同乘一个数</strong>，让系数变得相同或互为相反数。')}</p>
+   <p style="font-size:14px;color:var(--muted);margin-top:6px">${L('For example, in x + y = 5 and 2x − y = 4 the coefficients already oppose, so just add. But in x + 2y = 5 and 3x + 5y = 14 the x coefficients are 1 and 3, so multiply the first equation by 3, then subtract to eliminate x.','比如 x + y = 5 和 2x − y = 4，系数已经互为相反数，直接相加就行。而 x + 2y = 5 和 3x + 5y = 14，x 的系数是 1 和 3，就要把第一个方程乘 3，再相减消去 x。')}</p>
+  </div>
+  <div class="note">${L('<strong>Substitution vs elimination:</strong> if one equation is already y = … or x = …, substitution is fastest; otherwise elimination is usually more direct (no brackets to expand).','<strong>代入法还是加减法：</strong>如果已经有一个方程是 y = … 或 x = … 的形式，用代入法最快；否则一般用加减法更直接（不用拆括号）。')}</div>`;
+}
+
+/* ============ Lesson K4: three classic word problems ============ */
+function microK4(el){
+ let cur=0;
+ const problems=[
+  {title:'Chickens and Rabbits',tz:'鸡兔同笼',setup:`Chickens and rabbits in one cage: 35 heads, 94 feet. How many of each?<br><span class="cn">Classical problem: 35 heads, 94 feet. Find chickens and rabbits.</span>`,
+   table:[{name:'',t:['chickens','rabbits','total']},{name:'count',t:['x','y','35']},{name:'feet',t:['2x','4y','94']}],
+   sol:`Step 1, write the equations:<br>  x + y = 35<br>  2x + 4y = 94<br><br>Step 2, eliminate (match the y coefficients, ×2):<br>  2x + 2y = 70<br>  2x + 4y = 94<br>  subtract: 2y = 24 → <span class="num">y = 12 rabbits</span><br>  substitute: x = 35 − 12 = <span class="num">23 chickens</span><br><br>Check: 23 + 12 = 35 ✓; 2·23 + 4·12 = 46 + 48 = 94 ✓`},
+  {title:'Sales & Expenses',tz:'增收节支',setup:`A shop stocks 50 items of types A and B. A sells for ¥80 with ¥20 profit; B sells for ¥120 with ¥30 profit. Total profit is ¥1150. How many of each?<br><span class="cn">50 items total. A: sells at 80, 20 profit. B: sells at 120, 30 profit. Total profit 1150. Find quantities.</span>`,
+   table:[{name:'',t:['count of A','count of B','total']},{name:'',t:['x','y','50']},{name:'profit each',t:['20','30','—']},{name:'total profit',t:['20x','30y','1900']}],
+   sol:`Write the equations:<br>  x + y = 50<br>  20x + 30y = 1150<br><br>Substitute x = 50 − y into the second one:<br>  20(50−y) + 30y = 1150<br>  1000 + 10y = 1150<br>  10y = 150 → <span class="num">y = 15 of B</span><br>  x = 50 − 15 = <span class="num">35 of A</span><br><br>Check: 35 + 15 = 50 ✓; 20·35 + 30·15 = 700 + 450 = 1150 ✓`},
+  {title:'Milestone Numbers',tz:'里程碑上的数',setup:`A car leaves town A at 60 km/h. Two hours later a second car leaves A at 80 km/h. How long after the second car starts does it catch up, and how far has the first car gone by then?<br><span class="cn">Car A leaves first at 60 km/h. 2 hours later car B leaves at 80 km/h. When does B catch A, and how far has A gone?</span>`,
+   table:[{name:'',t:['A speed','B speed','time A has driven']},{name:'',t:['60','80','2 + 3 = 5 h']},{name:'',t:['km/h','km/h','']}],
+   sol:`Let t be the time car A has been driving. When B catches up, both have gone the same distance:<br>  60t = 80(t − 2)<br>  60t = 80t − 160<br>  160 = 20t → <span class="num">t = 8 h</span><br><br>So B catches up 8 − 2 = <span class="num">6 hours</span> after B starts.<br>  distance = 60·8 = <span class="num">480 km</span><br><br>Check: A drives 8 h × 60 = 480 km; B drives 6 h × 80 = 480 km ✓`},
+ ];
+ const render=()=>{
+  const p=problems[cur];
+  el.innerHTML=`
+   <div class="step">${L('★ Chickens & rabbits / sales & costs / milestone numbers','★ 鸡兔同笼 / 增收节支 / 里程碑上的数')}</div>
+   <div class="box">
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+     ${problems.map((q,i)=>`<button class="${i===cur?'':'secondary'}" data-p="${i}">${i+1}. ${q.title.split(' · ')[0]}</button>`).join('')}
+    </div>
+    <h3>${L(p.title,p.tz)}</h3>
+    <p style="font-size:14px;margin-top:8px">${p.setup}</p>
+    <h3 style="margin-top:14px">${L('Solution','解答')}</h3>
+    <div class="eq">${p.sol}</div>
+   </div>
+   <div class="note">${L('<strong>General method:</strong> ① name the unknowns (usually two: x and y) ② find two equalities and write two equations ③ solve the system ④ check it makes sense (x, y > 0; units consistent; answer the actual question)','<strong>通用方法：</strong>① 设未知数（通常是两个：x 和 y）② 找两个相等关系，列出两个方程 ③ 解方程组 ④ 检验是否合理（x, y > 0；单位一致；回答题目真正问的）')}</div>`;
+  el.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{cur=parseInt(b.dataset.p);render();});
+ };
+ render();
+}
+
+/* ============ Lesson K5: equations and functions ============ */
+function microK5(el){
+ el.innerHTML=`
+  <div class="step">${L('Equations and linear functions','方程与一次函数')}</div>
+  <div class="box">
+   <h3>${L('The key insight','关键联系')}</h3>
+   <p>${L('Rewrite <span class="num">2x + y = 7</span> as <span class="num">y = −2x + 7</span> and it is a straight line.','把 <span class="num">2x + y = 7</span> 改写成 <span class="num">y = −2x + 7</span>，它就是一条直线。')}</p>
+   <p>${L('Graph both equations of {2x + y = 7, x + y = 4} and the <strong>intersection</strong> of the two lines is the <strong>solution</strong> of the system.','把 {2x + y = 7, x + y = 4} 两个方程都画成图象，两条直线的<strong>交点</strong>就是这个方程组的<strong>解</strong>。')}</p>
+  </div>
+  <div class="box" style="background:#dbeafe">
+   <h3>${L('Solving a system with graphs','用图象解方程组')}</h3>
+   <p style="font-size:14px">${L('① Put both equations into y = kx + b form','① 把两个方程都化成 y = kx + b 的形式')}</p>
+   <p style="font-size:14px">${L('② Draw them (or solve algebraically)','② 画出图象（或直接用代数方法解）')}</p>
+   <p style="font-size:14px">${L('③ The intersection (x₀, y₀) is the solution','③ 交点 (x₀, y₀) 就是解')}</p>
+   <p style="font-size:14px;margin-top:8px">${L('<b>Special cases:</b> parallel lines → no solution (same k, different b); coincident lines → infinitely many (same k and b)','<b>特殊情况：</b>两线平行 → 无解（k 相同、b 不同）；两线重合 → 无数组解（k、b 都相同）')}</p>
+  </div>
+  <div class="note">${L('<strong>Link to chapter 4:</strong> there you learned to graph linear functions; here the solution of a system turns out to be the intersection of two graphs. Algebra and geometry meeting.','<strong>和第 4 章的联系：</strong>第 4 章学过画一次函数的图象；这里方程组的解正好是两条图象的交点 —— 代数和几何在这里碰到一起了。')}</div>`;
+}
+
+/* ============ Lesson K6: find the line from two points ============ */
+function microK6(el){
+ let k=ri(1,4),b=ri(-3,5),x1=ri(-3,3);
+ let x2=x1;while(x2===x1)x2=ri(-3,3);
+ const y1=k*x1+b,y2=k*x2+b;
+ const render=()=>{
+  el.innerHTML=`
+   <div class="step">${L('Find the straight-line rule from two points','已知两点求直线表达式')}</div>
+   <div class="box">
+    <h3>${L('What we are after','要找什么')}</h3>
+    <p>${L('A line has the form <span class="num">y = kx + b</span>. If you know <strong>two points</strong> on it, you can find both <span class="num">k</span> (slope) and <span class="num">b</span> (intercept) — by turning the two points into a tiny system of equations.','直线的形式是 <span class="num">y = kx + b</span>。知道直线上<strong>两个点</strong>，就能求出 <span class="num">k</span>（斜率）和 <span class="num">b</span>（截距）—— 办法是把这两个点变成一个小方程组。')}</p>
+   </div>
+   <div class="box">
+    <h3>${L('Worked example · points ','例题 · 已知两点 ')}(${x1}, ${y1}) ${L('and','和')} (${x2}, ${y2})</h3>
+    <p style="font-size:14px">${L('Step 1 — plug each point into y = kx + b:','第 1 步 —— 把两个点分别代入 y = kx + b：')}</p>
+    <div class="eq">${y1} = k·${x1} + b<br>${y2} = k·${x2} + b</div>
+    <p style="font-size:14px;margin-top:8px">${L('Step 2 — subtract to kill b:','第 2 步 —— 两式相减，消掉 b：')}</p>
+    <div class="eq">(${y2}) − (${y1}) = k·${x2} − k·${x1}<br>${y2-y1} = k·${x2-x1}<br>k = ${y2-y1} ÷ ${x2-x1} = <span class="num">${k}</span></div>
+    <p style="font-size:14px;margin-top:8px">${L('Step 3 — back-substitute to get b:','第 3 步 —— 回代求出 b：')}</p>
+    <div class="eq">${y1} = ${k}·${x1} + b → b = ${y1} − ${k*x1} = <span class="num">${b}</span></div>
+    <p style="font-size:14px;margin-top:8px">${L('So the rule is ','所以表达式是 ')}<span class="num">y = ${k}x + ${b}</span>${L('.','。')}</p>
+   </div>
+   <div class="box" style="background:#dbeafe">
+    <h3>${L('Why two points are enough','为什么两个点就够了')}</h3>
+    <p style="font-size:14px">${L('One point leaves both k and b unknown — infinitely many lines pass through it. Two points fix the slope, and once the slope is fixed, the intercept is forced. This is the same "two conditions, two unknowns" idea as the rest of the chapter, just dressed as a line.','只有一个点时，k 和 b 都还不知道 —— 经过一个点可以画无数条直线。两个点就能确定斜率，斜率一定，截距也就被定死了。这跟本章"两个条件、两个未知数"是同一个道理，只是换成了直线的说法。')}</p>
+    <p style="font-size:14px;color:var(--muted);margin-top:6px">${L('Hit 🎲 for a new pair of points and walk the three steps again.','按 🎲 换一对点，再把三步走一遍。')}</p>
+    <button id="reroll6" class="secondary">🎲 ${L('New points','换一组点')}</button>
+   </div>`;
+  el.querySelector('#reroll6').onclick=()=>{k=ri(1,4);b=ri(-3,5);x1=ri(-3,3);x2=x1;while(x2===x1)x2=ri(-3,3);y1=k*x1+b;y2=k*x2+b;render();};
+ };
+ render();
+}
+
+/* ============ Lesson EXT: three-variable systems (optional) ============ */
+function microExt(el){
+ const x0=ri(1,5),y0=ri(1,5),z0=ri(1,5);
+ const A=x0+y0+z0, B=x0+2*y0+3*z0, C=2*x0+y0+z0;
+ const render=()=>{
+  el.innerHTML=`
+   <div class="step">${L('★ Three variables — optional extension','★ 三元一次方程组 —— 选学拓展')}</div>
+   <div class="box">
+    <h3>${L('The idea','思路')}</h3>
+    <p>${L('Two unknowns needed two equations. With <strong>three</strong> unknowns you need <strong>three</strong> equations. You solve it by reducing it to the two-variable case you already know: use two equations to express one variable in terms of the others, then substitute into the third.','两个未知数需要两个方程。<strong>三个</strong>未知数就需要<strong>三个</strong>方程。解法是把它降成你已经会的两元情形：先用方程把一个未知数用另外两个表示，再代入第三个方程。')}</p>
+   </div>
+   <div class="box">
+    <h3>${L('Worked example','例题')}</h3>
+    <div class="eq">x + y + z = ${A}  ... (1)<br>x + 2y + 3z = ${B}  ... (2)<br>2x + y + z = ${C}  ... (3)</div>
+    <p style="font-size:14px;margin-top:8px">${L('From (1): ','由 (1) 得：')}<span class="num">z = ${A} − x − y</span>${L('. Drop it into (2) and (3):','。代入 (2) 和 (3)：')}</p>
+    <div class="eq">x + 2y + 3(${A} − x − y) = ${B}<br>2x + y + (${A} − x − y) = ${C}</div>
+    <p style="font-size:14px;margin-top:8px">${L('Clean up → a 2-variable system → solve it with substitution or elimination → then recover z. The solution is ','整理 → 得到一个二元方程组 → 用代入法或加减法解出 → 再求出 z。答案是 ')}<span class="num">x = ${x0}, y = ${y0}, z = ${z0}</span>${L('.','。')}</p>
+   </div>
+   <div class="note">${L('<strong>In the syllabus this is optional (an extension).</strong> It is here because the same method scales to any number of unknowns — but the chapter test only asks one light question on it.','<strong>教材里这一节是选学内容。</strong>放进来是因为同样的方法可以推广到任意多个未知数 —— 但章末检测只考一道很轻的题。')}</div>`;
+ };
+ render();
+}
+
+/* ============ Quick check ============ */
+function diag(el,lessonId,generator){
+ el.innerHTML=`<div class="step"><span class="en">Quick check</span><span class="zh">小测一下</span></div><div class="box"><p style="font-size:14px;color:var(--muted)">3 questions, just to see where you stand.</p><div id="diagQ"></div></div>`;
+ const qEl=el.querySelector('#diagQ');
+ let ok=0;
+ const qs=Array.from({length:3},()=>generator('diag'));
+ let i=0;
+ const show=()=>{
+  if(i>=3){
+   st(lessonId).diag=ok;
+   if(ok===3){
+    qEl.innerHTML=`<div class="note" style="background:#dcfce7;border-color:var(--ok)"><strong>3/3:</strong> you can skip the lesson.</div><div style="margin-top:14px"><button id="skipMicro"><span class="en">Skip the lesson, go to practice →</span><span class="zh">跳过微课，去做练习 →</span></button></div>`;
+    qEl.querySelector('#skipMicro').onclick=()=>{cur=`prac-${lessonId}`;render();};
+   } else {
+    qEl.innerHTML=`<div class="note" style="background:#fef3c7;border-color:var(--warn)"><strong>${ok}/3:</strong> work through the lesson below.</div><div style="margin-top:14px"><button id="goMicro"><span class="en">Go to lesson →</span><span class="zh">去看微课 →</span></button></div>`;
+    qEl.querySelector('#goMicro').onclick=()=>{cur=`micro-${lessonId}`;render();};
+   }
+   save();renderNav();return;
+  }
+  const q=qs[i];
+  qEl.innerHTML=`<div class="q"><div class="q-text">${i+1}. ${L(q.q,q.zhq)}</div><div style="display:flex;gap:8px"><input id="da" autocomplete="off"><button id="sub">Submit</button></div><div class="hint" id="ht"></div><div class="feedback" id="fb"></div></div>`;
+  const input=qEl.querySelector('#da'),fb=qEl.querySelector('#fb'),ht=qEl.querySelector('#ht');
+  input.focus();qEl.querySelector('#sub').onclick=check;input.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const ans=input.value.trim();
+   const correct=q.check(ans);
+   if(correct===true){ok++;fb.className='feedback show ok';fb.textContent='✓';input.disabled=true;setTimeout(()=>{i++;show();},700);}
+   else if(correct==='hint'){ht.className='hint show';ht.innerHTML=L(q.hint||'', q.zhh||'');}
+   else{fb.className='feedback show err';fb.innerHTML=L('✗ Try again. ','✗ 再试一次。');}
+  }
+ };
+ show();
+}
+
+/* ============ Practice generators ============ */
+const generators={
+k1:()=>{
+ const x=ri(-3,3),y=ri(-3,3);
+ const a1=ri(1,4),b1=ri(1,4),c1=a1*x+b1*y;
+ const a2=ri(1,4),b2=ri(1,4),c2=a2*x+b2*y;
+ const sol=[x,y];
+ return {q:`Is (${x}, ${y}) a solution to the system:<br>${a1}x + ${b1}y = ${c1}<br>${a2}x + ${b2}y = ${c2}<br>Answer "yes" or "no".`,
+   zhq:`(${x}, ${y}) 是这个方程组的解吗？<br>${a1}x + ${b1}y = ${c1}<br>${a2}x + ${b2}y = ${c2}<br>回答 "yes" 或 "no"。`,
+   check:a=>{const ans=a.toLowerCase().trim();return ans==='yes'||ans==='y'||ans==='yes';},
+   ans:'yes',hint:`Plug in: ${a1}·${x} + ${b1}·${y} = ${c1}? and ${a2}·${x} + ${b2}·${y} = ${c2}?`,
+   zhh:`代入检验：${a1}·${x} + ${b1}·${y} = ${c1}？以及 ${a2}·${x} + ${b2}·${y} = ${c2}？`};
+},
+k2:()=>{
+ const y=ri(1,5);
+ const x=ri(1,5);
+  return {q:`Solve: y = x + ${y - x}, and 3x + y = ${3*x + y}. Find x.`,
+   zhq:`解方程组：y = x + ${y-x}，且 3x + y = ${3*x+y}。求 x。`,
+   check:v=>parseInt(v)===x,ans:String(x),hint:`Replace y with x + ${y-x} in 3x + y = ${3*x+y}, then solve 4x + ${y-x} = ${3*x+y}.`,
+   zhh:`把 y 换成 x + ${y-x} 代入 3x + y = ${3*x+y}，再解 4x + ${y-x} = ${3*x+y}。`};
+},
+k3:()=>{
+ const x=ri(2,5),y=ri(1,4);
+  return {q:`Add the two equations:<br>x + 2y = ${x+2*y}<br>3x − 2y = ${3*x-2*y}<br>Find x.`,
+   zhq:`把两个方程相加：<br>x + 2y = ${x+2*y}<br>3x − 2y = ${3*x-2*y}<br>求 x。`,
+   check:a=>parseInt(a)===x,ans:String(x),hint:`Add: 4x = ${(x+2*y)+(3*x-2*y)}.`,
+   zhh:`相加得：4x = ${(x+2*y)+(3*x-2*y)}。`};
+},
+k4:()=>{
+ // randomly pick one of the three classic BNU word problems
+ const type=ri(1,3);
+ if(type===1){
+  // chickens and rabbits
+  const chickens=ri(5,15),rabbits=ri(3,8);
+  const total=chickens+rabbits,feet=2*chickens+4*rabbits;
+  return {q:`Chickens and rabbits: ${total} heads, ${feet} feet. How many rabbits? (number only)`,
+   zhq:`鸡兔同笼：共 ${total} 个头，${feet} 只脚。兔子有多少只？（只填数字）`,
+   check:a=>parseInt(a)===rabbits,ans:String(rabbits),
+   hint:`Let x=chickens, y=rabbits. x+y=${total}, 2x+4y=${feet}. Solve for y.`,
+   zhh:`设 x=鸡，y=兔。x+y=${total}，2x+4y=${feet}。解出 y。`};
+ } else if(type===2){
+  // sales & costs: two products, total count and total value
+  const x0=ri(3,9),y0=ri(3,9),a=ri(5,15),b=ri(5,15);
+  const n=x0+y0,C=a*x0+b*y0;
+  return {q:`A shop sells item A at ¥${a} each and item B at ¥${b} each. A customer buys ${n} items for ¥${C} in total. How many of item A? (number only)`,
+   zhq:`商店 A 商品每件 ¥${a}，B 商品每件 ¥${b}。一位顾客共买 ${n} 件，花了 ¥${C}。其中 A 商品买了多少件？（只填数字）`,
+   check:v=>parseInt(v)===x0,ans:String(x0),
+   hint:`Let x = count of A, y = count of B. x+y=${n}, ${a}x+${b}y=${C}. Solve for x.`,
+   zhh:`设 x 为 A 的件数，y 为 B 的件数。x+y=${n}，${a}x+${b}y=${C}。解出 x。`};
+ } else {
+  // milestone / catch-up: car B starts later and catches car A
+  const T=ri(2,3),h=ri(1,2),m=ri(8,12);
+  const a=T*m, b=m*(T+h); // a·(T+h)=b·T → both travel the same distance at catch-up
+  return {q:`Car A leaves at ${a} km/h. ${h} hour(s) later car B leaves at ${b} km/h and catches up with A. How many hours after B leaves does it catch A? (number only)`,
+   zhq:`A 车先以 ${a} km/h 出发。${h} 小时后 B 车以 ${b} km/h 出发并追上 A。B 出发后多少小时追上 A？（只填数字）`,
+   check:v=>parseInt(v)===T,ans:String(T),
+   hint:`At catch-up the distances are equal: ${a}·(t+${h}) = ${b}·t, where t is the time B has driven. Solve for t.`,
+   zhh:`追上时两车路程相等：${a}·(t+${h}) = ${b}·t，t 为 B 行驶的时间。解出 t。`};
+ }
+},
+k5:()=>{
+ const x=ri(1,4),y=ri(1,4);
+ // pick each slope ONCE: calling ri() again inside one question gives the two
+ // lines different slopes, and then they no longer meet at (x, y)
+ const m=ri(1,3), n=ri(1,3);
+ return {q:`Two lines: y = ${m}x + ${y-m*x} and y = −${n}x + ${y+n*x}. They cross at x = ${x}. Find y.`,
+   zhq:`两条直线：y = ${m}x + ${y-m*x} 与 y = −${n}x + ${y+n*x}。它们在 x = ${x} 处相交。求 y。`,
+   check:v=>parseInt(v)===y,ans:String(y),hint:`Plug x=${x} into either equation.`,
+   zhh:`把 x=${x} 代入任意一个方程。`};
+},
+k6:()=>{
+ const k=ri(1,4),b=ri(-3,5),x1=ri(-3,3);
+ let x2=x1;while(x2===x1)x2=ri(-3,3);
+ const y1=k*x1+b,y2=k*x2+b;
+ return {q:`A line passes through (${x1}, ${y1}) and (${x2}, ${y2}). It has the form y = kx + b. Find k. (number only)`,
+  zhq:`一条直线经过 (${x1}, ${y1}) 和 (${x2}, ${y2})，形式為 y = kx + b。求 k。（只填数字）`,
+  check:v=>parseInt(v)===k,ans:String(k),
+  hint:`k = (y₂ − y₁) / (x₂ − x₁) = (${y2} − ${y1}) / (${x2} − ${x1}).`,
+  zhh:`k = (y₂ − y₁) / (x₂ − x₁) = (${y2} − ${y1}) / (${x2} − ${x1})。`};
+},
+ext:()=>{
+ const x0=ri(1,5),y0=ri(1,5),z0=ri(1,5);
+ const A=x0+y0+z0, B=x0+2*y0+3*z0, C=2*x0+y0+z0;
+ return {q:`Solve the system:<br>x + y + z = ${A}<br>x + 2y + 3z = ${B}<br>2x + y + z = ${C}<br>Find x. (number only)`,
+  zhq:`解方程组：<br>x + y + z = ${A}<br>x + 2y + 3z = ${B}<br>2x + y + z = ${C}<br>求 x。（只填数字）`,
+  check:v=>parseInt(v)===x0,ans:String(x0),
+  hint:`From the first equation z = ${A} − x − y. Substitute into the other two to get a 2-variable system, then solve.`,
+  zhh:`由第一式得 z = ${A} − x − y，代入另两式化为二元一次方程组，再解。`};
+},
+};
+
+/* ============ Videos module ============ */
+function videos(el,lessonId){
+ const list=VIDEOS[lessonId]||[];
+ if(!list.length){el.innerHTML='<div class="note">No videos for this section.</div>';return;}
+ let html=`<div class="step"><span class="en">Videos</span><span class="zh">视频</span> · ${LESSONS.find(l=>l.id===lessonId).t}</div>`;
+ html+=`<div class="box"><p style="font-size:13px;color:var(--muted)"><span class="tag core">Watch first</span> watch first; <span class="tag ext">Optional</span> if you have time.</p></div>`;
+ list.forEach((v,i)=>{
+  const watched=st(lessonId).vid[i];
+  html+=`<div class="vid"><div class="vid-h"><span class="title">${L(v.t,(typeof VTZ!=='undefined'&&VTZ[v.t])||v.t)}</span><span class="meta"><span class="tag ${v.c}"><span class="en">${v.c==='core'?'Core':'Extra'}</span><span class="zh">${v.c==='core'?'核心':'拓展'}</span></span><span class="st ${watched?'ok':''}">${watched?'✓':'Unwatched'}</span><button data-i="${i}">${watched?'<span class="en">▶ Replay</span><span class="zh">▶ 重播</span>':'<span class="en">▶ Play</span><span class="zh">▶ 播放</span>'}</button></span></div><div id="vc${i}" style="display:${watched?'block':'none'}"><video controls preload="none" style="width:100%;background:#000" src="${encodeURI(VDIR+v.f)}"></video></div></div>`;
+ });
+ el.innerHTML=html;
+ el.querySelectorAll('[data-i]').forEach(b=>{
+  b.onclick=()=>{const i=parseInt(b.dataset.i);const slot=el.querySelector('#vc'+i);const v=slot.querySelector('video');if(slot.style.display==='none'){slot.style.display='block';v.play();}else{v.pause();v.currentTime=0;slot.style.display='none';}st(lessonId).vid[i]=true;save();renderNav();b.textContent='▶ Replay';b.parentElement.querySelector('.st').className='st ok';b.parentElement.querySelector('.st').textContent='✓';};
+ });
+}
+
+/* ============ Practice module ============ */
+function practice(el,lessonId){
+ const gen=generators[lessonId];
+ if(!gen){el.innerHTML='<div class="note">No practice for this.</div>';return;}
+ const s=st(lessonId);
+ let streak=0,need=5,q=null,tries=0;
+ const update=()=>{
+  el.innerHTML=`<div class="step"><span class="en">Practice</span><span class="zh">练习</span> (${streak}/${need})</div><div class="info" style="font-size:13px;color:var(--muted);margin:8px 0">Correct: ${s.prac.ok}/${s.prac.tot} (streak ${streak})<button class="secondary" id="rs" style="margin-left:8px"><span class="en">Reset</span><span class="zh">重置</span></button></div><div class="progress"><div style="width:${(streak/need)*100}%"></div></div><div class="q"><div class="q-text">${q.q}</div><div style="display:flex;gap:8px"><input id="pi" autocomplete="off"><button id="ps">Submit</button></div><div class="hint" id="ph"></div><div class="feedback" id="pf"></div></div>`;
+  el.querySelector('#rs').onclick=()=>{s.prac={ok:0,tot:0};streak=0;save();update();renderNav();};
+
+  const syncTop=()=>{
+   const stp=el.querySelector('.step'); if(stp) stp.innerHTML='<span class="en">Practice</span><span class="zh">练习</span> ('+streak+'/'+need+')';
+   const pg=el.querySelector('.progress'); if(pg&&pg.firstElementChild) pg.firstElementChild.style.width=(streak/need)*100+'%';
+   const inf=el.querySelector('.info'); if(inf){const rb=inf.querySelector('#rs');inf.textContent='Correct: '+s.prac.ok+'/'+s.prac.tot+' (streak '+streak+') ';if(rb)inf.appendChild(rb);}
+  };
+  const inp=el.querySelector('#pi'),fb=el.querySelector('#pf'),ht=el.querySelector('#ph');
+  inp.focus();el.querySelector('#ps').onclick=check;inp.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const a=inp.value.trim();
+   const r=q.check(a);
+   if(r===true){
+    streak++;s.prac.ok++;s.prac.tot++;
+    fb.className='feedback show ok';fb.innerHTML=L('✓ correct!','✓ 对了！');
+    inp.disabled=true;
+    syncTop();
+    if(streak>=need){s.done=true;fb.innerHTML+='<br><strong>'+L('Section cleared ✓','本节过关 ✓')+'</strong>';save();renderNav();}
+    setTimeout(()=>{q=gen();tries=0;update();},900);
+   } else {
+    tries++;
+    if(tries===1){
+     ht.className='hint show';ht.innerHTML=L(q.hint||'Have another go.', q.zhh||'再试一次。');
+     fb.className='feedback show err';fb.innerHTML=L('✗ Try again. ','✗ 再试一次。');
+    } else if(tries===2){
+     fb.className='feedback show err';
+     fb.innerHTML=L('✗ Not quite. '+(q.sol?('Method: '+q.sol):(q.hint?('Hint: '+q.hint):'Work through it once more.')), '✗ 不太对。'+(q.zhs?('方法：'+q.zhs):(q.zhh?('提示：'+q.zhh):'再算一遍。')));
+    } else {
+     streak=0;s.prac.tot++;syncTop();
+     
+     fb.className='feedback show err';
+     fb.innerHTML=L('The answer is <b>'+q.ans+'</b>'+(q.sol?('. '+q.sol):'. '), '答案是 <b>'+q.ans+'</b>'+(q.zhs?('。'+q.zhs):'。'));
+     inp.disabled=true;save();renderNav();
+     setTimeout(()=>{q=gen();tries=0;update();},2400);
+    }
+   }
+  }
+ };
+ q=gen();tries=0;update();
+}
+
+/* ============ Chapter check ============ */
+function chTest(el){
+ el.innerHTML=`<div class="step"><span class="en">Chapter check</span><span class="zh">章末自己测</span></div><div class="box"><p style="font-size:13px;color:var(--muted)">12 questions.</p><div id="tq"></div></div>`;
+ const tq=el.querySelector('#tq');
+ const qs=[];
+ for(let i=0;i<2;i++)qs.push(generators.k1(i+1));
+ for(let i=0;i<2;i++)qs.push(generators.k2());
+ for(let i=0;i<2;i++)qs.push(generators.k3());
+ for(let i=0;i<2;i++)qs.push(generators.k4());
+ for(let i=0;i<2;i++)qs.push(generators.k5());
+ qs.push(generators.k6());
+ qs.push(generators.ext());
+ let i=0,ok=0;
+ const show=()=>{
+  if(i>=qs.length){tq.innerHTML=`<div class="note" style="background:${ok>=7?'#dcfce7':'#fef3c7'};border-color:${ok>=7?'var(--ok)':'var(--warn)'}"><strong>${ok}/${qs.length}</strong> ${ok>=7?'Chapter passed!':'Go back and review'}</div>`;S.test={ok,tot:qs.length};save();renderNav();return;}
+  const q=qs[i];
+  tq.innerHTML=`<div class="q"><div class="q-text">${i+1}/${qs.length}. ${L(q.q,q.zhq)}</div><div style="display:flex;gap:8px"><input id="ti"><button id="ts"><span class="en">Submit</span><span class="zh">提交</span></button></div><div class="hint" id="th"></div><div class="feedback" id="tf"></div></div>`;
+  const inp=tq.querySelector('#ti'),fb=tq.querySelector('#tf'),ht=tq.querySelector('#th');
+  inp.focus();tq.querySelector('#ts').onclick=check;inp.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const r=q.check(inp.value.trim());
+   if(r===true){ok++;fb.className='feedback show ok';fb.textContent='✓';inp.disabled=true;setTimeout(()=>{i++;show();},600);}
+   else if(r==='hint'){ht.className='hint show';ht.innerHTML=L(q.hint||'', q.zhh||'');}
+   else{fb.className='feedback show err';fb.textContent='✗';setTimeout(()=>{i++;show();},900);}
+  }
+ };
+ show();
+}
+
+/* ============ Render ============ */
+
+/* ===== Chapter lobby: start here ===== */
+const GLOSS={k1:"二元一次方程组",k2:"代入消元法",k3:"加减消元法",k4:"应用题",k5:"交点",k6:"待定系数法",ext:"三元一次方程组"};
+const USE_MICRO=true;
+const INTRO={why:"Chickens and rabbits in one cage: 35 heads, 94 feet. How many of each? Name two unknowns, write two equations, solve it in one go. Unit prices, meeting and catching-up problems, mixing and budgeting — all of them are \"two conditions, two unknowns\". This chapter gives you two algebraic methods, plus the picture: where the two lines cross is the answer.",desc:{k1:"Two unknowns, two conditions — how to set it up",k2:"Replace one unknown so that only one is left",k3:"Add or subtract the equations to cancel one unknown",k4:"Turning word problems into equations",k5:"Where the two lines cross is the solution",k6:"Two points fix a straight line — find its rule",ext:"Three unknowns need three equations (optional)"}};
+function goLesson(id){cur=USE_MICRO?('micro-'+id):id;render();}
+function introRender(main){
+  const pts=LESSONS.filter(l=>l.id!=='test'&&l.id!=='intro');
+  let h='<div class="intro-h"><span class="en">What this chapter covers</span><span class="zh">本章学什么</span></div>'
+    +'<div class="intro-sub"><span class="en">Skim the list to see where this chapter is going, then press the button at the bottom.</span><span class="zh">先扫一眼下面的清单，看本章去哪，然后按底部按钮开始。</span></div><div class="kp">';
+  pts.forEach(l=>{
+    const s=st(l.id);
+    const badge=s.done?' <span class="st ok">✓ done</span>':(s.prac.tot>0?' <span class="st">'+s.prac.ok+'/'+s.prac.tot+'</span>':'');
+    h+='<div class="kp-c"><div class="n">'+l.n+'</div><div class="t">'+l.t+(GLOSS[l.id]?' <span class="cn-tag">'+GLOSS[l.id]+'</span>':'')+'</div><div class="d">'+((INTRO.desc&&INTRO.desc[l.id])||'')+'</div>'+badge+'</div>';
+  });
+  h+='</div>';
+  h+='<div class="why"><b><span class="en">Where this shows up in real life</span><span class="zh">在真实生活里哪里会用到</span></b><br>'+INTRO.why+'</div>';
+  h+='<div class="box"><b><span class="en">How this chapter works</span><span class="zh">本章怎么学</span></b><div class="how">'
+    +'① <b><span class="en">Watch the lesson</span><span class="zh">看微课</span></b>: <span class="en">a few minutes to get what the section is about</span><span class="zh">花几分钟了解本节内容</span><br>'
+    +'② <b><span class="en">Practice</span><span class="zh">练一练</span></b>: <span class="en">5 correct in a row clears it; if you get stuck, hints walk you through</span><span class="zh">连对 5 题就算过关；卡住了就看提示</span><br>'
+    +'③ <b><span class="en">Next section</span><span class="zh">下一节</span></b>: <span class="en">on the left, </span><span class="zh">在左侧，</span>'+pts[0].n+', '+pts[1].n+'… open whichever you want, in any order'
+    +'</div></div>';
+  h+='<div class="big-start"><button id="startBtn">'+pts[0].n+' <span class="en">'+pts[0].t+'</span><span class="zh">开始 · '+NAVZH[pts[0].id]+'</span> →</button></div>';
+  main.innerHTML=h;
+  main.querySelector('#startBtn').onclick=()=>{goLesson(pts[0].id);};
+}
+const NAVZH={"intro":"概览","k1":"方程组","k2":"代入法","k3":"加减法","k4":"应用题","k5":"图像法","k6":"待定系数","ext":"三元一次方程组","test":"章末自己测"};
+const LKEY='bnu8_lang';
+function getLang(){return localStorage.getItem(LKEY)||'en';}
+function setLang(l){localStorage.setItem(LKEY,l);applyLang();}
+function applyLang(){const l=getLang();document.body.className=(' '+document.body.className+' ').replace(/\s+lang-(en|mix|zh)\b/g,' ').trim();if(l==='mix'||l==='zh')document.body.classList.add('lang-'+l);document.querySelectorAll('.langseg button').forEach(b=>{b.classList.toggle('on',b.dataset.lang===l);});}
+applyLang();
+
+
+function renderNav(){
+ const nav=document.getElementById('nav');
+ nav.innerHTML=LESSONS.map(l=>{
+  const s=st(l.id);
+  let stxt='';
+  if(s.done)stxt='<span class="st ok">✓</span>';
+  else if(s.prac.tot>0)stxt=`<span class="st ${s.prac.ok/s.prac.tot>0.6?'ok':'err'}">${s.prac.ok}/${s.prac.tot}</span>`;
+  return `<div class="nav-i ${l.id===cur||cur===`micro-${l.id}`||cur===`diag-${l.id}`||cur===`prac-${l.id}`?'on':''}" data-go="${l.id}"><span><b>${l.n}</b> <span class="en">${l.t}</span><span class="zh">${NAVZH[l.id]||l.t}</span></span>${stxt}</div>`;
+ }).join('');
+ nav.querySelectorAll('[data-go]').forEach(n=>n.onclick=()=>{const id=n.dataset.go;cur=id==='test'?'test':`micro-${id}`;render();});
+}
+
+function render(){
+ const main=document.getElementById('main');
+ renderNav();
+ if(cur==='intro'||cur==='micro-intro'){introRender(main);return;}
+ if(cur==='test'){chTest(main);return;}
+ const m=cur.match(/^(diag|micro|prac)-(\w+)$/);
+ if(m){
+  const phase=m[1],id=m[2];
+  const lesson=LESSONS.find(l=>l.id===id);
+  if(!lesson){main.innerHTML='<div class="note">Unknown</div>';return;}
+  const titles={k1:'What is a system?',k2:'Substitution',k3:'Elimination',k4:'Word problems',k5:'Systems and graphs',k6:'Find the line from two points',ext:'Three variables (optional)'};
+  main.innerHTML=`<div class="lesson-id">${lesson.n} · <span class="en">${titles[id]} · ${lesson.cn}</span><span class="zh">${NAVZH[id]||titles[id]}</span></div>`;
+  const c=document.createElement('div');main.appendChild(c);
+  if(phase==='diag'){
+   if(st(id).diag===3){cur=`micro-${id}`;render();return;}
+   diag(c,id,generators[id]);
+  } else if(phase==='micro'){
+   if(id==='k1')microK1(c);
+   else if(id==='k2')microK2(c);
+   else if(id==='k3')microK3(c);
+   else if(id==='k4')microK4(c);
+   else if(id==='k5')microK5(c);
+   else if(id==='k6')microK6(c);
+   else if(id==='ext')microExt(c);
+   const after=document.createElement('div');main.appendChild(after);
+   videos(after,id);
+   const btn=document.createElement('div');btn.style.marginTop='14px';
+   btn.innerHTML=`<button id="toPrac">Go to practice</button>`;
+   main.appendChild(btn);
+   btn.querySelector('#toPrac').onclick=()=>{cur=`prac-${id}`;render();};
+  } else if(phase==='prac'){practice(c,id);}
+ } else {
+  introRender(main);
+ }
+}
+render();
+</script>
+<script>
+(function(){try{if(new URLSearchParams(location.search).get('go')==='test'){cur='test';render();}}catch(e){}})();
+</script>
+<p style="text-align:center;font-size:11px;color:var(--muted);margin:26px 0 8px">
+ <span id="busuanzi_container_site_uv" style="display:none">
+  <span class="en">Visitors so far:&nbsp;</span><span class="zh">已经有&nbsp;</span>
+  <b id="busuanzi_value_site_uv">·</b><span class="zh">&nbsp;位访客来过这里</span>
+ </span>
+</p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body></body>
+</html>
