@@ -1,162 +1,247 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QClaw 学习站 — 选年级</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Choose your course</title>
 <style>
 :root{
-  --bg:#f6f8fb;
-  --bg-2:#eef2f7;
-  --text:#0f172a;
-  --text-2:#475569;
-  --text-3:#94a3b8;
-  --card:#ffffff;
-  --card-hover:#ffffff;
-  --border:#e2e8f0;
-  --brand:#0d9488;
-  --brand-2:#0ea5e9;
-  --brand-grad:linear-gradient(135deg,#0ea5e9 0%,#14b8a6 100%);
-  --shadow:0 1px 3px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.06);
-  --shadow-lg:0 12px 40px rgba(13,148,136,.18);
+ --bg:#fafafa; --card:#fff; --line:#e5e7eb; --text:#1f2937; --muted:#5b6472;
+ --accent:#7c3aed; --ok:#15803d; --err:#b91c1c; --warn:#b45309;
 }
-[data-theme="dark"]{
-  --bg:#0b1220;
-  --bg-2:#0e1626;
-  --text:#e8eef6;
-  --text-2:#a3b1c6;
-  --text-3:#64748b;
-  --card:#141d2e;
-  --card-hover:#1a2438;
-  --border:#233044;
-  --brand:#2dd4bf;
-  --brand-2:#38bdf8;
-  --brand-grad:linear-gradient(135deg,#38bdf8 0%,#2dd4bf 100%);
-  --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
-  --shadow-lg:0 12px 40px rgba(45,212,191,.22);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  transition:background .3s,color .3s;
-}
-/* decorative blobs */
-body::before{
-  content:"";position:fixed;top:-180px;right:-120px;width:460px;height:460px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,rgba(14,184,166,.18),transparent 70%);
-  pointer-events:none;z-index:0;
-}
-body::after{
-  content:"";position:fixed;bottom:-200px;left:-140px;width:500px;height:500px;border-radius:50%;
-  background:radial-gradient(circle at 70% 70%,rgba(14,165,233,.16),transparent 70%);
-  pointer-events:none;z-index:0;
-}
-.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 22px 64px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.wrap{max-width:880px;margin:0 auto;padding:18px 16px 40px}
+header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:30px 28px;border-radius:16px;margin-bottom:18px}
+header h1{font-size:24px;margin-bottom:8px}
+header p{opacity:.94;font-size:13.5px;max-width:640px}
+/* ===== Language tiers (en / mix / zh) ===== */
+.zh{display:none}
+body.lang-en .zh{display:none}
+body.lang-mix .zh{display:inline;font-size:.82em;margin-left:6px;font-weight:400}
+body.lang-zh .en{display:inline;font-size:.78em;margin-left:6px;font-weight:400}
+body.lang-zh .zh{display:inline}
+/* Colored backgrounds always show white text, regardless of the language tier.
+   Without this, inherit + lang rules can leave Chinese/English subtitles invisible on the
+   purple gradient header and the colored chapter cards. */
+header, header h1, header p, header .en, header .zh, header .src, header .sub, header .t, header .no{ color:#fff; }
+header p, header .en, header .zh{ opacity:1; }
+.ch .top, .ch .top .en, .ch .top .zh, .ch .top .no, .ch .top .t{ color:#fff; opacity:1; }
 
-/* top bar */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0 8px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:-.3px}
-.brand .mark{width:30px;height:30px;border-radius:9px;background:var(--brand-grad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;box-shadow:var(--shadow)}
-.theme-btn{background:var(--card);border:1px solid var(--border);color:var(--text-2);border-radius:10px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow);transition:.15s}
-.theme-btn:hover{transform:translateY(-1px)}
-
-/* hero */
-.hero{text-align:center;padding:48px 0 30px}
-.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--brand);background:rgba(13,148,136,.1);padding:6px 14px;border-radius:999px;margin-bottom:18px}
-.hero h1{font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:14px}
-.hero h1 .grad{background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:16px;color:var(--text-2);max-width:440px;margin:0 auto}
-.hero .en{font-size:13px;color:var(--text-3);margin-top:6px}
-
-/* question */
-.qblock{margin:34px auto 0;max-width:520px;text-align:center}
-.qblock .qlabel{font-size:14px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
-.qblock .qhead{font-size:30px;font-weight:800;letter-spacing:-.5px}
-
-/* grade grid */
-.grades{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
-.gcard{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  padding:38px 20px;text-decoration:none;color:var(--text);
-  box-shadow:var(--shadow);transition:transform .16s,box-shadow .16s,border-color .16s;
-  position:relative;overflow:hidden;
-}
-.gcard::after{content:"";position:absolute;inset:0;background:var(--brand-grad);opacity:0;transition:opacity .16s}
-.gcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:transparent}
-.gcard:hover::after{opacity:.06}
-.gcard .gnum{font-size:52px;font-weight:800;line-height:1;background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1}
-.gcard .gzh{font-size:18px;font-weight:700;position:relative;z-index:1}
-.gcard .gen{font-size:13px;color:var(--text-3);position:relative;z-index:1}
-.gcard .go{margin-top:10px;font-size:13px;font-weight:700;color:var(--brand);display:flex;align-items:center;gap:4px;position:relative;z-index:1}
-.gcard:hover .go{gap:8px;transition:gap .16s}
-
-/* footer */
-.foot{text-align:center;margin-top:48px;font-size:13px;color:var(--text-3)}
-.foot a{color:var(--brand);text-decoration:none}
-.foot a:hover{text-decoration:underline}
-
-@media(max-width:560px){
-  .hero{padding:32px 0 20px}
-  .hero h1{font-size:30px}
-  .qblock .qhead{font-size:24px}
-  .grades{grid-template-columns:1fr}
-  .gcard .gnum{font-size:44px}
-}
+.langbar{position:fixed;top:8px;right:10px;z-index:300;display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.langseg{display:inline-flex}
+.langseg button{background:transparent;color:#374151;border:none;padding:6px 11px;font-size:12px;cursor:pointer;font-family:inherit;border-radius:999px;white-space:nowrap}
+.langseg button.on{background:var(--accent);color:#fff}
+@media(max-width:680px){.langbar{top:6px;right:6px}.langseg button{padding:5px 8px;font-size:11px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px;margin-bottom:16px}
+.sel{margin-bottom:22px}
+.sel:last-child{margin-bottom:0}
+.sel h3{font-size:15px;margin-bottom:4px}
+.sel .hint{font-size:12px;color:var(--muted);margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{background:#fff;border:1.5px solid var(--line);color:var(--text);border-radius:999px;padding:9px 16px;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chip .e{font-size:11px;opacity:.75;display:block}
+.chip.on .e{opacity:.9}
+.chip .rec{font-size:10.5px;font-weight:700;background:#dcfce7;color:#15803d;border-radius:999px;padding:2px 7px;margin-left:4px;vertical-align:middle}
+.chip.on .rec{background:rgba(255,255,255,.28);color:#fff}
+.go{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:8px}
+button.enter{font-family:inherit;border:none;cursor:pointer;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:600;background:var(--accent);color:#fff}
+button.enter:hover{background:#6d28d9}
+button.enter:disabled{background:#cbbef0;cursor:not-allowed}
+.remind{font-size:12.5px;color:var(--muted)}
+.remind a{color:var(--accent);cursor:pointer;text-decoration:underline;background:transparent;border:none;font-family:inherit;font-size:12.5px;padding:0}
+.choose{font-size:12.5px;color:var(--muted);margin-top:10px}
+.choose b{color:var(--text)}
+.soon{display:none;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:18px 20px;margin-top:18px;font-size:14px;color:#9a3412}
+.soon.show{display:block}
+.soon .t{font-weight:700;font-size:15px;margin-bottom:6px}
+.visit{text-align:center;font-size:11px;color:var(--muted);margin-top:26px}
+a{color:var(--accent)}
 </style>
 </head>
 <body>
+
+<div class="langbar" title="显示语言 · Language display — 随时可改 · change anytime">
+ <span class="langseg">
+  <button data-lang="en" onclick="setLang('en')">English</button>
+  <button data-lang="mix" onclick="setLang('mix')">English + 中文</button>
+  <button data-lang="zh" onclick="setLang('zh')">中文 + English</button>
+ </span>
+</div>
+
 <div class="wrap">
-  <div class="topbar">
-    <div class="brand"><span class="mark">Q</span> QClaw 学习站</div>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()"><span id="themeIcon">🌙</span> <span id="themeText">夜间</span></button>
-  </div>
+<header>
+ <h1><span class="en">Pick your course</span><span class="zh">选择你的课程</span></h1>
+ <p><span class="en">This site re-organises Khan Academy videos to match Chinese public-school textbooks — by grade, subject and textbook edition. Choose below to open the matching study page.</span>
+    <span class="zh">这个网站把 Khan Academy 的视频，按中国公立校的「年级 / 学科 / 教材版本」重新整理。选一下，就进入对应的学习页。</span></p>
+</header>
 
-  <section class="hero">
-    <span class="eyebrow">可汗学院本地化课程 · 深圳公立校</span>
-    <h1>欢迎来到 <span class="grad">QClaw 学习站</span></h1>
-    <p>想学就学，随时学。</p>
-    <div class="en">Learn what you want, when you want.</div>
-  </section>
+<div class="card">
+ <!-- grade -->
+ <div class="sel" data-dim="grade">
+  <h3><span class="en">1 · Grade</span><span class="zh">1 · 年级</span></h3>
+  <div class="hint"><span class="en">Which grade are you in?</span><span class="zh">你（或孩子）读几年级？</span></div>
+  <div class="chips" id="gradeChips"></div>
+ </div>
+ <!-- subject -->
+ <div class="sel" data-dim="subject">
+  <h3><span class="en">2 · Subject</span><span class="zh">2 · 学科</span></h3>
+  <div class="hint"><span class="en">Which subject?</span><span class="zh">哪一科？</span></div>
+  <div class="chips" id="subjectChips"></div>
+ </div>
+ <!-- edition -->
+ <div class="sel" data-dim="edition">
+  <h3><span class="en">3 · Textbook edition</span><span class="zh">3 · 教材版本</span></h3>
+  <div class="hint"><span class="en">Which textbook does the school use?</span><span class="zh">学校用的是哪个版本？</span></div>
+  <div class="chips" id="editionChips"></div>
+ </div>
 
-  <div class="qblock">
-    <div class="qlabel">Choose your year</div>
-    <div class="qhead">你在几年级？</div>
-  </div>
+ <div class="go">
+  <button class="enter" id="enterBtn" disabled><span class="en">Enter →</span><span class="zh">进入 →</span></button>
+  <span class="choose" id="chooseLine"></span>
+ </div>
+ <div class="remind" id="remind" style="display:none"></div>
+ <div class="soon" id="soon"></div>
+</div>
 
-  <nav class="grades">
-    <a class="gcard" href="grade7/index.html">
-      <div class="gnum">7</div>
-      <div class="gzh">七年级</div>
-      <div class="gen">Grade 7</div>
-      <div class="go">进入 →</div>
-    </a>
-    <a class="gcard" href="grade8/index.html">
-      <div class="gnum">8</div>
-      <div class="gzh">八年级</div>
-      <div class="gen">Grade 8</div>
-      <div class="go">进入 →</div>
-    </a>
-  </nav>
-
-  <footer class="foot">
-    课程内容基于 <a href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy</a> 本地化改编 · 适配深圳公立校教学大纲
-  </footer>
+<p class="visit">
+ <span id="busuanzi_container_site_uv" style="display:none">
+  <span class="en">Visitors so far:&nbsp;</span><span class="zh">已经有&nbsp;</span>
+  <b id="busuanzi_value_site_uv">·</b><span class="zh">&nbsp;位访客来过这里</span>
+ </span>
+</p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </div>
 
 <script>
-function getStored(){return localStorage.getItem('qclaw-theme');}
-function getSys(){return window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
-function setTheme(t){if(t==='system'){localStorage.removeItem('qclaw-theme');document.documentElement.removeAttribute('data-theme');}else{localStorage.setItem('qclaw-theme',t);document.documentElement.setAttribute('data-theme',t);}upd();}
-function cur(){return getStored()||getSys();}
-function toggleTheme(){setTheme(cur()==='dark'?'light':'dark');}
-function upd(){var c=cur();document.getElementById('themeIcon').textContent=c==='dark'?'☀️':'🌙';document.getElementById('themeText').textContent=c==='dark'?'日间':'夜间';}
-(function(){var s=getStored();if(s)document.documentElement.setAttribute('data-theme',s);upd();window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(!getStored())upd();});})();
+/* ============ Dual-language helper ============ */
+function L(a,b){return '<span class="en">'+a+'</span><span class="zh">'+(b==null?a:b)+'</span>';}
+
+/* ============ Options (data-driven; add more as pages get built) ============ */
+const GRADES=[
+ {id:'7',en:'Grade 7',cz:'七年级'},
+ {id:'8',en:'Grade 8',cz:'八年级'},
+ {id:'9',en:'Grade 9',cz:'九年级'}
+];
+const SUBJECTS=[
+ {id:'math',en:'Math',cz:'数学'},
+ {id:'phys',en:'Physics',cz:'物理'},
+ {id:'chem',en:'Chemistry',cz:'化学'}
+];
+const EDITIONS=[
+ {id:'bsd',en:'BNU (Bei-Shi-Da)',cz:'北师大版',rec:true},
+ {id:'rj', en:'People’s Education',cz:'人教版'},
+ {id:'sk', en:'Su-Ke',cz:'苏科版'},
+ {id:'hs', en:'Hua-Shi',cz:'华师版'},
+ {id:'zj', en:'Zhejiang',cz:'浙教版'},
+ {id:'hk', en:'Shanghai',cz:'沪科版'},
+ {id:'sl', en:'Shandong',cz:'鲁教版'}
+];
+
+/* ============ Where each combo leads ============
+   Only combos with a built page are listed. Anything missing shows "coming soon".
+   Example: Grade 8 + Math + BNU  -> the site we built (home.html).
+   Add new lines here as more pages are created. */
+const MAP={
+ '8':{ math:{ bsd:'home.html' } }
+};
+
+/* ============ Language tier (en / mix / zh) ============ */
+const LKEY='bnu8_lang';
+function getLang(){return localStorage.getItem(LKEY)||'en';}
+function setLang(l){localStorage.setItem(LKEY,l);applyLang();}
+function applyLang(){
+ const l=getLang();
+ document.body.className=(' '+document.body.className+' ').replace(/\s+lang-(en|mix|zh)\b/g,' ').trim();
+ if(l==='mix'||l==='zh')document.body.classList.add('lang-'+l);
+ document.querySelectorAll('.langseg button').forEach(b=>{b.classList.toggle('on',b.dataset.lang===l);});
+}
+applyLang();
+
+/* ============ State ============ */
+const SEL={grade:null,subject:null,edition:null};
+const SKEY='bnu8_start_sel';
+
+function renderChips(list,dim,box){
+ box.innerHTML='';
+ list.forEach(o=>{
+  const b=document.createElement('button');
+  b.className='chip';
+  b.dataset.id=o.id;
+  b.innerHTML=L(o.en,o.cz)+(o.rec?' <span class="rec"><span class="en">ready now</span><span class="zh">已做好</span></span>':'');
+  b.onclick=()=>{
+   SEL[dim]=o.id;
+   [...box.children].forEach(c=>c.classList.toggle('on',c.dataset.id===o.id));
+   update();
+  };
+  box.appendChild(b);
+ });
+}
+renderChips(GRADES,'grade',document.getElementById('gradeChips'));
+renderChips(SUBJECTS,'subject',document.getElementById('subjectChips'));
+renderChips(EDITIONS,'edition',document.getElementById('editionChips'));
+// BNU is the edition this site is built for — pre-select it so nobody has to guess.
+(function(){SEL.edition='bsd';[...document.getElementById('editionChips').children].forEach(c=>c.classList.toggle('on',c.dataset.id==='bsd'));update();})();
+
+function label(dim,id){
+ const map={grade:GRADES,subject:SUBJECTS,edition:EDITIONS};
+ const o=map[dim].find(x=>x.id===id);
+ return o?L(o.en,o.cz):'';
+}
+function update(){
+ const done=SEL.grade&&SEL.subject&&SEL.edition;
+ document.getElementById('enterBtn').disabled=!done;
+ const line=document.getElementById('chooseLine');
+ if(done){
+  line.innerHTML=L('You chose: ','您选择了：')+label('grade',SEL.grade)+' · '+label('subject',SEL.subject)+' · '+label('edition',SEL.edition);
+ }else{
+  line.innerHTML='';
+ }
+ document.getElementById('soon').classList.remove('show');
+}
+
+function target(){
+ const g=MAP[SEL.grade];
+ if(!g)return null;
+ const s=g[SEL.subject];
+ if(!s)return null;
+ return s[SEL.edition]||null;
+}
+
+document.getElementById('enterBtn').onclick=function(){
+ if(!(SEL.grade&&SEL.subject&&SEL.edition))return;
+ localStorage.setItem(SKEY,JSON.stringify(SEL));
+ const t=target();
+ if(t){
+  location.href=t;
+ }else{
+  const box=document.getElementById('soon');
+  box.innerHTML='<div class="t">'+L('Not built yet','这个组合还没做好')+'</div>'
+   +'<div>'+L('You chose ','您选择了 ')+label('grade',SEL.grade)+' · '+label('subject',SEL.subject)+' · '+label('edition',SEL.edition)
+   +'. '+L('More grade / subject / edition pages are being added. For now, only Grade 8 · Math · BNU is ready.','。更多「年级 / 学科 / 版本」页面正在陆续补齐。目前只做好了：八年级 · 数学 · 北师大版。')+'</div>';
+  box.classList.add('show');
+ }
+};
+
+/* ============ Prefill last choice ============ */
+(function(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(SKEY));
+  if(saved&&saved.grade&&saved.subject&&saved.edition){
+   for(const [dim,box] of [['grade',document.getElementById('gradeChips')],['subject',document.getElementById('subjectChips')],['edition',document.getElementById('editionChips')]]){
+    const chip=[...box.children].find(c=>c.dataset.id===saved[dim]);
+    if(chip){chip.click();}
+   }
+   const r=document.getElementById('remind');
+   r.style.display='block';
+   r.innerHTML=L('Last time you opened: ','上次您进来时选的是：')+label('grade',saved.grade)+' · '+label('subject',saved.subject)+' · '+label('edition',saved.edition)
+    +' <a id="enterSaved">'+L('open it again →','直接再进 →')+'</a>';
+   document.getElementById('enterSaved').onclick=()=>{location.href=target()||'home.html';};
+  }
+ }catch(e){}
+})();
 </script>
 </body>
 </html>
