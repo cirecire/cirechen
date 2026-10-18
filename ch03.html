@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chapter 3 · Position and coordinates</title>
+<style>
+:root{
+ --bg:#fafafa; --card:#fff; --line:#e5e7eb; --text:#1f2937; --muted:#5b6472;
+ --accent:#7c3aed; --ok:#15803d; --err:#b91c1c; --warn:#b45309;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.wrap{display:grid;grid-template-columns:240px 1fr;gap:18px;max-width:1180px;margin:0 auto;padding:18px}
+header{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:22px 26px;border-radius:14px;margin-bottom:14px;grid-column:1/-1}
+header h1{font-size:22px;margin-bottom:4px}
+header p{opacity:.92;font-size:13px}
+nav{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;height:fit-content;position:sticky;top:14px}
+.nav-i{padding:10px 12px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.nav-i:hover{background:#f5f3ff}
+.nav-i.on{background:var(--accent);color:#fff}
+.nav-i .st{font-size:11px;opacity:.85}
+.nav-i .st.ok{color:var(--ok)}
+.nav-i .st.err{color:var(--err)}
+.nav-i.on .st.ok,.nav-i.on .st.err{color:#fff}
+main{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 26px;min-height:80vh}
+h2{font-size:18px;margin-bottom:6px}
+.lesson-id{color:var(--muted);font-size:13px;margin-bottom:14px}
+.box{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0}
+.box h3{font-size:15px;margin-bottom:8px;color:var(--accent)}
+.box .cn{font-size:12px;color:var(--muted);font-style:italic}
+.step{padding:10px 14px;background:var(--accent);color:#fff;border-radius:8px;margin-bottom:14px;font-size:15px}
+.note{background:#fffbeb;border-left:3px solid var(--warn);padding:10px 14px;border-radius:6px;margin:10px 0;font-size:14px}
+.note strong{color:var(--warn)}
+.vid{margin:14px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.vid-h{padding:10px 14px;background:#f5f3ff;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.vid-h .meta{display:flex;gap:8px;align-items:center;font-size:11px}
+.tag{background:#e5e7eb;padding:2px 8px;border-radius:10px;font-size:11px}
+.tag.core{background:#dcfce7;color:#166534}
+.tag.ext{background:#fef3c7;color:#92400e}
+.vid-h .cn{font-size:12px;color:var(--muted);margin-right:auto}
+.vid-h .title{font-size:13px;font-weight:600}
+button{font-family:inherit;border:none;cursor:pointer;border-radius:8px;padding:8px 14px;font-size:14px;background:var(--accent);color:#fff}
+button.secondary{background:#e5e7eb;color:var(--text)}
+button:hover{opacity:.92}
+input[type=text],input[type=number]{padding:10px 12px;font-size:15px;border:1px solid var(--line);border-radius:8px;width:120px;font-family:inherit}
+input:focus{outline:none;border-color:var(--accent)}
+input.ok{border-color:var(--ok);background:#f0fdf4}
+input.err{border-color:var(--err);background:#fef2f2}
+input:disabled{background:#f3f4f6;cursor:not-allowed}
+.q{margin:12px 0;padding:14px;background:#f9fafb;border-radius:8px;border-left:3px solid var(--accent)}
+.q .q-text{font-size:15px;margin-bottom:8px}
+.q .q-cn{font-size:12px;color:var(--muted);margin-bottom:8px}
+.q .feedback{margin-top:8px;font-size:13px;padding:6px 10px;border-radius:6px;display:none}
+.q .feedback.show{display:block}
+.q .feedback.ok{background:#dcfce7;color:#166534}
+.q .feedback.err{background:#fee2e2;color:#991b1b}
+.q .feedback.warn{background:#fef3c7;color:#92400e}
+.hint{background:#fef3c7;border-left:3px solid var(--warn);padding:10px 12px;border-radius:6px;margin:8px 0;font-size:13px;display:none}
+.hint.show{display:block}
+.diff{display:flex;gap:10px;align-items:center;margin:10px 0;font-size:13px}
+.diff button{padding:4px 10px;font-size:12px}
+.diff button.on{background:var(--ok)}
+.controls{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap;align-items:center}
+.controls .info{margin-left:auto;font-size:13px;color:var(--muted)}
+.progress{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin:8px 0}
+.progress div{height:100%;background:var(--accent);transition:width .3s}
+svg{max-width:100%;display:block;margin:0 auto}
+.num{color:var(--accent);font-weight:600}
+svg circle{transition:r .2s,fill .2s}
+svg line,svg path{transition:stroke .3s,opacity .3s}
+
+.intro-h{font-size:21px;font-weight:700;margin:0 0 4px}
+.intro-sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+.kp{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:14px 0}
+.kp-c{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#f9fafb}
+.kp-c .n{font-size:12px;color:var(--accent);font-weight:700}
+.kp-c .t{font-size:15px;font-weight:600;margin:2px 0 5px;line-height:1.4}
+.kp-c .d{font-size:12px;color:var(--muted);line-height:1.55}
+.why{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14px;line-height:1.85}
+.why b{color:var(--accent)}
+.how{font-size:14px;line-height:2.1;margin:8px 0 2px}
+.how b{color:var(--accent)}
+.big-start{margin-top:20px;text-align:center}
+.big-start button{font-size:16px;padding:13px 30px;border-radius:10px}
+.trytip{font-size:12px;color:var(--muted);margin:10px 0 2px}
+
+/* ===== Language tiers (en / mix / zh) ===== */
+.zh{display:none}
+body.lang-en .zh{display:none}
+body.lang-mix .zh{display:inline;font-size:.82em;margin-left:6px;font-weight:400}
+body.lang-zh .en{display:inline;font-size:.78em;margin-left:6px;font-weight:400}
+body.lang-zh .zh{display:inline}
+/* Colored backgrounds always show white text, regardless of the language tier.
+   Without this, inherit + lang rules can leave Chinese/English subtitles invisible on the
+   purple gradient header and the colored chapter cards. */
+header, header h1, header p, header .en, header .zh, header .src, header .sub, header .t, header .no{ color:#fff; }
+header p, header .en, header .zh{ opacity:1; }
+.ch .top, .ch .top .en, .ch .top .zh, .ch .top .no, .ch .top .t{ color:#fff; opacity:1; }
+
+.langbar{position:fixed;top:8px;right:10px;z-index:300;display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.langseg{display:inline-flex}
+.langseg button{background:transparent;color:#374151;border:none;padding:6px 11px;font-size:12px;cursor:pointer;font-family:inherit;border-radius:999px;white-space:nowrap}
+.langseg button.on{background:var(--accent);color:#fff}
+@media(max-width:680px){.langbar{top:6px;right:6px}.langseg button{padding:5px 8px;font-size:11px}}
+
+</style>
+</head>
+<body>
+<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:8px 16px;font-size:13px;display:flex;gap:18px;align-items:center;position:sticky;top:0;z-index:99">
+ <a href="home.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">← Overview</span><span class="zh">← 总览</span></a>
+ <a href="unittests.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">Unit tests</span><span class="zh">单元测试</span></a>
+ <span style="font-size:11px;color:#5b6472"><span class="en">Content from Khan Academy · CC BY-NC-SA</span><span class="zh">内容来自 Khan Academy · CC BY-NC-SA</span></span>
+</div>
+
+<div class="langbar" title="显示语言 · Language display — 随时可改 · change anytime">
+ <span class="langseg">
+  <button data-lang="en" onclick="setLang('en')">English</button>
+  <button data-lang="mix" onclick="setLang('mix')">English + 中文</button>
+  <button data-lang="zh" onclick="setLang('zh')">中文 + English</button>
+ </span>
+</div>
+
+<div class="wrap">
+<header>
+ <h1><span class="en">Chapter 3 · Position & Coordinates</span><span class="zh">第 3 章 · 位置与坐标</span></h1>
+ <p><span class="en">Grade 8 · 5 class periods · the shortest chapter</span><span class="zh">八年级 · 5 课时 · 最短的一章</span></p>
+ </header>
+<nav id="nav"></nav>
+<main id="main"></main>
+</div>
+
+<script>
+const VDIR='videos/Ch03_位置与坐标/';
+const KEY='bnu8_ch03_state';
+let S=load();
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return{};}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const LESSONS=[
+ {id:'intro',t:'Intro',cn:'Start here · What this chapter covers',n:'🏠'},
+ {id:'k1',t:'Determining Position',cn:'Locating points: ordered pairs and bearings',n:'3.1'},
+ {id:'k2',t:'The Coordinate Plane',cn:'The coordinate plane',n:'3.2'},
+ {id:'k3',t:'Reflections & Coordinates',cn:'Reflections and coordinates',n:'3.3'},
+ {id:'ext',t:'Optional · Transformations',cn:'Optional · Translations / rotations / dilations',n:''},
+ {id:'test',t:'Chapter check',cn:'Chapter check',n:''}
+];
+let cur='intro';
+function st(id){return S[id]||(S[id]={diag:null,prac:{ok:0,tot:0},vid:{},done:false});}
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(a){return a[ri(0,a.length-1)];}
+function L(a,b){ return '<span class="en">'+a+'</span><span class="zh">'+(b==null?a:b)+'</span>'; }
+
+/* ===== Video list (4 topics) ===== */
+const VIDEOS={
+k1:[
+ {f:'01_Introduction to the coordinate plane.mp4',t:'Intro to the coordinate plane',c:'core'},
+ {f:'02_Coordinate plane examples.mp4',t:'Coordinate plane examples',c:'core'},
+],
+k2:[
+ {f:'08_Interpreting plotted points.mp4',t:'Interpreting plotted points',c:'core'},
+ {f:'09_Finding the point not graphed.mp4',t:'Finding the point not graphed',c:'core'},
+ {f:'10_Plotting a point (ordered pair).mp4',t:'Plotting a point (ordered pair)',c:'core'},
+],
+k3:[
+ {f:'11_Reflecting points.mp4',t:'Reflecting points',c:'core'},
+ {f:'12_Reflecting shapes.mp4',t:'Reflecting shapes',c:'core'},
+ {f:'05_Using reflection tool.mp4',t:'Using reflection tool',c:'core'},
+],
+ext:[
+ {f:'03_Introduction to transformations.mp4',t:'Intro to transformations',c:'ext'},
+ {f:'04_Translation example.mp4',t:'Translation example',c:'ext'},
+ {f:'06_Using rotation widget.mp4',t:'Using rotation widget',c:'ext'},
+ {f:'07_Scaling down a triangle by half.mp4',t:'Scaling down a triangle by half',c:'ext'},
+],
+};
+const VTZ={
+ 'Intro to the coordinate plane':'坐标平面入门',
+ 'Coordinate plane examples':'坐标平面举例',
+ 'Interpreting plotted points':'解读已画出的点',
+ 'Finding the point not graphed':'找出未画出的点',
+ 'Plotting a point (ordered pair)':'描点（有序数对）',
+ 'Reflecting points':'点的对称',
+ 'Reflecting shapes':'图形的对称',
+ 'Using reflection tool':'使用对称工具',
+ 'Intro to transformations':'图形变换入门',
+ 'Translation example':'平移举例',
+ 'Using rotation widget':'使用旋转工具',
+ 'Scaling down a triangle by half':'把三角形缩小一半'
+};
+
+/* ============ Lesson K1: latitude, longitude and ordered pairs ============ */
+function microK1(el){
+ el.innerHTML=`
+  <div class="step">How does one pair of numbers pin down a spot?</div>
+  <div class="box">
+   <h3>One number is not enough</h3>
+   <div class="cn"></div>
+   <p>Say you're in Shenzhen — but Shenzhen is 2000 km². You need two numbers: <span class="num">22.5°N, 114.0°E</span> (latitude, longitude).</p>
+   <p>So a position in a plane is always given as an <b>ordered pair (x, y)</b> — order matters: (3, 5) ≠ (5, 3).</p>
+  </div>
+  <div class="box">
+   <h3>A direction first, then a distance</h3>
+   <div class="cn"></div>
+   <p>Before the coordinate plane, Chinese maps used <b>bearing</b>: from a known point, go "north 30° east, 50 meters". One direction + one distance = one position.</p>
+   <p>Same logic as (r, θ) in polar coordinates.</p>
+  </div>
+  <div class="box">
+   <h3>From bearings to ordered pairs</h3>
+   <div class="cn"></div>
+   <p>The coordinate plane is just <b>two perpendicular axes</b> — once you set them, every point has exactly one ordered pair. So "ordered pair" is the bridge from any positioning system (latitude/longitude, bearing, or grid).</p>
+  </div>
+  One (x, y) matches one point — one to one. K2 and K3 both build on this.`;
+}
+
+/* ============ Lesson K2: the coordinate plane ============ */
+function microK2(el){
+ let px=2,py=3,drag=null;
+ const render=()=>{
+  const X=x=>240+x*30, Y=y=>240-y*30;
+  const quadrants=[
+   {x:1,y:1,label:'I (+,+)'},{x:-1,y:1,label:'II (−,+)'},{x:-1,y:-1,label:'III (−,−)'},{x:1,y:-1,label:'IV (+,−)'}
+  ];
+  let q=quadrants.map(qt=>{
+   const cx=qt.x*150,cy=qt.y*100;
+   const onAxis=(px===0)||(py===0);
+   return `<text x="${X(cx/150*3-0)+15}" y="${Y(cy/100*4+1.5)-10}" font-size="13" fill="#9ca3af" font-weight="600">${qt.label}</text>`;
+  }).join('');
+  el.innerHTML=`
+   <div class="step">Drag P and watch the coordinates</div>
+   <div class="box">
+    <h3>The four quadrants</h3>
+    <div class="cn">The x-axis splits the plane top from bottom, the y-axis left from right; together they make four quadrants, numbered anticlockwise: I, II, III, IV.</div>
+    <svg viewBox="0 0 480 480" style="background:#fafafa;border-radius:8px;cursor:crosshair" id="svgK2">
+     <defs>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#374151"/></marker>
+     </defs>
+     <line x1="20" y1="${Y(0)}" x2="460" y2="${Y(0)}" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+     <line x1="${X(0)}" y1="460" x2="${X(0)}" y2="20" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+     <text x="455" y="${Y(0)-6}" font-size="14" fill="#374151">x</text>
+     <text x="${X(0)+8}" y="20" font-size="14" fill="#374151">y</text>
+     <text x="${X(0)-5}" y="${Y(0)+14}" font-size="11" fill="#5b6472">O</text>
+     ${[-4,-3,-2,-1,1,2,3,4].map(i=>`<line x1="${X(i)}" y1="${Y(0)-3}" x2="${X(i)}" y2="${Y(0)+3}" stroke="#9ca3af"/><text x="${X(i)-3}" y="${Y(0)+15}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     ${[-4,-3,-2,-1,1,2,3,4].map(i=>`<line x1="${X(0)-3}" y1="${Y(i)}" x2="${X(0)+3}" y2="${Y(i)}" stroke="#9ca3af"/><text x="${X(0)-15}" y="${Y(i)+4}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     ${q}
+     <line x1="${X(0)}" y1="${Y(0)}" x2="${X(px)}" y2="${Y(py)}" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4 3"/>
+     <line x1="${X(px)}" y1="${Y(0)}" x2="${X(px)}" y2="${Y(py)}" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3 3"/>
+     <line x1="${X(0)}" y1="${Y(py)}" x2="${X(px)}" y2="${Y(py)}" stroke="#15803d" stroke-width="1.5" stroke-dasharray="3 3"/>
+     <circle cx="${X(px)}" cy="${Y(py)}" r="8" fill="#7c3aed" stroke="#fff" stroke-width="2" id="dotP"/>
+     <text x="${X(px)+12}" y="${Y(py)-8}" font-size="14" font-weight="bold" fill="#7c3aed">P(${px}, ${py})</text>
+     <text x="${X(px/2)-12}" y="${Y(0)-6}" font-size="11" fill="#b91c1c">x=${px}</text>
+     <text x="${X(0)+8}" y="${Y(py/2)+4}" font-size="11" fill="#15803d">y=${py}</text>
+    </svg>
+    <div class="box" style="margin-top:14px;background:#fef3c7">
+     <h3 id="quadrantInfo">Quadrant analysis</h3>
+     <div id="coordDesc" style="font-size:14px"></div>
+    </div>
+   </div>`;
+  const desc=px>0&&py>0?'Quadrant I (+,+)':
+            px<0&&py>0?'Quadrant II (−,+)':
+            px<0&&py<0?'Quadrant III (−,−)':
+            px>0&&py<0?'Quadrant IV (+,−)':
+            'On the axes (sign is mixed)';
+  const sp=Math.abs(px)+Math.abs(py);
+  el.querySelector('#coordDesc').innerHTML=`Coordinates <b class="num">(${px}, ${py})</b> → ${desc}<br>Manhattan distance from the origin = |x|+|y| = <b>${sp}</b>`;
+  const svg=el.querySelector('#svgK2');
+  svg.onmousedown=e=>{drag=true;update(e);};
+  svg.onmousemove=e=>{if(drag)update(e);};
+  svg.onmouseup=svg.onmouseleave=()=>drag=false;
+  svg.ontouchstart=svg.ontouchmove=e=>{update(e.touches[0]);e.preventDefault();};
+  function update(e){
+   const r=svg.getBoundingClientRect();
+   const x=Math.round(((e.clientX-r.left)/r.width*480-240)/30);
+   const y=Math.round((240-(e.clientY-r.top)/r.height*480)/30);
+   px=Math.max(-4,Math.min(4,x)); py=Math.max(-4,Math.min(4,y));
+   render();
+  }
+ };
+ render();
+}
+
+/* ============ Lesson K3: reflections ============ */
+function microK3(el){
+ let px=2,py=3,axis='x';
+ const render=()=>{
+  let rx,ry,rule,ruleCN;
+  if(axis==='x'){rx=px;ry=-py;rule=`(${px}, ${py}) → (${px}, ${py<0?'−'+(-py):py})`;ruleCN='Across the x-axis: <b>x stays, y flips sign</b>';}
+  else if(axis==='y'){rx=-px;ry=py;rule=`(${px}, ${py}) → (${px<0?'−'+(-px):px}, ${py})`;ruleCN='Across the y-axis: <b>y stays, x flips sign</b>';}
+  else{rx=-px;ry=-py;rule=`(${px}, ${py}) → (${px<0?'−'+(-px):px}, ${py<0?'−'+(-py):py})`;ruleCN='Through the origin: <b>both x and y flip sign</b>';}
+  const X=x=>240+x*30, Y=y=>240-y*30;
+  el.innerHTML=`
+   <div class="step">Reflections — drag and see</div>
+   <div class="controls">
+    <button class="${axis==='x'?'on':''}" data-a="x">Reflect across the x-axis</button>
+    <button class="${axis==='y'?'on':''}" data-a="y">Reflect across the y-axis</button>
+    <button class="${axis==='o'?'on':''}" data-a="o">Reflect through the origin</button>
+   </div>
+   <div class="box">
+    <svg viewBox="0 0 480 480" style="background:#fafafa;border-radius:8px;cursor:crosshair" id="svgK3">
+     <defs><marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#374151"/></marker></defs>
+     <line x1="20" y1="${Y(0)}" x2="460" y2="${Y(0)}" stroke="#374151" stroke-width="2" marker-end="url(#arr3)"/>
+     <line x1="${X(0)}" y1="460" x2="${X(0)}" y2="20" stroke="#374151" stroke-width="2" marker-end="url(#arr3)"/>
+     <text x="455" y="${Y(0)-6}" font-size="14" fill="#374151">x</text>
+     <text x="${X(0)+8}" y="20" font-size="14" fill="#374151">y</text>
+     ${[-4,-3,-2,-1,1,2,3,4].map(i=>`<line x1="${X(i)}" y1="${Y(0)-3}" x2="${X(i)}" y2="${Y(0)+3}" stroke="#9ca3af"/><text x="${X(i)-3}" y="${Y(0)+15}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     ${[-4,-3,-2,-1,1,2,3,4].map(i=>`<line x1="${X(0)-3}" y1="${Y(i)}" x2="${X(0)+3}" y2="${Y(i)}" stroke="#9ca3af"/><text x="${X(0)-15}" y="${Y(i)+4}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     ${axis==='x'?`<line x1="20" y1="${Y(0)}" x2="460" y2="${Y(0)}" stroke="#b45309" stroke-width="3" opacity=".6"/>`:''}
+     ${axis==='y'?`<line x1="${X(0)}" y1="20" x2="${X(0)}" y2="460" stroke="#b45309" stroke-width="3" opacity=".6"/>`:''}
+     <line x1="${X(px)}" y1="${Y(py)}" x2="${X(rx)}" y2="${Y(ry)}" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4 3"/>
+     <circle cx="${X(px)}" cy="${Y(py)}" r="8" fill="#7c3aed" stroke="#fff" stroke-width="2"/>
+     <circle cx="${X(rx)}" cy="${Y(ry)}" r="8" fill="#b91c1c" stroke="#fff" stroke-width="2"/>
+     <text x="${X(px)+12}" y="${Y(py)-8}" font-size="13" font-weight="bold" fill="#7c3aed">P(${px},${py})</text>
+     <text x="${X(rx)+12}" y="${Y(ry)-8}" font-size="13" font-weight="bold" fill="#b91c1c">P'(${rx},${ry})</text>
+    </svg>
+    <div class="box" style="margin-top:14px;background:#dbeafe">
+     <h3>The pattern</h3>
+     <p style="font-size:16px">${rule}</p>
+     <p style="margin-top:6px;font-size:14px">${ruleCN}</p>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px">Hint: drag P (or click an axis to switch it) and compare the coordinates of P and P'.</p>
+   </div>`;
+  el.querySelectorAll('[data-a]').forEach(b=>{b.onclick=()=>{axis=b.dataset.a;render();};});
+  const svg=el.querySelector('#svgK3');
+  let drag=false;
+  svg.onmousedown=()=>drag=true;
+  svg.onmousemove=e=>{if(drag)update(e);};
+  svg.onmouseup=svg.onmouseleave=()=>drag=false;
+  function update(e){
+   const r=svg.getBoundingClientRect();
+   px=Math.max(-4,Math.min(4,Math.round(((e.clientX-r.left)/r.width*480-240)/30)));
+   py=Math.max(-4,Math.min(4,Math.round((240-(e.clientY-r.top)/r.height*480)/30)));
+   render();
+  }
+ };
+ render();
+}
+
+/* ============ Quick check ============ */
+function diag(el,lessonId,generator){
+ el.innerHTML=`<div class="step"><span class="en">Quick check</span><span class="zh">小测一下</span></div><div class="box"><p style="font-size:14px;color:var(--muted)">3 questions, just to see where you stand. Pass 3/3 to skip the lesson; otherwise the lesson comes next.</p><div id="diagQ"></div></div>`;
+ const qEl=el.querySelector('#diagQ');
+ let ok=0;
+ const qs=Array.from({length:3},()=>generator('diag'));
+ let i=0;
+ const show=()=>{
+  if(i>=3){
+   st(lessonId).diag=ok;
+   if(ok===3){
+    qEl.innerHTML=`<div class="note" style="background:#dcfce7;border-color:var(--ok)"><strong>3/3:</strong> you already have this — skip the lesson and go to practice.</div><div style="margin-top:14px"><button id="skipMicro"><span class="en">Skip the lesson, go to practice →</span><span class="zh">跳过微课，去做练习 →</span></button></div>`;
+    qEl.querySelector('#skipMicro').onclick=()=>{cur=`prac-${lessonId}`;render();};
+   } else {
+    qEl.innerHTML=`<div class="note" style="background:#fef3c7;border-color:var(--warn)"><strong>${ok}/3:</strong> work through the lesson below to fill the gap.</div><div style="margin-top:14px"><button id="goMicro"><span class="en">Go to lesson →</span><span class="zh">去看微课 →</span></button></div>`;
+    qEl.querySelector('#goMicro').onclick=()=>{cur=`micro-${lessonId}`;render();};
+   }
+   save();renderNav();
+   return;
+  }
+  const q=qs[i];
+  qEl.innerHTML=`
+   <div class="q">
+    <div class="q-text">${i+1}. ${L(q.q,q.zhq)}</div>
+    
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+     <input type="text" id="da" autocomplete="off" placeholder="?"> <button id="sub"><span class="en">Submit</span><span class="zh">提交</span></button>
+    </div>
+    <div class="hint" id="ht"></div>
+    <div class="feedback" id="fb"></div>
+   </div>`;
+  const input=qEl.querySelector('#da'),fb=qEl.querySelector('#fb'),ht=qEl.querySelector('#ht');
+  input.focus();
+  qEl.querySelector('#sub').onclick=check;
+  input.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const ans=input.value.trim();
+   const correct=q.check(ans);
+   if(correct===true){ok++;fb.className='feedback show ok';fb.innerHTML=L('✓ Correct · correct','✓ 正确 · 对了');input.disabled=true;setTimeout(()=>{i++;show();},700);}
+   else if(correct==='hint'){ht.className='hint show';ht.innerHTML=L(q.hint||'Have another go.', q.zhh||'再试一次。');}
+   else{fb.className='feedback show err';fb.innerHTML=L('✗ Not right, try again.','✗ 不对，再试一次。');}
+  }
+ };
+ show();
+}
+
+/* ============ Practice generators (by topic) ============ */
+const generators={
+k1:()=>{ // ordered pairs and bearings
+ const type=ri(1,3);
+ if(type===1){
+  const x=ri(-4,4),y=ri(-4,4);
+  const opts=[`(${x},${y})`,`(${y},${x})`,`(${x},${-y})`,`(${-x},${y})`];
+  return {q:`Point P has x-coordinate ${x} and y-coordinate ${y}. Which is its ordered pair?`,
+   zhq:`点 P 的横坐标是 ${x}，纵坐标是 ${y}。它的有序数对是？`,
+   check:a=>a===opts[0],ans:opts[0],opts,choice:true,hint:'Order matters: (x, y), not (y, x).',zhh:'顺序很重要：(x, y)，不是 (y, x)。'};
+ } else if(type===2){
+  // Never use 0: a point on an axis is not in any quadrant, so it has no answer.
+  const NZ=[-3,-2,-1,1,2,3];
+  const x=NZ[ri(0,5)], y=NZ[ri(0,5)];
+  const qn = x>0 ? (y>0?1:4) : (y>0?2:3);
+  return {q:`Find the point (${x}, ${y}). Which quadrant is it in?`,
+   zhq:`找出点 (${x}, ${y})。它在第几象限？`,
+   check:v=>parseInt(v)===qn, ans:String(qn),
+   hint:`(${x}, ${y}) — the signs of x and y tell you the quadrant.`,
+   zhh:`(${x}, ${y}) —— x 和 y 的正负决定它所在的象限。`};
+ } else {
+  const a=ri(1,3),b=ri(1,3);
+  return {q:`In a grid, point A is at row ${a}, column ${b}. What is the ordered pair (column, row)?`,
+   zhq:`在方格中，点 A 位于第 ${a} 行第 ${b} 列。它的有序数对（列, 行）是？`,
+   // NB: do NOT name the parameter `a` — it would shadow the row number above
+   check:v=>v===`(${b},${a})`,ans:`(${b},${a})`,hint:'In an ordered pair: x comes first (column), y second (row).',zhh:'有序数对中：x 在前（列），y 在后（行）。'};
+ }
+},
+k2:()=>{ // plotting and reading points
+ const type=ri(1,2);
+ if(type===1){
+  const x=ri(-5,5),y=ri(-5,5);
+  return {q:`What are the coordinates of the point 3 units right of origin and 2 units up?`,
+   zhq:`原点向右 3 个单位、再向上 2 个单位的点，坐标是什么？`,
+   check:v=>v===`(3,2)`,ans:`(3,2)`,hint:'Right is +x, up is +y.',zhh:'向右是 +x，向上是 +y。'};
+ } else {
+  const x=ri(-4,4),y=ri(-4,4);
+  return {q:`The point (${x}, ${y}) — what is its distance from the y-axis (absolute value of x)?`,
+   zhq:`点 (${x}, ${y}) 到 y 轴的距离（x 的绝对值）是多少？`,
+   check:a=>parseInt(a)===Math.abs(x),ans:String(Math.abs(x)),hint:'Distance from y-axis = |x|.',zhh:'到 y 轴的距离 = |x|。'};
+ }
+},
+k3:()=>{ // reflections
+ const ax=['x','y','o'][ri(0,2)];
+ const x=ri(-4,4),y=ri(-4,4);
+ let rx,ry;
+ if(ax==='x'){rx=x;ry=-y;}
+ else if(ax==='y'){rx=-x;ry=y;}
+ else{rx=-x;ry=-y;}
+ const axn=ax==='o'?'origin':ax+'-axis';
+ const hintz=ax==='x'?'(x, y) → (x, −y)':ax==='y'?'(x, y) → (−x, y)':'(x, y) → (−x, −y)';
+ return {q:`If point P = (${x}, ${y}) is reflected across the ${axn}, what is P'?`,
+   zhq:`点 P = (${x}, ${y}) 关于${ax==='o'?'原点':ax+'轴'}对称后的点 P' 是什么？`,
+   check:a=>{
+    const m=a.match(/^\(?\s*(-?\d+)\s*,\s*(-?\d+)\s*\)?$/);
+    if(!m)return false;
+    return parseInt(m[1])===rx&&parseInt(m[2])===ry;
+   },ans:`(${rx},${ry})`,
+   hint:ax==='x'?'(x, y) → (x, −y)':ax==='y'?'(x, y) → (−x, y)':'(x, y) → (−x, −y)',zhh:hintz};
+},
+};
+
+/* ============ Videos module ============ */
+function videos(el,lessonId){
+ const list=VIDEOS[lessonId]||[];
+ if(!list.length){el.innerHTML='<div class="note">No videos for this section.</div>';return;}
+ let html=`<div class="step"><span class="en">Videos</span><span class="zh">视频</span> · ${LESSONS.find(l=>l.id===lessonId).t}</div>`;
+ html+=`<div class="box"><p style="font-size:13px;color:var(--muted)"><span class="tag core">Watch first</span> watch first; <span class="tag ext">Optional</span> if you have time.</p></div>`;
+ list.forEach((v,i)=>{
+  const watched=st(lessonId).vid[i];
+  html+=`<div class="vid">
+   <div class="vid-h">
+    <span class="title">${L(v.t,(typeof VTZ!=='undefined'&&VTZ[v.t])||v.t)}</span>
+    
+    <span class="meta">
+     <span class="tag ${v.c}"><span class="en">${v.c==='core'?'Core':'Extra'}</span><span class="zh">${v.c==='core'?'核心':'拓展'}</span></span>
+     <span class="st ${watched?'ok':''}">${watched?'✓ watched':'Unwatched'}</span>
+     <button data-i="${i}">${watched?'<span class="en">▶ Replay</span><span class="zh">▶ 重播</span>':'<span class="en">▶ Play</span><span class="zh">▶ 播放</span>'}</button>
+    </span>
+   </div>
+   <div id="vc${i}" style="display:${watched?'block':'none'}">
+    <video controls preload="none" style="width:100%;background:#000" src="${encodeURI(VDIR+v.f)}"></video>
+   </div>
+  </div>`;
+ });
+ el.innerHTML=html;
+ el.querySelectorAll('[data-i]').forEach(b=>{
+  b.onclick=()=>{
+   const i=parseInt(b.dataset.i);
+   const slot=el.querySelector('#vc'+i);
+   const v=slot.querySelector('video');
+   if(slot.style.display==='none'){slot.style.display='block';v.play();}
+   else{v.pause();v.currentTime=0;slot.style.display='none';}
+   st(lessonId).vid[i]=true;save();renderNav();b.textContent='▶ Replay';
+   b.parentElement.querySelector('.st').className='st ok';
+   b.parentElement.querySelector('.st').textContent='✓ watched';
+  };
+ });
+}
+
+/* ============ Practice module ============ */
+function practice(el,lessonId){
+ const gen=generators[lessonId];
+ if(!gen){el.innerHTML='<div class="note">No practice for this.</div>';return;}
+ const s=st(lessonId);
+ let streak=0,need=5,q=null,ans='',tries=0;
+ let diff=1; // 1=easy,2=med,3=hard
+ const pickDiff=()=>diff;
+ function newQ(){q=gen(pickDiff());tries=0;}
+ const update=()=>{
+  el.innerHTML=`
+   <div class="step"><span class="en">Practice</span><span class="zh">练习</span> (${streak}/${need})</div>
+   <div class="diff">
+    Difficulty: 
+    <button class="secondary ${diff===1?'on':''}" data-d="1">Easy</button>
+    <button class="secondary ${diff===2?'on':''}" data-d="2">Medium</button>
+    <button class="secondary ${diff===3?'on':''}" data-d="3">Hard</button>
+    <span class="info">Correct: ${s.prac.ok}/${s.prac.tot} (streak ${streak})<button class="secondary" id="rs" style="margin-left:8px"><span class="en">Reset</span><span class="zh">重置</span></button></span>
+   </div>
+   <div class="progress"><div style="width:${(streak/need)*100}%"></div></div>
+   <div class="q">
+    <div class="q-text">${L(q.q,q.zhq)}</div>
+    
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+     <input type="text" id="pi" autocomplete="off" placeholder="?"> <button id="ps"><span class="en">Submit</span><span class="zh">提交</span></button>
+    </div>
+    <div class="hint" id="ph"></div>
+    <div class="feedback" id="pf"></div>
+   </div>`;
+  el.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{diff=parseInt(b.dataset.d);update();});
+  el.querySelector('#rs').onclick=()=>{s.prac={ok:0,tot:0};streak=0;diff=1;save();update();renderNav();};
+
+  const syncTop=()=>{
+   const stp=el.querySelector('.step'); if(stp) stp.innerHTML='<span class="en">Practice</span><span class="zh">练习</span> ('+streak+'/'+need+')';
+   const pg=el.querySelector('.progress'); if(pg&&pg.firstElementChild) pg.firstElementChild.style.width=(streak/need)*100+'%';
+   const inf=el.querySelector('.info'); if(inf){const rb=inf.querySelector('#rs');inf.textContent='Correct: '+s.prac.ok+'/'+s.prac.tot+' (streak '+streak+') ';if(rb)inf.appendChild(rb);}
+  };
+  const inp=el.querySelector('#pi'),fb=el.querySelector('#pf'),ht=el.querySelector('#ph');
+  inp.focus();
+  el.querySelector('#ps').onclick=check;
+  inp.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const a=inp.value.trim();
+   const r=q.check(a);
+   if(r===true){
+    streak++;s.prac.ok++;s.prac.tot++;
+    fb.className='feedback show ok';fb.innerHTML=L('✓ correct!','✓ 对了！');
+    inp.disabled=true;
+    syncTop();
+    if(streak>=need){s.done=true;fb.innerHTML+='<br><strong>'+L('Section cleared ✓','本节过关 ✓')+'</strong>';save();renderNav();}
+    else if(streak>=3&&diff<3){diff++;}
+    setTimeout(()=>{newQ();update();},900);
+   } else {
+    tries++;
+    if(tries===1){
+     ht.className='hint show';ht.innerHTML=L(q.hint||'Have another go.', q.zhh||'再试一次。');
+     fb.className='feedback show err';fb.innerHTML=L('✗ Try again. ','✗ 再试一次。');
+    } else if(tries===2){
+     fb.className='feedback show err';
+     fb.innerHTML=L('✗ Not quite. '+(q.sol?('Method: '+q.sol):(q.hint?('Hint: '+q.hint):'Work through it once more.')), '✗ 不太对。'+(q.zhs?('方法：'+q.zhs):(q.zhh?('提示：'+q.zhh):'再算一遍。')));
+    } else {
+     streak=0;s.prac.tot++;syncTop();
+     if(diff>1)diff--;
+     fb.className='feedback show err';
+     fb.innerHTML=L('The answer is <b>'+q.ans+'</b>'+(q.sol?('. '+q.sol):'. '), '答案是 <b>'+q.ans+'</b>'+(q.zhs?('。'+q.zhs):'。'));
+     inp.disabled=true;save();renderNav();
+     setTimeout(()=>{q=gen();tries=0;update();},2400);
+    }
+   }
+   save();
+  }
+ };
+ newQ();update();
+}
+
+/* ============ Chapter check ============ */
+function chTest(el){
+ el.innerHTML=`<div class="step"><span class="en">Chapter check</span><span class="zh">章末自己测</span></div><div class="box"><p style="font-size:13px;color:var(--muted)">8 questions covering every topic in this chapter. Not timed, not scored.</p><div id="tq"></div></div>`;
+ const tq=el.querySelector('#tq');
+ const qs=[];
+ for(let i=0;i<3;i++)qs.push(generators.k1(i+1));
+ for(let i=0;i<2;i++)qs.push(generators.k2(i+1));
+ for(let i=0;i<3;i++)qs.push(generators.k3());
+ let i=0,ok=0;
+ const show=()=>{
+  if(i>=qs.length){
+   tq.innerHTML=`<div class="note" style="background:${ok>=6?'#dcfce7':'#fef3c7'};border-color:${ok>=6?'var(--ok)':'var(--warn)'}"><strong>${ok}/${qs.length}</strong> ${ok>=6?'Chapter passed! Move on to the next chapter':'Go back and review what you missed'}</div>`;
+   S.test={ok,tot:qs.length};save();renderNav();return;
+  }
+  const q=qs[i];
+  tq.innerHTML=`<div class="q"><div class="q-text">${i+1}/${qs.length}. ${q.q}</div><div style="display:flex;gap:8px"><input id="ti" autocomplete="off"><button id="ts"><span class="en">Submit</span><span class="zh">提交</span></button></div><div class="hint" id="th"></div><div class="feedback" id="tf"></div></div>`;
+  const inp=tq.querySelector('#ti'),fb=tq.querySelector('#tf'),ht=tq.querySelector('#th');
+  inp.focus();tq.querySelector('#ts').onclick=check;inp.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const r=q.check(inp.value.trim());
+   if(r===true){ok++;fb.className='feedback show ok';fb.textContent='✓';inp.disabled=true;setTimeout(()=>{i++;show();},600);}
+   else if(r==='hint'){ht.className='hint show';ht.textContent=q.hint;}
+   else{fb.className='feedback show err';fb.textContent='✗';setTimeout(()=>{i++;show();},900);}
+  }
+ };
+ show();
+}
+
+/* ============ Render ============ */
+
+/* ===== Chapter lobby: start here ===== */
+const GLOSS={k1:"有序数对",k2:"平面直角坐标系",k3:"轴对称",ext:"平移 / 旋转 / 缩放"};
+const USE_MICRO=true;
+const INTRO={why:"How does a delivery rider find you? \"Building 3, unit 502\" — two pieces of information pinning down one spot. That is a coordinate. Maps, where a character stands in a game, seating plans, spreadsheets: all of them are \"which column, which row\". Turn \"where\" into a pair of numbers and you can measure the distance between two points, or work out where a shape ends up after a flip.",desc:{k1:"Two pieces of information pin down a point: column and row, or a bearing",k2:"Writing \"where\" as a pair (x, y), and the four quadrants",k3:"What happens to coordinates when a shape is reflected",ext:"Translations, rotations and dilations (optional)"}};
+function goLesson(id){cur=USE_MICRO?('micro-'+id):id;render();}
+function introRender(main){
+  const pts=LESSONS.filter(l=>l.id!=='test'&&l.id!=='intro');
+  let h='<div class="intro-h"><span class="en">What this chapter covers</span><span class="zh">本章学什么</span></div>'
+    +'<div class="intro-sub"><span class="en">Skim the list to see where this chapter is going, then press the button at the bottom.</span><span class="zh">先扫一眼下面的清单，看本章去哪，然后按底部按钮开始。</span></div><div class="kp">';
+  pts.forEach(l=>{
+    const s=st(l.id);
+    const badge=s.done?' <span class="st ok">✓ done</span>':(s.prac.tot>0?' <span class="st">'+s.prac.ok+'/'+s.prac.tot+'</span>':'');
+    h+='<div class="kp-c"><div class="n">'+l.n+'</div><div class="t">'+l.t+(GLOSS[l.id]?' <span class="cn-tag">'+GLOSS[l.id]+'</span>':'')+'</div><div class="d">'+((INTRO.desc&&INTRO.desc[l.id])||'')+'</div>'+badge+'</div>';
+  });
+  h+='</div>';
+  h+='<div class="why"><b><span class="en">Where this shows up in real life</span><span class="zh">在真实生活里哪里会用到</span></b><br>'+INTRO.why+'</div>';
+  h+='<div class="box"><b><span class="en">How this chapter works</span><span class="zh">本章怎么学</span></b><div class="how">'
+    +'① <b><span class="en">Watch the lesson</span><span class="zh">看微课</span></b>: <span class="en">a few minutes to get what the section is about</span><span class="zh">花几分钟了解本节内容</span><br>'
+    +'② <b><span class="en">Practice</span><span class="zh">练一练</span></b>: <span class="en">5 correct in a row clears it; if you get stuck, hints walk you through</span><span class="zh">连对 5 题就算过关；卡住了就看提示</span><br>'
+    +'③ <b><span class="en">Next section</span><span class="zh">下一节</span></b>: <span class="en">on the left, </span><span class="zh">在左侧，</span>'+pts[0].n+', '+pts[1].n+'… open whichever you want, in any order'
+    +'</div></div>';
+  h+='<div class="big-start"><button id="startBtn">'+pts[0].n+' <span class="en">'+pts[0].t+'</span><span class="zh">开始 · '+NAVZH[pts[0].id]+'</span> →</button></div>';
+  main.innerHTML=h;
+  main.querySelector('#startBtn').onclick=()=>{goLesson(pts[0].id);};
+}
+const NAVZH={"intro":"概览","k1":"确定位置","k2":"平面直角坐标系","k3":"轴对称与坐标","ext":"平移·旋转·位似","test":"章末自己测"};
+const LKEY='bnu8_lang';
+function getLang(){return localStorage.getItem(LKEY)||'en';}
+function setLang(l){localStorage.setItem(LKEY,l);applyLang();}
+function applyLang(){const l=getLang();document.body.className=(' '+document.body.className+' ').replace(/\s+lang-(en|mix|zh)\b/g,' ').trim();if(l==='mix'||l==='zh')document.body.classList.add('lang-'+l);document.querySelectorAll('.langseg button').forEach(b=>{b.classList.toggle('on',b.dataset.lang===l);});}
+applyLang();
+
+
+function renderNav(){
+ const nav=document.getElementById('nav');
+ nav.innerHTML=LESSONS.map(l=>{
+  const s=st(l.id);
+  let stxt='';
+  if(s.done)stxt='<span class="st ok">✓</span>';
+  else if(s.prac.tot>0)stxt=`<span class="st ${s.prac.ok/s.prac.tot>0.6?'ok':'err'}">${s.prac.ok}/${s.prac.tot}</span>`;
+  return `<div class="nav-i ${l.id===cur||cur===`micro-${l.id}`||cur===`diag-${l.id}`||cur===`prac-${l.id}`?'on':''}" data-go="${l.id}">
+   <span><b>${l.n}</b> <span class="en">${l.t}</span><span class="zh">${NAVZH[l.id]||l.t}</span></span>${stxt}</div>`;
+ }).join('');
+ nav.querySelectorAll('[data-go]').forEach(n=>n.onclick=()=>{
+  const id=n.dataset.go;
+  cur = id==='test' ? 'test' : (id==='ext' ? 'ext' : `micro-${id}`);
+  render();
+ });
+}
+
+function render(){
+ const main=document.getElementById('main');
+ renderNav();
+ if(cur==='intro'||cur==='micro-intro'){introRender(main);return;}
+ if(cur==='test'){chTest(main);return;}
+ const m=cur.match(/^(diag|micro|prac)-(\w+)$/);
+ if(m){
+  const phase=m[1],id=m[2];
+  const lesson=LESSONS.find(l=>l.id===id);
+  if(!lesson){main.innerHTML='<div class="note">Unknown lesson</div>';return;}
+  if(id==='ext'){
+   main.innerHTML=`<div class="step">Optional · Translations / rotations / dilations</div><div class="box"><p style="font-size:13px;color:var(--muted)">Once coordinates make sense, these transformations help you picture how coordinates move and change.</p></div>`;
+   videos(main,'ext');
+   return;
+  }
+  const titles={k1:'Locating points',k2:'The coordinate plane',k3:'Reflections and coordinates'};
+  main.innerHTML=`<div class="lesson-id">${lesson.n} · <span class="en">${titles[id]} · ${lesson.cn}</span><span class="zh">${NAVZH[id]||titles[id]}</span></div>`;
+  const c=document.createElement('div');main.appendChild(c);
+  if(phase==='diag'){
+   if(st(id).diag===3){cur=`micro-${id}`;render();return;}
+   diag(c,id,generators[id]);
+  } else if(phase==='micro'){
+   if(id==='k1')microK1(c);
+   else if(id==='k2')microK2(c);
+   else if(id==='k3')microK3(c);
+   const after=document.createElement('div');main.appendChild(after);
+   videos(after,id);
+   const btn=document.createElement('div');btn.style.marginTop='14px';
+   btn.innerHTML=`<button id="toPrac">Go to practice</button>`;
+   main.appendChild(btn);
+   btn.querySelector('#toPrac').onclick=()=>{cur=`prac-${id}`;render();};
+  } else if(phase==='prac'){
+   practice(c,id);
+  }
+ } else {
+  introRender(main);
+ }
+}
+render();
+</script>
+<script>
+(function(){try{if(new URLSearchParams(location.search).get('go')==='test'){cur='test';render();}}catch(e){}})();
+</script>
+<p style="text-align:center;font-size:11px;color:var(--muted);margin:26px 0 8px">
+ <span id="busuanzi_container_site_uv" style="display:none">
+  <span class="en">Visitors so far:&nbsp;</span><span class="zh">已经有&nbsp;</span>
+  <b id="busuanzi_value_site_uv">·</b><span class="zh">&nbsp;位访客来过这里</span>
+ </span>
+</p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body></body>
+</html>
