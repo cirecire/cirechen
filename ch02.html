@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2 · Real numbers</title>
+<style>
+:root{
+  --bg:#f7f8fa; --card:#fff; --ink:#1c2430; --mute:#5b6472; --line:#e3e8ef;
+  --accent:#7c3aed; --accent2:#0ea5e9; --ok:#15803d; --bad:#b91c1c; --warn:#b45309;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#7c3aed,#0ea5e9);color:#fff;padding:26px 20px;border-radius:14px;margin-bottom:18px}
+header h1{font-size:24px;font-weight:700}
+header .sub{opacity:.92;font-size:14px;margin-top:4px}
+header .cn{font-size:13px;opacity:.85;margin-top:2px}
+.layout{display:grid;grid-template-columns:236px 1fr;gap:18px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}}
+nav{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;height:fit-content;position:sticky;top:14px}
+.nav-i{padding:10px 12px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.nav-i:hover{background:#f5f3ff}
+.nav-i.on{background:var(--accent);color:#fff}
+.nav-i .st{font-size:11px;opacity:.85}
+main{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;min-height:520px}
+h2{font-size:19px;margin-bottom:6px}
+h3{font-size:16px;margin:18px 0 8px;color:var(--accent)}
+.cn-tag{color:var(--mute);font-weight:400;font-size:13px}
+.lead{color:var(--mute);font-size:14px;margin-bottom:14px}
+.box{background:#faf9ff;border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:600;background:var(--accent);color:#fff;transition:.15s}
+button:hover{filter:brightness(1.08)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.step{display:inline-block;background:#f3e8ff;color:var(--accent);padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:10px}
+.micro{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+@media(max-width:680px){.micro{grid-template-columns:1fr}}
+.fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+.fig .cap{font-size:13px;font-weight:600;margin-bottom:6px}
+.fig .sub2{font-size:12px;color:var(--mute)}
+svg{display:block;margin:0 auto}
+.slider-row{display:flex;gap:20px;justify-content:center;align-items:center;margin:12px 0;flex-wrap:wrap}
+.slider-row label{font-size:13px;display:flex;align-items:center;gap:8px}
+input[type=range]{width:130px;accent-color:var(--accent)}
+.val{font-weight:700;color:var(--accent);min-width:56px;display:inline-block}
+.eqbox{text-align:center;font-size:16px;padding:12px;background:#fff;border:2px solid var(--accent);border-radius:10px;margin:12px 0;font-weight:700}
+.eqbox .num{color:var(--accent)}
+.vid-item{display:flex;gap:12px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:10px;margin:8px 0;background:#fff}
+.vid-item .t{flex:1}
+.vid-item .t b{font-size:14px;display:block}
+.vid-item .t small{color:var(--mute);font-size:12px}
+.badge{font-size:11px;padding:2px 8px;border-radius:12px;font-weight:600;white-space:nowrap}
+.b-core{background:#dcfce7;color:#15803d}
+.b-ext{background:#fef3c7;color:#a16207}
+.b-link{background:#e0e7ff;color:#4338ca}
+video{width:100%;max-width:520px;border-radius:8px;background:#000;display:block;margin:8px 0}
+.q{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
+.q .qt{font-size:15px;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:1.5px solid var(--line);border-radius:8px;background:#fff;font-size:14px;font-family:inherit}
+.opt:hover:not(:disabled){border-color:var(--accent);background:#f5f3ff}
+.opt.sel-ok{border-color:var(--ok);background:#dcfce7}
+.opt.sel-bad{border-color:var(--bad);background:#fee2e2}
+.fb{margin-top:10px;padding:10px;border-radius:8px;font-size:13px;display:none}
+.fb.ok{display:block;background:#dcfce7;color:#15803d}
+.fb.bad{display:block;background:#fee2e2;color:#b91c1c}
+.hint{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px;font-size:13px;margin-top:8px;display:none}
+.hint.on{display:block}
+.prog{height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin:10px 0}
+.prog i{display:block;height:100%;background:var(--ok);transition:.3s}
+.stat{display:flex;gap:14px;font-size:13px;color:var(--mute);flex-wrap:wrap}
+.stat b{color:var(--ink)}
+.mastery{font-size:12px;padding:3px 10px;border-radius:12px;font-weight:600}
+.m-none{background:#e5e7eb;color:#475569}.m-att{background:#fef08a;color:#854d0e}
+.m-fam{background:#bfdbfe;color:#1e40af}.m-pro{background:#a7f3d0;color:#065f46}
+.m-mas{background:#15803d;color:#fff}
+.note{font-size:12px;color:var(--mute);margin-top:6px}
+.credit{margin-top:22px;padding:12px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)}
+.stepbtn{padding:6px 12px;font-size:13px}
+
+.intro-h{font-size:21px;font-weight:700;margin:0 0 4px}
+.intro-sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+.kp{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:14px 0}
+.kp-c{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#f9fafb}
+.kp-c .n{font-size:12px;color:var(--accent);font-weight:700}
+.kp-c .t{font-size:15px;font-weight:600;margin:2px 0 5px;line-height:1.4}
+.kp-c .d{font-size:12px;color:var(--muted);line-height:1.55}
+.why{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14px;line-height:1.85}
+.why b{color:var(--accent)}
+.how{font-size:14px;line-height:2.1;margin:8px 0 2px}
+.how b{color:var(--accent)}
+.big-start{margin-top:20px;text-align:center}
+.big-start button{font-size:16px;padding:13px 30px;border-radius:10px}
+.trytip{font-size:12px;color:var(--muted);margin:10px 0 2px}
+
+/* ===== Language tiers (en / mix / zh) ===== */
+.zh{display:none}
+body.lang-en .zh{display:none}
+body.lang-mix .zh{display:inline;font-size:.82em;margin-left:6px;font-weight:400}
+body.lang-zh .en{display:inline;font-size:.78em;margin-left:6px;font-weight:400}
+body.lang-zh .zh{display:inline}
+/* Colored backgrounds always show white text, regardless of the language tier.
+   Without this, inherit + lang rules can leave Chinese/English subtitles invisible on the
+   purple gradient header and the colored chapter cards. */
+header, header h1, header p, header .en, header .zh, header .src, header .sub, header .t, header .no{ color:#fff; }
+header p, header .en, header .zh{ opacity:1; }
+.ch .top, .ch .top .en, .ch .top .zh, .ch .top .no, .ch .top .t{ color:#fff; opacity:1; }
+
+.langbar{position:fixed;top:8px;right:10px;z-index:300;display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.langseg{display:inline-flex}
+.langseg button{background:transparent;color:#374151;border:none;padding:6px 11px;font-size:12px;cursor:pointer;font-family:inherit;border-radius:999px;white-space:nowrap}
+.langseg button.on{background:var(--accent);color:#fff}
+@media(max-width:680px){.langbar{top:6px;right:6px}.langseg button{padding:5px 8px;font-size:11px}}
+
+</style>
+</head>
+<body>
+<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:8px 16px;font-size:13px;display:flex;gap:18px;align-items:center;position:sticky;top:0;z-index:99">
+ <a href="home.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">← Overview</span><span class="zh">← 总览</span></a>
+ <a href="unittests.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">Unit tests</span><span class="zh">单元测试</span></a>
+ <span style="font-size:11px;color:#5b6472"><span class="en">Content from Khan Academy · CC BY-NC-SA</span><span class="zh">内容来自 Khan Academy · CC BY-NC-SA</span></span>
+</div>
+
+<div class="langbar" title="显示语言 · Language display — 随时可改 · change anytime">
+ <span class="langseg">
+  <button data-lang="en" onclick="setLang('en')">English</button>
+  <button data-lang="mix" onclick="setLang('mix')">English + 中文</button>
+  <button data-lang="zh" onclick="setLang('zh')">中文 + English</button>
+ </span>
+</div>
+
+<div class="wrap">
+<header>
+  <h1><span class="en">Chapter 2 · Real Numbers</span><span class="zh">第 2 章 · 实数</span></h1>
+  <div class="sub"><span class="en">Grade 8 · 11 lessons · the heaviest chapter</span><span class="zh">八年级 · 11 节 · 最重的一章</span></div>
+  </header>
+
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="main"></main>
+</div>
+
+<div class="credit">
+  A learning prototype (test site), for self-study practice.
+</div>
+</div>
+
+<script>
+const VDIR='videos/Ch02_实数/';
+const V={
+ k1:[
+  {f:'01_Introduction to rational and irrational numbers.mp4',t:'Intro to rational & irrational numbers',c:'core'},
+  {f:'02_Recognizing rational and irrational numbers (examples).mp4',t:'Recognizing rational & irrational (examples)',c:'core'},
+  {f:'03_Proof that square root of 2 is irrational.mp4',t:'Proof that √2 is irrational',c:'core'},
+  {f:'33_Classifying numbers - rational & irrational.mp4',t:'Classifying numbers: rational & irrational',c:'core'}
+ ],
+ k2:[
+  {f:'07_Introduction to square roots.mp4',t:'Introduction to square roots',c:'core'},
+  {f:'08_Square root of decimal (example).mp4',t:'Square root of a decimal',c:'core'}
+ ],
+ k3:[
+  {f:'11_Introduction to cube roots.mp4',t:'Introduction to cube roots',c:'core'},
+  {f:'12_Cube root of a negative number (example).mp4',t:'Cube root of a negative number',c:'core'},
+  {f:'16_Dimensions of a cube from its volume.mp4',t:'Dimensions of a cube from its volume',c:'core'}
+ ],
+ k4:[
+  {f:'10_How to approximate square roots.mp4',t:'How to approximate square roots',c:'core'},
+  {f:'09_Approximating square roots to hundredths.mp4',t:'Approximating square roots to hundredths',c:'core'}
+ ],
+ k5:[
+  {f:'15_Comparing values with calculator.mp4',t:'Comparing values with calculator',c:'core'}
+ ],
+ k6:[
+  {f:'13_How to classify numbers.mp4',t:'How to classify numbers',c:'core'},
+  {f:'14_Comparing irrational numbers involving radicals.mp4',t:'Comparing irrational numbers with radicals',c:'core'},
+  {f:'04_Converting a fraction to a repeating decimal.mp4',t:'Converting a fraction to a repeating decimal',c:'ext'},
+  {f:'05_Converting repeating decimals to fractions 1.mp4',t:'Converting repeating decimals to fractions 1',c:'ext'},
+  {f:'06_Converting repeating decimals to fractions 2.mp4',t:'Converting repeating decimals to fractions 2',c:'ext'}
+ ],
+ k7:[
+  {f:'17_Simplifying square-root expressions.mp4',t:'Simplifying square-root expressions',c:'core'},
+  {f:'27_Exponent properties involving products.mp4',t:'Exponent properties: products',c:'link'},
+  {f:'28_Exponent properties involving quotients.mp4',t:'Exponent properties: quotients',c:'link'},
+  {f:'29_Negative exponents.mp4',t:'Negative exponents',c:'link'},
+  {f:'30_Negative exponent intuition.mp4',t:'Negative exponent intuition',c:'link'},
+  {f:'31_Products and exponents raised to an exponent.mp4',t:'Products & exponents raised to an exponent',c:'link'},
+  {f:'32_Powers of zero.mp4',t:'Powers of zero',c:'link'}
+ ],
+ ext:[
+  {f:'18_Scientific notation examples.mp4',t:'Scientific notation examples',c:'ext'},
+  {f:'19_Multiplying three numbers in scientific notation.mp4',t:'Multiplying three numbers in scientific notation',c:'ext'},
+  {f:'20_Multiplying in scientific notation.mp4',t:'Multiplying in scientific notation',c:'ext'},
+  {f:'21_Subtracting in scientific notation.mp4',t:'Subtracting in scientific notation',c:'ext'},
+  {f:'22_Express a small number in scientific notation.mp4',t:'Express a small number in scientific notation',c:'ext'},
+  {f:'23_Multiplying and dividing in scientific notation.mp4',t:'Multiplying & dividing in scientific notation',c:'ext'},
+  {f:'24_Red blood cells (scientific notation word problem).mp4',t:'Red blood cells (word problem)',c:'ext'},
+  {f:'25_Speed of light and distance from sun (scientific notation).mp4',t:'Speed of light & distance from sun',c:'ext'},
+  {f:'26_U.S. national debt (scientific notation word problem).mp4',t:'U.S. national debt (word problem)',c:'ext'}
+ ]
+};
+
+const VTZ={
+ 'Intro to rational & irrational numbers':'有理数与无理数入门',
+ 'Recognizing rational & irrational (examples)':'识别有理数与无理数（举例）',
+ 'Proof that √2 is irrational':'√2 是无理数的证明',
+ 'Classifying numbers: rational & irrational':'数的分类：有理数与无理数',
+ 'Introduction to square roots':'平方根入门',
+ 'Square root of a decimal':'小数的平方根',
+ 'Introduction to cube roots':'立方根入门',
+ 'Cube root of a negative number':'负数的立方根',
+ 'Dimensions of a cube from its volume':'由体积求立方体的棱长',
+ 'How to approximate square roots':'如何估算平方根',
+ 'Approximating square roots to hundredths':'把平方根估算到百分位',
+ 'Comparing values with calculator':'用计算器比较数值',
+ 'How to classify numbers':'如何对数字分类',
+ 'Comparing irrational numbers with radicals':'比较含根号的无理数',
+ 'Converting a fraction to a repeating decimal':'分数化为循环小数',
+ 'Converting repeating decimals to fractions 1':'循环小数化为分数（一）',
+ 'Converting repeating decimals to fractions 2':'循环小数化为分数（二）',
+ 'Simplifying square-root expressions':'化简二次根式',
+ 'Exponent properties: products':'指数性质：乘法',
+ 'Exponent properties: quotients':'指数性质：除法',
+ 'Negative exponents':'负指数',
+ 'Negative exponent intuition':'负指数的直观理解',
+ 'Products & exponents raised to an exponent':'乘积与指数的乘方',
+ 'Powers of zero':'零的次幂',
+ 'Scientific notation examples':'科学记数法举例',
+ 'Multiplying three numbers in scientific notation':'科学记数法中三个数的乘法',
+ 'Multiplying in scientific notation':'科学记数法乘法',
+ 'Subtracting in scientific notation':'科学记数法减法',
+ 'Express a small number in scientific notation':'用科学记数法表示很小的数',
+ 'Multiplying & dividing in scientific notation':'科学记数法的乘除',
+ 'Red blood cells (word problem)':'红细胞（应用题）',
+ 'Speed of light & distance from sun':'光速与日地距离',
+ 'U.S. national debt (word problem)':'美国国债（应用题）'
+};
+const KEY='bnu8_ch02_state';
+let S=load();
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return{};}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const LESSONS=[
+ {id:'intro',t:'Intro',cn:'Start here · What this chapter covers',n:'🏠'},
+ {id:'k1',t:'Irrational Numbers',cn:'Irrational numbers',n:'2.1'},
+ {id:'k2',t:'Square Roots',cn:'Square roots',n:'2.2'},
+ {id:'k3',t:'Cube Roots',cn:'Cube roots',n:'2.3'},
+ {id:'k4',t:'Estimating Roots',cn:'Estimating roots',n:'2.4'},
+ {id:'k5',t:'Using a Calculator',cn:'Using a calculator',n:'2.5'},
+ {id:'k6',t:'The Real Numbers',cn:'The real numbers',n:'2.6'},
+ {id:'k7',t:'Radicals',cn:'Radicals',n:'2.7'},
+ {id:'ext',t:'Optional · Scientific notation',cn:'Optional · Scientific notation',n:''},
+ {id:'test',t:'Chapter check',cn:'Chapter check',n:''}
+];
+let cur='intro';
+function st(id){return S[id]||(S[id]={diag:null,prac:{ok:0,tot:0},vid:{},done:false});}
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(a){return a[ri(0,a.length-1)];}
+// Dual-language wrapper: en mode shows English; mix shows English+small Chinese; zh shows Chinese+small English.
+function L(a,b){ return '<span class="en">'+a+'</span><span class="zh">'+(b==null?a:b)+'</span>'; }
+const SQR=[1,4,9,16,25,36,49,64,81,100,121,144,169,196,225];
+const CUB=[1,8,27,64,125,216,343,512,729,1000];
+
+/* ============ Lesson K1: placing √2 on the number line ============ */
+function microK1(el){
+  let step=0;
+  const steps=[
+    {t:'Mark 0 and 1 on the number line'},
+    {t:'At 1, draw a perpendicular of length 1'},
+    {t:'Join 0 to that point — the hypotenuse is √2'},
+    {t:'Swing an arc centred at 0 to meet the line at √2'}
+  ];
+  el.innerHTML=`
+    <div class="step">Have a go</div>
+    <h3>Where exactly is √2 on the number line?</h3>
+    <div class="lead">
+      √2 ≈ 1.414 is only an approximation; you cannot just measure it with a ruler. So build it with the theorem from chapter 1 — press through the steps.
+    </div>
+    <div class="row"><button class="stepbtn" id="prev">← Back</button>
+      <button class="stepbtn" id="next">Next →</button>
+      <button class="stepbtn ghost" id="auto">Autoplay</button>
+      <span class="val" id="snum">1 / 4</span></div>
+    <div class="fig"><div class="cap" id="stitle">${steps[0].t}</div>
+      <svg id="svgA" viewBox="0 0 560 260" width="540" height="250"></svg>
+      <div class="sub2" id="sdesc">${steps[0].d}</div></div>
+    <div class="box">There it is — √2 is a genuine point on the line, just like 1, 2 and 3.</div>`;
+
+  const SC=110, OX=70, OY=190;
+  const X=v=>OX+v*SC, Y=v=>OY-v*SC;
+  function draw(){
+    let g='';
+    // number line
+    g+=`<line x1="${X(-0.4)}" y1="${OY}" x2="${X(4.6)}" y2="${OY}" stroke="#1c2430" stroke-width="2"/>`;
+    for(let i=0;i<=4;i++){
+      g+=`<line x1="${X(i)}" y1="${OY-5}" x2="${X(i)}" y2="${OY+5}" stroke="#1c2430" stroke-width="1.5"/>`;
+      g+=`<text x="${X(i)}" y="${OY+20}" font-size="13" fill="#1c2430" text-anchor="middle">${i}</text>`;
+    }
+    // unit segment 0 to 1
+    if(step>=0){
+      g+=`<line x1="${X(0)}" y1="${OY+9}" x2="${X(1)}" y2="${OY+9}" stroke="#7c3aed" stroke-width="3"/>`;
+      g+=`<text x="${X(0.5)}" y="${OY+34}" font-size="12" fill="#7c3aed" text-anchor="middle">1</text>`;
+    }
+    if(step>=1){
+      g+=`<line x1="${X(1)}" y1="${OY}" x2="${X(1)}" y2="${Y(1)}" stroke="#0ea5e9" stroke-width="3"/>`;
+      g+=`<text x="${X(1)+12}" y="${(OY+Y(1))/2}" font-size="12" fill="#0ea5e9">1</text>`;
+    }
+    if(step>=2){
+      g+=`<line x1="${X(0)}" y1="${OY}" x2="${X(1)}" y2="${Y(1)}" stroke="#b91c1c" stroke-width="3"/>`;
+      const mx=(X(0)+X(1))/2, my=(OY+Y(1))/2;
+      g+=`<text x="${mx-18}" y="${my-6}" font-size="14" fill="#b91c1c" font-weight="bold">√2</text>`;
+      g+=`<text x="${X(1)+16}" y="${Y(1)-4}" font-size="12" fill="#1c2430">(1,1)</text>`;
+    }
+    if(step>=3){
+      const r=Math.sqrt(2)*SC;
+      g+=`<path d="M ${X(0)+r} ${OY} A ${r} ${r} 0 0 1 ${X(1)} ${Y(1)}" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="5 4"/>`;
+      g+=`<circle cx="${X(Math.sqrt(2))}" cy="${OY}" r="6" fill="#15803d" stroke="#fff" stroke-width="2"/>`;
+      g+=`<text x="${X(Math.sqrt(2))}" y="${OY-14}" font-size="13" fill="#15803d" font-weight="bold" text-anchor="middle">√2 ≈ 1.414</text>`;
+    }
+    el.querySelector('#svgA').innerHTML=g;
+    el.querySelector('#stitle').textContent=steps[step].t;
+    el.querySelector('#sdesc').textContent=steps[step].d;
+    el.querySelector('#snum').textContent=(step+1)+' / 4';
+  }
+  el.querySelector('#next').onclick=()=>{step=Math.min(3,step+1);draw();};
+  el.querySelector('#prev').onclick=()=>{step=Math.max(0,step-1);draw();};
+  el.querySelector('#auto').onclick=()=>{
+    step=0;draw();
+    let i=0;const t=setInterval(()=>{i++;if(i>=3){clearInterval(t);}step=Math.min(3,i);draw();},1100);
+  };
+  draw();
+}
+
+/* ============ Lesson K2: √9=3 vs x²=9 → ±3 ============ */
+function microK2(el){
+  let n=9;
+  el.innerHTML=`
+    <div class="step">Have a go</div>
+    <h3>√n  vs  x² = n </h3>
+    <div class="lead">Two questions that look alike but answer differently. Drag the slider and see.</div>
+    <div class="slider-row"><label>n = <input type="range" id="rn" min="1" max="25" value="9"><span class="val" id="vn">9</span></label></div>
+    <div class="micro">
+      <div class="fig"><div class="cap">What is √n?</div>
+        <svg id="sL" viewBox="0 0 240 150" width="230" height="144"></svg>
+        <div class="sub2" id="dL"></div></div>
+      <div class="fig"><div class="cap">Solutions of x² = n</div>
+        <svg id="sR" viewBox="0 0 240 150" width="230" height="144"></svg>
+        <div class="sub2" id="dR"></div></div>
+    </div>
+    <div class="box">√9 asks only for 3 — one answer. x² = 9 asks for x = ±3 — two answers.
+      </div>`;
+  const draw=()=>{
+    const r=Math.sqrt(n);
+    const isSq=Math.abs(r-Math.round(r))<1e-9;
+    let L=`<text x="120" y="52" font-size="26" fill="#7c3aed" font-weight="bold" text-anchor="middle">√${n} = ${isSq?Math.round(r):r.toFixed(3)}</text>
+           <text x="120" y="86" font-size="13" fill="#15803d" text-anchor="middle">One value only · never negative</text>
+           <line x1="40" y1="110" x2="200" y2="110" stroke="#e3e8ef" stroke-width="2"/>
+           <circle cx="${40+(r/6)*160}" cy="110" r="7" fill="#15803d" stroke="#fff" stroke-width="2"/>
+           <text x="40" y="132" font-size="11" fill="#5b6472" text-anchor="middle">0</text>`;
+    el.querySelector('#sL').innerHTML=L;
+    el.querySelector('#dL').innerHTML=`√${n} is the principal square root — the non-negative one`;
+    let R=isSq
+      ? `<text x="120" y="42" font-size="22" fill="#7c3aed" font-weight="bold" text-anchor="middle">x² = ${n}</text>
+         <text x="120" y="74" font-size="20" fill="#b91c1c" font-weight="bold" text-anchor="middle">x = +${Math.round(r)}  or  −${Math.round(r)}</text>
+         <text x="120" y="100" font-size="13" fill="#b91c1c" text-anchor="middle">${n===0?'only one (0)':'Two solutions · one positive, one negative'}</text>
+         <line x1="30" y1="124" x2="210" y2="124" stroke="#e3e8ef" stroke-width="2"/>
+         <circle cx="${120-(r/6)*90}" cy="124" r="7" fill="#b91c1c" stroke="#fff" stroke-width="2"/>
+         <circle cx="${120+(r/6)*90}" cy="124" r="7" fill="#b91c1c" stroke="#fff" stroke-width="2"/>
+         <text x="${120-(r/6)*90}" y="144" font-size="11" fill="#b91c1c" text-anchor="middle">−${Math.round(r)}</text>
+         <text x="${120+(r/6)*90}" y="144" font-size="11" fill="#b91c1c" text-anchor="middle">+${Math.round(r)}</text>`
+      : `<text x="120" y="42" font-size="22" fill="#7c3aed" font-weight="bold" text-anchor="middle">x² = ${n}</text>
+         <text x="120" y="74" font-size="18" fill="#b91c1c" font-weight="bold" text-anchor="middle">x = ±√${n} ≈ ±${r.toFixed(3)}</text>
+         <text x="120" y="100" font-size="13" fill="#b91c1c" text-anchor="middle">Two solutions · both irrational</text>
+         <line x1="30" y1="124" x2="210" y2="124" stroke="#e3e8ef" stroke-width="2"/>
+         <circle cx="${120-(r/6)*90}" cy="124" r="7" fill="#b91c1c" stroke="#fff" stroke-width="2"/>
+         <circle cx="${120+(r/6)*90}" cy="124" r="7" fill="#b91c1c" stroke="#fff" stroke-width="2"/>`;
+    el.querySelector('#sR').innerHTML=R;
+    el.querySelector('#dR').innerHTML=`x² = ${n} is an equation: find every number whose square is ${n}`;
+  };
+  el.querySelector('#rn').oninput=()=>{n=+el.querySelector('#rn').value;el.querySelector('#vn').textContent=n;draw();};
+  draw();
+}
+
+/* ============ Lesson K3: cube roots can be negative ============ */
+function microK3(el){
+  let v=8;
+  el.innerHTML=`
+    <div class="step">Have a go</div>
+    <h3>Cube roots can be negative </h3>
+    <div class="lead">Drag the slider past 0 and watch what happens.</div>
+    <div class="slider-row"><label>the number <input type="range" id="rv" min="-27" max="27" value="8"><span class="val" id="vv">8</span></label></div>
+    <div class="eqbox" id="res"></div>
+    <div class="micro">
+      <div class="fig"><div class="cap">Square root √v</div><svg id="cs" viewBox="0 0 240 120" width="230" height="115"></svg>
+        <div class="sub2" id="csd"></div></div>
+      <div class="fig"><div class="cap">Cube root ∛v</div><svg id="cc" viewBox="0 0 240 120" width="230" height="115"></svg>
+        <div class="sub2" id="ccd"></div></div>
+    </div>
+    <div class="box">(−3)² = 9. What number squares to −9? None. So √(−4) does not exist. But (−2)³ = −8, so ∛(−8) = −2.</div>`;
+  const draw=()=>{
+    const ok = v>=0;
+    const sr = ok?Math.sqrt(v):null;
+    const cr = Math.cbrt(v);
+    el.querySelector('#res').innerHTML =
+      `√${v} = ${ok? (Math.abs(sr-Math.round(sr))<1e-9? Math.round(sr): sr.toFixed(3)) : '<span style="color:#b91c1c">does not exist in the real numbers</span>'}`+
+      `&nbsp;&nbsp;&nbsp;&nbsp;∛${v} = ${Math.abs(cr-Math.round(cr))<1e-9? Math.round(cr): cr.toFixed(3)}`;
+    let S1=`<text x="120" y="48" font-size="24" font-weight="bold" fill="${ok?'#15803d':'#b91c1c'}" text-anchor="middle">${ok?(Math.abs(sr-Math.round(sr))<1e-9?Math.round(sr):sr.toFixed(3)):'No real solution'}</text>
+            <text x="120" y="80" font-size="12" fill="#5b6472" text-anchor="middle">${ok?'the number under the root must be ≥ 0':'negative numbers have no (real) square root'}</text>`;
+    el.querySelector('#cs').innerHTML=S1;
+    el.querySelector('#csd').textContent=ok?'can be done':'does not exist';
+    let S2=`<text x="120" y="48" font-size="24" font-weight="bold" fill="#15803d" text-anchor="middle">${Math.abs(cr-Math.round(cr))<1e-9?Math.round(cr):cr.toFixed(3)}</text>
+            <text x="120" y="80" font-size="12" fill="#5b6472" text-anchor="middle">${v<0?'negative numbers have cube roots too, and they are negative':'positive, negative and zero all have cube roots'}</text>`;
+    el.querySelector('#cc').innerHTML=S2;
+    el.querySelector('#ccd').textContent='always works';
+  };
+  el.querySelector('#rv').oninput=()=>{v=+el.querySelector('#rv').value;el.querySelector('#vv').textContent=v;draw();};
+  draw();
+}
+
+/* ============ Lesson K4: trapping the value ============ */
+function microK4(el){
+  let n=20;
+  el.innerHTML=`
+    <div class="step">Have a go</div>
+    <h3>Squeeze method </h3>
+    <div class="lead">How big is √20? Trap it between two integers, then tighten.</div>
+    <div class="slider-row"><label>n = <input type="range" id="rn2" min="2" max="90" value="20"><span class="val" id="vn2">20</span></label></div>
+    <div class="row"><button class="stepbtn" id="refine">Tighten by one decimal →</button><button class="stepbtn ghost" id="reset2">Reset</button>
+      <span class="val" id="prec">between integers</span></div>
+    <svg id="sq" viewBox="0 0 520 150" width="500" height="145"></svg>
+    <div class="eqbox" id="eq4"></div>
+    <div class="box">4² = 16, 5² = 25, so √20 lies between 4 and 5. Then 4.4², 4.5², 4.47²… each step pins it closer.</div>`;
+  let lo=0,hi=0,d=0;
+  function init(){ lo=Math.floor(Math.sqrt(n)); hi=lo+1; d=0; }
+  function draw(){
+    const SC=440/Math.max(hi+0.5,2), OX=30;
+    let g=`<line x1="${OX}" y1="80" x2="${OX+460}" y2="80" stroke="#e3e8ef" stroke-width="3"/>`;
+    for(let i=0;i<=hi+1;i++){
+      const x=OX+i*SC;
+      g+=`<line x1="${x}" y1="72" x2="${x}" y2="88" stroke="#1c2430" stroke-width="1.5"/>
+          <text x="${x}" y="104" font-size="12" fill="#1c2430" text-anchor="middle">${i}</text>`;
+    }
+    g+=`<rect x="${OX+lo*SC}" y="60" width="${(hi-lo)*SC}" height="14" fill="#fef3c7" stroke="#a16207" stroke-width="1"/>`;
+    const trueV=Math.sqrt(n);
+    g+=`<circle cx="${OX+trueV*SC}" cy="80" r="7" fill="#15803d" stroke="#fff" stroke-width="2"/>
+        <text x="${OX+trueV*SC}" y="44" font-size="13" fill="#15803d" font-weight="bold" text-anchor="middle">√${n} ≈ ${trueV.toFixed(4)}</text>`;
+    el.querySelector('#sq').innerHTML=g;
+    const a=d===0?lo:(lo+ (d===1? Math.floor((trueV-lo)*10)/10 : (trueV.toFixed(d-1)-0))).toFixed(d);
+    el.querySelector('#eq4').innerHTML=
+      `${lo}² = ${lo*lo} &lt; ${n} &lt; ${hi*hi} = ${hi}² &nbsp;→&nbsp; ${lo} &lt; √${n} &lt; ${hi}`+
+      `&nbsp;&nbsp;|&nbsp;&nbsp; <span class="num">√${n} ≈ ${trueV.toFixed(Math.min(d+1,4))}</span>`;
+    el.querySelector('#prec').textContent=d===0?'between integers':('to '+d+' decimal places');
+  }
+  el.querySelector('#rn2').oninput=()=>{n=+el.querySelector('#rn2').value;el.querySelector('#vn2').textContent=n;init();draw();};
+  el.querySelector('#refine').onclick=()=>{d=Math.min(4,d+1);draw();};
+  el.querySelector('#reset2').onclick=()=>{init();draw();};
+  init();draw();
+}
+
+/* ============ Lesson K7: radicals ============ */
+function microK7(el){
+  let n=8;
+  el.innerHTML=`
+    <div class="step">Have a go</div>
+    <h3>Simplifying radicals </h3>
+    <div class="lead">Drag the sliders to see why √(a·b) = √a · √b.</div>
+    <div class="slider-row">
+      <label>square factor k² <input type="range" id="rk" min="1" max="9" value="2"><span class="val" id="vk">2</span></label>
+      <label>remaining factor m <input type="range" id="rm" min="2" max="20" value="2"><span class="val" id="vm">2</span></label>
+    </div>
+    <div class="eqbox" id="eq7"></div>
+    <div class="fig"><div class="cap">Area model: why √(k²·m) = k·√m</div>
+      <svg id="s7" viewBox="0 0 420 200" width="400" height="190"></svg>
+      <div class="sub2" id="d7"></div></div>
+    <div class="box">Watch √20 = √(4·5) = 2√5 — pull the square factor outside.
+      <b>The rules:</b> √a · √b = √(ab) for a, b ≥ 0; √a ÷ √b = √(a/b) for b &gt; 0.<br>
+      <span class="cn-tag">These rules come from the laws of exponents: √a = a^(1/2), so √a·√b = a^(1/2)·b^(1/2) = (ab)^(1/2). The exponent videos marked "Foundation" above are where it comes from.</span></div>`;
+  const draw=()=>{
+    const k=+el.querySelector('#rk').value, m=+el.querySelector('#rm').value;
+    const prod=k*k*m;
+    el.querySelector('#eq7').innerHTML=
+      `√${prod} = √(${k}² × ${m}) = √${k*k} × √${m} = <span class="num">${k}√${m}</span> &nbsp;≈ ${(k*Math.sqrt(m)).toFixed(3)}`;
+    // area model: split the k²·m rectangle into k² blocks of area m
+    const S=150/Math.max(k,1);
+    let g=`<rect x="30" y="20" width="${S*k}" height="${S*k}" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>`;
+    for(let i=0;i<k;i++)for(let j=0;j<k;j++){
+      g+=`<rect x="${30+i*S}" y="${20+j*S}" width="${S}" height="${S}" fill="none" stroke="#c4b5fd" stroke-width="1"/>`;
+    }
+    g+=`<text x="${30+S*k/2}" y="${20+S*k+18}" font-size="12" fill="#7c3aed" text-anchor="middle">area = ${k}² × ${m} = ${prod}</text>`;
+    g+=`<text x="230" y="60" font-size="16" fill="#1c2430">side = √${prod}</text>`;
+    g+=`<text x="230" y="86" font-size="16" fill="#7c3aed" font-weight="bold">= ${k} × √${m}</text>`;
+    g+=`<text x="230" y="112" font-size="12" fill="#5b6472">(${k} copies of √${m} side by side)</text>`;
+    g+=`<line x1="230" y1="128" x2="400" y2="128" stroke="#e3e8ef" stroke-width="2"/>`;
+    for(let i=0;i<k;i++){
+      g+=`<rect x="${230+i*34}" y="140" width="32" height="32" fill="#ddd6fe" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="${230+i*34+16}" y="${160}" font-size="11" fill="#5b21b6" text-anchor="middle">${m}</text>`;
+    }
+    g+=`<text x="${230+k*34/2}" y="${186}" font-size="11" fill="#5b6472" text-anchor="middle">each block has side √${m}, ${k} blocks in all</text>`;
+    el.querySelector('#s7').innerHTML=g;
+    el.querySelector('#d7').textContent=`√${prod} = ${k}√${m}`;
+  };
+  el.querySelector('#rk').oninput=()=>{el.querySelector('#vk').textContent=el.querySelector('#rk').value;draw();};
+  el.querySelector('#rm').oninput=()=>{el.querySelector('#vm').textContent=el.querySelector('#rm').value;draw();};
+  draw();
+}
+
+/* ============ Practice engine ============ */
+function genQ(type,diff){
+  if(type==='sqrt'){
+    const p=pick(SQR.filter(x=>diff===1?x<=100:true));
+    const rt=Math.sqrt(p);
+    return {q:`Find <b>√${p}</b>.`, zhq:`求 <b>√${p}</b> 的值。`,
+      kind:'sqrt', ans:rt,
+      hint:'The principal (non-negative) square root: which number squared gives the value under the root?',
+      zhh:'算术平方根取非负值：哪个数的平方等于根号里的数？',
+      sol:`Since ${rt}² = ${p}, and the principal root is non-negative, √${p} = ${rt}`,
+      zhs:`因为 ${rt}² = ${p}，算术平方根取非负值，所以 √${p} = ${rt}`};
+  }
+  if(type==='cuberoot'){
+    const sign=Math.random()<0.35?-1:1;
+    const p=pick(CUB.filter(x=>diff===1?x<=125:true));
+    const v=sign*p;
+    const cr=Math.cbrt(v);
+    return {q:`Find <b>∛${v}</b>.`, zhq:`求 <b>∛${v}</b> 的值。`,
+      kind:'cuberoot', ans:cr,
+      hint:'The cube root keeps the sign: negative numbers have cube roots too.',
+      zhh:'立方根保留符号：负数也有立方根。',
+      sol:`Since (${cr})³ = ${v}, ∛${v} = ${cr}${v<0?'(negative numbers have cube roots too)':''}`,
+      zhs:`因为 (${cr})³ = ${v}，所以 ∛${v} = ${cr}${v<0?'（负数也有立方根）':''}`};
+  }
+  if(type==='eq'){
+    const p=pick(SQR.filter(x=>diff===1?x<=81:true));
+    const cnt=p===0?'1':'2';
+    return {q:`Solve <b>x² = ${p}</b>. Select ALL solutions — how many are there?`, zhq:`解方程 <b>x² = ${p}</b>。一共有几个解？`,
+      kind:'eq', ans:cnt,
+      hint:'x² = a usually has two solutions (one positive, one negative) — unless a is 0.',
+      zhh:'x² = a 通常有两个解（一正一负），除非 a 是 0。',
+      sol:`x² = ${p} → x = ±√${p} = ±${Math.sqrt(p)}, so ${cnt} solutions (one positive, one negative)`,
+      zhs:`x² = ${p} → x = ±√${p} = ±${Math.sqrt(p)}，所以有 ${cnt} 个解（一正一负）`};
+  }
+  if(type==='ratirr'){
+    const irr=['√2','√3','√5','√7','π','√10','√8'];
+    const rat=['1/2','0.75','-3','0.333...','22/7','0.6','5'];
+    const isIrr=Math.random()<0.5;
+    const v=isIrr?pick(irr):pick(rat);
+    return {q:`Is <b>${v}</b> rational or irrational?`, zhq:`<b>${v}</b> 是有理数还是无理数？`,
+      kind:'ratirr', ans:isIrr?'Irrational':'Rational',
+      hint:'Can it be written as a ratio of two integers (a fraction)? If not, it is irrational.',
+      zhh:'它能写成两个整数之比（分数）吗？不能，就是无理数。',
+      sol:isIrr?`${v} cannot be written as a ratio of two integers; its decimal never ends and never repeats → irrational`:`${v} can be written as a fraction (a ratio of two integers) → rational`,
+      zhs:`${v} ${isIrr?'不能写成两个整数之比，小数无限不循环 → 无理数':'可以写成分数（两个整数之比）→ 有理数'}`};
+  }
+  if(type==='estimate'){
+    const n=ri(2,90);
+    const lo=Math.floor(Math.sqrt(n));
+    return {q:`Between which two consecutive integers is <b>√${n}</b>?`, zhq:`<b>√${n}</b> 介于哪两个相邻整数之间？`,
+      kind:'estimate', ans:`${lo} and ${lo+1}`,
+      hint:'Find the largest whole number whose square is still below the value; that is the lower bound.',
+      zhh:'找平方仍小于该数的最大整数，它就是下界。',
+      sol:`${lo}² = ${lo*lo} and ${lo+1}² = ${(lo+1)*(lo+1)}. Since ${lo*lo} < ${n} < ${(lo+1)*(lo+1)}, we get ${lo} < √${n} < ${lo+1}`,
+      zhs:`${lo}² = ${lo*lo}，${lo+1}² = ${(lo+1)*(lo+1)}。因为 ${lo*lo} < ${n} < ${(lo+1)*(lo+1)}，所以 ${lo} < √${n} < ${lo+1}`};
+  }
+  if(type==='simplify'){
+    const k=ri(2,7), m=ri(2,11);
+    return {q:`Simplify <b>√${k*k*m}</b>.`, zhq:`化简 <b>√${k*k*m}</b>。`,
+      kind:'simplify', ans:`${k}√${m}`,
+      hint:'Pull out the square factor: √(k² × m) = k√m.',
+      zhh:'把平方因子提出根号：√(k² × m) = k√m。',
+      sol:`√${k*k*m} = √${k*k} × √${m} = ${k}√${m}`,
+      zhs:`√${k*k*m} = √${k*k} × √${m} = ${k}√${m}`};
+  }
+}
+
+function renderQ(el,q,onAns){
+  el.innerHTML=`<div class="q"><div class="qt">${L(q.q,q.zhq)}</div><div id="opts"></div>
+    <div class="row"><button class="ghost" id="hb">${L('Hint','提示')}</button></div>
+    <div class="hint" id="hint">${L(q.hint||'First decide whether you are being asked for the principal square root or for solutions to an equation — the first has one non-negative answer, the second two, one positive and one negative.', q.zhh||'先判断题目问的是算术平方根还是方程的解——前者只有一个非负答案，后者有两个（一正一负）。')}</div>
+    <div class="fb" id="fb"></div></div>`;
+  const od=el.querySelector('#opts');
+  let opts; let tries=0;
+  // choose options by the question's KIND, never by the answer's value
+  if(q.kind==='ratirr'){opts=['Rational','Irrational'];}
+  else if(q.kind==='eq'){opts=['1','2'];}
+  else if(q.kind==='conv'||String(q.ans)==='Yes'||String(q.ans)==='No'){opts=['Yes','No'];}
+  else if(String(q.ans).includes(' and ')){
+    opts=[q.ans, `${parseInt(q.ans)-1} and ${parseInt(q.ans)}`, `${parseInt(q.ans)+1} and ${parseInt(q.ans)+2}`];
+  } else if(String(q.ans).includes('√')){
+    const kk=parseInt(q.ans);
+    opts=[q.ans, `${kk+1}√${q.ans.split('√')[1]}`, `${kk-1}√${q.ans.split('√')[1]}`, `√${q.ans.split('√')[1]}`];
+  } else {
+    const n=+q.ans;
+    opts=[...new Set([n, n+1, Math.max(-10,n-1), n+ri(2,4), -n])].slice(0,4);
+  }
+  opts=[...new Set(opts)].sort(()=>Math.random()-0.5);
+  const optLabel=o=>(o==='Rational')?L('Rational','有理数'):(o==='Irrational')?L('Irrational','无理数'):(o==='Yes')?L('Yes','是'):(o==='No')?L('No','否'):String(o);
+  opts.forEach(o=>{
+    const b=document.createElement('button'); b.className='opt';
+    b.innerHTML=optLabel(o); b.dataset.val=String(o);
+    b.onclick=()=>{
+      const ok=b.dataset.val===String(q.ans);
+      const fb=el.querySelector('#fb');
+      if(ok){
+        od.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+        b.classList.add('sel-ok');
+        fb.className='fb ok';
+        fb.innerHTML=L('✓ Correct. '+q.sol, '✓ 对了。'+q.zhs);
+        onAns(true);
+      } else {
+        tries++;
+        b.classList.add('sel-bad'); b.disabled=true;
+        if(tries===1){
+          el.querySelector('#hint').classList.add('on');
+          fb.className='fb bad'; fb.innerHTML=L('✗ Try again. ','✗ 再试一次。');
+        } else if(tries===2){
+          fb.className='fb bad';
+          fb.innerHTML=L('✗ Not quite. '+(q.sol?('Method: '+q.sol):'Work through it once more.'), '✗ 不太对。'+(q.zhs?('方法：'+q.zhs):'再算一遍。'));
+        } else {
+          od.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+          od.querySelectorAll('.opt').forEach(x=>{if(x.dataset.val===String(q.ans))x.classList.add('sel-ok');});
+          fb.className='fb bad';
+          fb.innerHTML=L('The answer is <b>'+q.ans+'</b>'+(q.sol?('. '+q.sol):'. '), '答案是 <b>'+q.ans+'</b>'+(q.zhs?('。'+q.zhs):'。'));
+          onAns(false);
+        }
+      }
+    };
+    od.appendChild(b);
+  });
+  el.querySelector('#hb').onclick=()=>el.querySelector('#hint').classList.add('on');
+}
+function guessType(q){
+  if(q.q.includes('rational or irrational'))return 'ratirr';
+  if(q.q.includes('how many are there'))return 'eq';
+  return 'conv';
+}
+
+/* ============ Video list ============ */
+function videos(el,list,id){
+  el.innerHTML=`<h3><span class="en">Videos</span><span class="zh">视频</span></h3>
+    <div class="lead"><span class="badge b-core">Core</span> Watch first ｜
+      <span class="badge b-link">Catch-up</span> ｜
+      <span class="badge b-ext">Extra</span> Optional extra</div>`;
+  list.forEach((v,i)=>{
+    const d=document.createElement('div'); d.className='vid-item';
+    const cls=v.c==='core'?'b-core':(v.c==='link'?'b-link':'b-ext');
+    const lbl=v.c==='core'?'<span class="en">Core</span><span class="zh">核心</span>':(v.c==='link'?'<span class="en">Foundation</span><span class="zh">基础</span>':'<span class="en">Extra</span><span class="zh">拓展</span>');
+    d.innerHTML=`<div class="t"><b>${L(v.t,(typeof VTZ!=='undefined'&&VTZ[v.t])||v.t)}</b><small>${v.d||''}</small> <span class="badge ${cls}">${lbl}</span></div>`;
+    const b=document.createElement('button'); b.className='ghost'; b.innerHTML='<span class="en">▶ Play</span><span class="zh">▶ 播放</span>';
+    b.onclick=()=>{
+      let p=d.querySelector('video');
+      if(!p){p=document.createElement('video');p.controls=true;p.preload='metadata';
+        p.src=encodeURI(VDIR+v.f);d.appendChild(p);st(id).vid[i]=true;save();renderNav();}
+      p.scrollIntoView({behavior:'smooth',block:'center'});p.play();
+    };
+    d.appendChild(b); el.appendChild(d);
+  });
+}
+
+/* ============ Diagnostic / practice / chapter test ============ */
+function diag(el,id,types){
+  const s=st(id);
+  if(s.diag){el.innerHTML=`<div class="box"><b>Quick check: </b>${s.diag.pass?'✓ all correct — go straight to practice.':'Done, with some wrong — watch the lesson first.'}</div>`;return;}
+  el.innerHTML=`<div class="step"><span class="en">Quick check</span><span class="zh">小测一下</span></div>
+    <div class="lead">Three questions. All correct and you can skip straight to practice.</div>
+    <div id="dq"></div><div class="row"><button id="done2" disabled><span class="en">Submit</span><span class="zh">提交</span></button></div>`;
+  const box=el.querySelector('#dq'); let ok=0,done=0;
+  const qs=types.map(t=>genQ(t,1));
+  qs.forEach(q=>{const d=document.createElement('div');box.appendChild(d);
+    renderQ(d,q,r=>{if(r)ok++;done++;if(done===qs.length)el.querySelector('#done2').disabled=false;},true);});
+  el.querySelector('#done2').onclick=()=>{
+    s.diag={ok,tot:qs.length,pass:ok===qs.length};save();
+    el.innerHTML=`<div class="box"><b>Result: ${ok}/${qs.length}</b><br>${ok===qs.length?'✓ all correct — go straight to practice.':'Watch the lesson and the videos first.'}</div>`;};
+}
+function prac(el,id,types,need){
+  const s=st(id);
+  el.innerHTML=`<div class="step"><span class="en">Practice</span><span class="zh">练习</span></div>
+    <div class="lead">Questions are generated fresh each time. To clear it: ${need} correct in a row.</div>
+    <div class="stat"><span><span class="en">Streak: </span><span class="zh">连对：</span><b id="sk">0</b>/${need}</span><span><span class="en">Total: </span><span class="zh">总数：</span><b id="cm">${s.prac.ok}/${s.prac.tot}</b></span><span id="ms"></span></div>
+    <div class="prog"><i id="pb" style="width:0%"></i></div>
+    <div id="pq"></div><div class="row"><button id="nq"><span class="en">Next question</span><span class="zh">下一题</span></button><button class="ghost" id="rs"><span class="en">Reset</span><span class="zh">重置</span></button></div>`;
+  let streak=0,diff=1;
+  const upd=()=>{el.querySelector('#sk').textContent=streak;
+    el.querySelector('#cm').textContent=s.prac.ok+'/'+s.prac.tot;
+    el.querySelector('#pb').style.width=Math.min(100,streak/need*100)+'%';
+    const m=el.querySelector('#ms');
+    const p=s.prac||{};
+    const L=s.done?['m-mas','<span class="en">Mastered</span><span class="zh">已掌握</span>']:(p.tot>=5&&p.ok/p.tot>=0.8?['m-pro','<span class="en">Proficient</span><span class="zh">熟练</span>']
+      :(p.tot>0?['m-fam','<span class="en">Familiar</span><span class="zh">较熟</span>']:((Object.keys(s.vid||{}).length||s.diag!=null)?['m-att','<span class="en">Attempted</span><span class="zh">尝试过</span>']:['m-none','<span class="en">Not started</span><span class="zh">未开始</span>'])));
+    m.innerHTML=`<span class="mastery ${L[0]}">${L[1]}</span>`;};
+  const next=()=>{const box=el.querySelector('#pq');box.innerHTML='';
+    const d=document.createElement('div');box.appendChild(d);
+    const q=genQ(pick(types),diff);
+    renderQ(d,q,r=>{s.prac.tot++;if(r){s.prac.ok++;streak++;if(streak>=3)diff=Math.min(3,diff+1);}else{streak=0;diff=Math.max(1,diff-1);}
+      if(streak>=need){s.done=true;save();renderNav();}save();upd();});upd();};
+  el.querySelector('#nq').onclick=next;
+  el.querySelector('#rs').onclick=()=>{s.prac={ok:0,tot:0};s.done=false;streak=0;save();upd();renderNav();};
+  next();
+}
+function chTest(el){
+  el.innerHTML=`<div class="step"><span class="en">Chapter check</span><span class="zh">章末自己测</span></div>
+    <div class="lead">10 questions covering the 7 topics in this chapter.</div>
+    <div id="tq"></div><div class="row"><button id="sb"><span class="en">Submit</span><span class="zh">提交</span></button></div><div id="rs2"></div>`;
+  const box=el.querySelector('#tq');
+  const types=['sqrt','cuberoot','eq','ratirr','estimate','simplify','sqrt','cuberoot','ratirr','estimate'];
+  const qs=types.map((t,i)=>genQ(t,i<5?1:2));
+  const ans=[];
+  qs.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.innerHTML=`<div class="q"><div class="qt"><b>Q${i+1}.</b> ${q.q}</div><div id="o"></div></div>`;
+    box.appendChild(d);const od=d.querySelector('#o');
+    let opts;
+    if(q.kind==='ratirr')opts=['Rational','Irrational'];
+    else if(q.kind==='eq')opts=['1','2'];
+    else if(String(q.ans).includes(' and '))opts=[q.ans,`${parseInt(q.ans)-1} and ${parseInt(q.ans)}`,`${parseInt(q.ans)+1} and ${parseInt(q.ans)+2}`];
+    else if(String(q.ans).includes('√')){const kk=parseInt(q.ans);opts=[q.ans,`${kk+1}√${q.ans.split('√')[1]}`,`${kk-1}√${q.ans.split('√')[1]}`,`√${q.ans.split('√')[1]}`];}
+    else {const n=+q.ans;opts=[...new Set([n,n+1,n-1,n+ri(2,4),-n])].slice(0,4);}
+    opts=[...new Set(opts)].sort(()=>Math.random()-0.5);
+    opts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.innerHTML=String(o);
+      b.onclick=()=>{od.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel-ok'));b.classList.add('sel-ok');ans[i]=String(o);};od.appendChild(b);});
+  });
+  el.querySelector('#sb').onclick=()=>{
+    let ok=0;qs.forEach((q,i)=>{if(ans[i]===String(q.ans))ok++;});
+    S.test={ok,tot:qs.length};save();renderNav();
+    let h=`<div class="box"><b>Score: ${ok}/${qs.length}</b><br>${ok>=8?'✓ You have this chapter down.':ok>=6?'△ Nearly there — rewatch the lesson for what you missed.':'✗ Go back through the chapter.'}</div>`;
+    qs.forEach((q,i)=>{h+=`<div class="q"><b>Q${i+1}</b> you answered ${ans[i]||'no answer'} · correct ${q.ans}<br><span class="cn-tag">${q.sol}</span></div>`;});
+    el.querySelector('#rs2').innerHTML=h;};
+}
+
+/* ============ Render ============ */
+
+/* ===== Chapter lobby: start here ===== */
+const GLOSS={k1:"无理数",k2:"平方根",k3:"立方根",k4:"估算",k5:"算术平方根",k6:"实数",k7:"二次根式",ext:"科学计数法"};
+const USE_MICRO=false;
+const INTRO={why:"Draw a square with side length 1. How long is its diagonal? It is √2 — a decimal that never ends and never repeats. The 1.414 your calculator shows is only an approximation. This chapter introduces those awkward numbers, shows you how to trap one between two decimals without a calculator, and how to simplify a square root by hand.",desc:{k1:"A square of side 1 has a diagonal of √2 — a number you can never finish writing",k2:"Which number, times itself, gives this one?",k3:"Which number, cubed, gives this one?",k4:"Pin √2 between two decimals, with no calculator",k5:"How to do it on a calculator — and why the answer is only approximate",k6:"Rationals plus irrationals; every real number is a point on the number line",k7:"Simplifying and combining square roots",ext:"Writing very large and very small numbers compactly (optional)"}};
+function goLesson(id){cur=USE_MICRO?('micro-'+id):id;render();}
+function introRender(main){
+  const pts=LESSONS.filter(l=>l.id!=='test'&&l.id!=='intro');
+  let h='<div class="intro-h"><span class="en">What this chapter covers</span><span class="zh">本章学什么</span></div>'
+    +'<div class="intro-sub"><span class="en">Skim the list to see where this chapter is going, then press the button at the bottom.</span><span class="zh">先扫一眼下面的清单，看本章去哪，然后按底部按钮开始。</span></div><div class="kp">';
+  pts.forEach(l=>{
+    const s=st(l.id);
+    const badge=s.done?' <span class="st ok">✓ done</span>':(s.prac.tot>0?' <span class="st">'+s.prac.ok+'/'+s.prac.tot+'</span>':'');
+    h+='<div class="kp-c"><div class="n">'+l.n+'</div><div class="t">'+l.t+(GLOSS[l.id]?' <span class="cn-tag">'+GLOSS[l.id]+'</span>':'')+'</div><div class="d">'+((INTRO.desc&&INTRO.desc[l.id])||'')+'</div>'+badge+'</div>';
+  });
+  h+='</div>';
+  h+='<div class="why"><b><span class="en">Where this shows up in real life</span><span class="zh">在真实生活里哪里会用到</span></b><br>'+INTRO.why+'</div>';
+  h+='<div class="box"><b><span class="en">How this chapter works</span><span class="zh">本章怎么学</span></b><div class="how">'
+    +'① <b><span class="en">Watch the lesson</span><span class="zh">看微课</span></b>: <span class="en">a few minutes to get what the section is about</span><span class="zh">花几分钟了解本节内容</span><br>'
+    +'② <b><span class="en">Practice</span><span class="zh">练一练</span></b>: <span class="en">5 correct in a row clears it; if you get stuck, hints walk you through</span><span class="zh">连对 5 题就算过关；卡住了就看提示</span><br>'
+    +'③ <b><span class="en">Next section</span><span class="zh">下一节</span></b>: <span class="en">on the left, </span><span class="zh">在左侧，</span>'+pts[0].n+', '+pts[1].n+'… open whichever you want, in any order'
+    +'</div></div>';
+  h+='<div class="big-start"><button id="startBtn">'+pts[0].n+' <span class="en">'+pts[0].t+'</span><span class="zh">开始 · '+NAVZH[pts[0].id]+'</span> →</button></div>';
+  main.innerHTML=h;
+  main.querySelector('#startBtn').onclick=()=>{goLesson(pts[0].id);};
+}
+const NAVZH={"intro":"概览","k1":"无理数","k2":"平方根","k3":"立方根","k4":"估算","k5":"计算器","k6":"实数","k7":"二次根式","ext":"科学计数法","test":"章末自己测"};
+const LKEY='bnu8_lang';
+function getLang(){return localStorage.getItem(LKEY)||'en';}
+function setLang(l){localStorage.setItem(LKEY,l);applyLang();}
+function applyLang(){const l=getLang();document.body.className=(' '+document.body.className+' ').replace(/\s+lang-(en|mix|zh)\b/g,' ').trim();if(l==='mix'||l==='zh')document.body.classList.add('lang-'+l);document.querySelectorAll('.langseg button').forEach(b=>{b.classList.toggle('on',b.dataset.lang===l);});}
+applyLang();
+
+
+function renderNav(){
+  const n=document.getElementById('nav');n.innerHTML='';
+  LESSONS.forEach(l=>{
+    const s=st(l.id);let badge='';
+    // st('test') creates a state object, so S.test exists before the test is taken —
+    // only show a score once there is one, otherwise it prints "undefined/undefined"
+    if(l.id==='test'){if(S.test&&S.test.tot!=null)badge=`<span class="st">${S.test.ok}/${S.test.tot}</span>`;}
+    else if(s.done)badge='<span class="st">✓</span>';
+    else if(s.prac.tot>0)badge=`<span class="st">${s.prac.ok}/${s.prac.tot}</span>`;
+    const d=document.createElement('div');d.className='nav-i'+(l.id===cur?' on':'');
+    d.innerHTML=`<span><b>${l.n}</b> <span class="en">${l.t}</span><span class="zh">${NAVZH[l.id]||l.t}</span></span>${badge}`;
+    d.onclick=()=>{cur=l.id;render();};n.appendChild(d);});
+}
+function render(){
+  renderNav();
+  const m=document.getElementById('main');m.innerHTML='';
+  const L=LESSONS.find(x=>x.id===cur);
+  if(cur==='intro'){introRender(m);return;}
+  const h=document.createElement('h2');h.innerHTML=`<b>${L.n}</b> <span class="en">${L.t}</span><span class="zh">${NAVZH[L.id]||L.t}</span>`;
+  m.appendChild(h);
+  const mk=()=>{const d=document.createElement('div');m.appendChild(d);return d;};
+  if(cur==='k1'){microK1(mk());videos(mk(),V.k1,'k1');diag(mk(),'k1',['ratirr','sqrt','eq']);prac(mk(),'k1',['ratirr','sqrt','eq'],5);}
+  else if(cur==='k2'){microK2(mk());videos(mk(),V.k2,'k2');diag(mk(),'k2',['sqrt','eq']);prac(mk(),'k2',['sqrt','eq'],5);}
+  else if(cur==='k3'){microK3(mk());videos(mk(),V.k3,'k3');prac(mk(),'k3',['cuberoot'],5);}
+  else if(cur==='k4'){microK4(mk());videos(mk(),V.k4,'k4');prac(mk(),'k4',['estimate'],5);}
+  else if(cur==='k5'){
+    m.innerHTML+=`<div class="lead">This is just a few button presses — try it yourself first.</div>`;
+    const d=mk();d.innerHTML=`<div class="box">
+      <h3>Using the calculator</h3>
+      <b>1. The √ key:</b> press √ then the number, or the number then √ — models differ, try both.<br>
+      <b>2. Cube roots:</b> most calculators have a ∛ key, otherwise enter <code>^(1/3)</code>.<br>
+      <b>3. Check:</b> square or cube your answer back and confirm you typed it right.<br>
+      <b>4. Precision:</b> √2 = 1.414… is an <b>approximation</b>, not the exact value.<br>
+      </div>`;
+    videos(mk(),V.k5,'k5');}
+  else if(cur==='k6'){
+    const d=mk();
+    d.innerHTML=`<div class="box"><h3>Real numbers</h3>
+      Real numbers = rationals + irrationals.<br><br>
+      <b>Rational:</b> can be written as p/q with p, q integers and q ≠ 0 — that covers integers, terminating decimals and repeating decimals.<br>
+      <b>Irrational:</b> decimals that never end and never repeat — like √2, √3, π.<br><br>
+      <b>The key fact: real numbers and points on the line match up one to one.</b> Every real number is exactly one point on the line, and every point is a real number.
+      √2 included — see the construction in 2.1.<br>
+      <span class="cn-tag"></span></div>`;
+    videos(mk(),V.k6,'k6');prac(mk(),'k6',['ratirr','sqrt'],5);}
+  else if(cur==='k7'){microK7(mk());videos(mk(),V.k7,'k7');prac(mk(),'k7',['simplify','sqrt'],5);}
+  else if(cur==='ext'){
+    m.innerHTML+=`<div class="lead">It turns up all over physics and chemistry formulas — worth a look now.</div>`;
+    videos(mk(),V.ext,'ext');}
+  else if(cur==='test'){chTest(mk());}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+<script>
+(function(){try{if(new URLSearchParams(location.search).get('go')==='test'){cur='test';render();}}catch(e){}})();
+</script>
+<p style="text-align:center;font-size:11px;color:var(--muted);margin:26px 0 8px">
+ <span id="busuanzi_container_site_uv" style="display:none">
+  <span class="en">Visitors so far:&nbsp;</span><span class="zh">已经有&nbsp;</span>
+  <b id="busuanzi_value_site_uv">·</b><span class="zh">&nbsp;位访客来过这里</span>
+ </span>
+</p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body></body>
+</html>
