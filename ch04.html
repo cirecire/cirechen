@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chapter 4 · Linear functions</title>
+<style>
+:root{
+ --bg:#fafafa; --card:#fff; --line:#e5e7eb; --text:#1f2937; --muted:#5b6472;
+ --accent:#7c3aed; --ok:#15803d; --err:#b91c1c; --warn:#b45309;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.wrap{display:grid;grid-template-columns:240px 1fr;gap:18px;max-width:1200px;margin:0 auto;padding:18px}
+header{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:22px 26px;border-radius:14px;margin-bottom:14px;grid-column:1/-1}
+header h1{font-size:22px;margin-bottom:4px}
+header p{opacity:.92;font-size:13px}
+nav{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;height:fit-content;position:sticky;top:14px}
+.nav-i{padding:10px 12px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.nav-i:hover{background:#f5f3ff}
+.nav-i.on{background:var(--accent);color:#fff}
+.nav-i .st{font-size:11px;opacity:.85}
+.nav-i .st.ok{color:var(--ok)}
+.nav-i .st.err{color:var(--err)}
+.nav-i.on .st.ok,.nav-i.on .st.err{color:#fff}
+main{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 26px;min-height:80vh}
+h2{font-size:18px;margin-bottom:6px}
+.lesson-id{color:var(--muted);font-size:13px;margin-bottom:14px}
+.box{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0}
+.box h3{font-size:15px;margin-bottom:8px;color:var(--accent)}
+.box .cn{font-size:12px;color:var(--muted);font-style:italic}
+.step{padding:10px 14px;background:var(--accent);color:#fff;border-radius:8px;margin-bottom:14px;font-size:15px}
+.note{background:#fffbeb;border-left:3px solid var(--warn);padding:10px 14px;border-radius:6px;margin:10px 0;font-size:14px}
+.note strong{color:var(--warn)}
+.vid{margin:14px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.vid-h{padding:10px 14px;background:#f5f3ff;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.vid-h .meta{display:flex;gap:8px;align-items:center;font-size:11px}
+.tag{background:#e5e7eb;padding:2px 8px;border-radius:10px;font-size:11px}
+.tag.core{background:#dcfce7;color:#166534}
+.tag.ext{background:#fef3c7;color:#92400e}
+.vid-h .cn{font-size:12px;color:var(--muted);margin-right:auto}
+.vid-h .title{font-size:13px;font-weight:600}
+button{font-family:inherit;border:none;cursor:pointer;border-radius:8px;padding:8px 14px;font-size:14px;background:var(--accent);color:#fff}
+button.secondary{background:#e5e7eb;color:var(--text)}
+button:hover{opacity:.92}
+input[type=text],input[type=number]{padding:10px 12px;font-size:15px;border:1px solid var(--line);border-radius:8px;width:120px;font-family:inherit}
+input:focus{outline:none;border-color:var(--accent)}
+input.ok{border-color:var(--ok);background:#f0fdf4}
+input.err{border-color:var(--err);background:#fef2f2}
+input:disabled{background:#f3f4f6;cursor:not-allowed}
+.q{margin:12px 0;padding:14px;background:#f9fafb;border-radius:8px;border-left:3px solid var(--accent)}
+.q .q-text{font-size:15px;margin-bottom:8px}
+.q .q-cn{font-size:12px;color:var(--muted);margin-bottom:8px}
+.q .feedback{margin-top:8px;font-size:13px;padding:6px 10px;border-radius:6px;display:none}
+.q .feedback.show{display:block}
+.q .feedback.ok{background:#dcfce7;color:#166534}
+.q .feedback.err{background:#fee2e2;color:#991b1b}
+.q .feedback.warn{background:#fef3c7;color:#92400e}
+.hint{background:#fef3c7;border-left:3px solid var(--warn);padding:10px 12px;border-radius:6px;margin:8px 0;font-size:13px;display:none}
+.hint.show{display:block}
+.diff{display:flex;gap:10px;align-items:center;margin:10px 0;font-size:13px}
+.diff button{padding:4px 10px;font-size:12px}
+.diff button.on{background:var(--ok)}
+.controls{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap;align-items:center}
+.controls .info{margin-left:auto;font-size:13px;color:var(--muted)}
+.progress{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin:8px 0}
+.progress div{height:100%;background:var(--accent);transition:width .3s}
+svg{max-width:100%;display:block;margin:0 auto}
+.num{color:var(--accent);font-weight:600}
+svg circle{transition:r .2s,fill .2s}
+svg line,svg path{transition:stroke .3s,opacity .3s}
+.eq{font-family:"Courier New",monospace;background:#1f2937;color:#a5f3fc;padding:10px 14px;border-radius:6px;margin:10px 0;font-size:14px;overflow-x:auto}
+.frac{display:inline-block;vertical-align:middle;text-align:center;font-size:13px;line-height:1.1}
+.frac .num{display:block;border-bottom:1px solid currentColor;padding:0 4px}
+.frac .den{display:block;padding:0 4px}
+
+.intro-h{font-size:21px;font-weight:700;margin:0 0 4px}
+.intro-sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+.kp{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:14px 0}
+.kp-c{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#f9fafb}
+.kp-c .n{font-size:12px;color:var(--accent);font-weight:700}
+.kp-c .t{font-size:15px;font-weight:600;margin:2px 0 5px;line-height:1.4}
+.kp-c .d{font-size:12px;color:var(--muted);line-height:1.55}
+.why{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14px;line-height:1.85}
+.why b{color:var(--accent)}
+.how{font-size:14px;line-height:2.1;margin:8px 0 2px}
+.how b{color:var(--accent)}
+.big-start{margin-top:20px;text-align:center}
+.big-start button{font-size:16px;padding:13px 30px;border-radius:10px}
+.trytip{font-size:12px;color:var(--muted);margin:10px 0 2px}
+
+/* ===== Language tiers (en / mix / zh) ===== */
+.zh{display:none}
+body.lang-en .zh{display:none}
+body.lang-mix .zh{display:inline;font-size:.82em;margin-left:6px;font-weight:400}
+body.lang-zh .en{display:inline;font-size:.78em;margin-left:6px;font-weight:400}
+body.lang-zh .zh{display:inline}
+/* Colored backgrounds always show white text, regardless of the language tier.
+   Without this, inherit + lang rules can leave Chinese/English subtitles invisible on the
+   purple gradient header and the colored chapter cards. */
+header, header h1, header p, header .en, header .zh, header .src, header .sub, header .t, header .no{ color:#fff; }
+header p, header .en, header .zh{ opacity:1; }
+.ch .top, .ch .top .en, .ch .top .zh, .ch .top .no, .ch .top .t{ color:#fff; opacity:1; }
+
+.langbar{position:fixed;top:8px;right:10px;z-index:300;display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.langseg{display:inline-flex}
+.langseg button{background:transparent;color:#374151;border:none;padding:6px 11px;font-size:12px;cursor:pointer;font-family:inherit;border-radius:999px;white-space:nowrap}
+.langseg button.on{background:var(--accent);color:#fff}
+@media(max-width:680px){.langbar{top:6px;right:6px}.langseg button{padding:5px 8px;font-size:11px}}
+
+</style>
+</head>
+<body>
+<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:8px 16px;font-size:13px;display:flex;gap:18px;align-items:center;position:sticky;top:0;z-index:99">
+ <a href="home.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">← Overview</span><span class="zh">← 总览</span></a>
+ <a href="unittests.html" style="color:#7c3aed;text-decoration:none;font-weight:600"><span class="en">Unit tests</span><span class="zh">单元测试</span></a>
+ <span style="font-size:11px;color:#5b6472"><span class="en">Content from Khan Academy · CC BY-NC-SA</span><span class="zh">内容来自 Khan Academy · CC BY-NC-SA</span></span>
+</div>
+
+<div class="langbar" title="显示语言 · Language display — 随时可改 · change anytime">
+ <span class="langseg">
+  <button data-lang="en" onclick="setLang('en')">English</button>
+  <button data-lang="mix" onclick="setLang('mix')">English + 中文</button>
+  <button data-lang="zh" onclick="setLang('zh')">中文 + English</button>
+ </span>
+</div>
+
+<div class="wrap">
+<header>
+ <h1><span class="en">Chapter 4 · Linear Functions</span><span class="zh">第 4 章 · 一次函数</span></h1>
+ <p><span class="en">Grade 8 · 7 class periods · the hardest chapter</span><span class="zh">八年级 · 7 课时 · 最难的一章</span></p>
+ </header>
+<nav id="nav"></nav>
+<main id="main"></main>
+</div>
+
+<script>
+const VDIR='videos/Ch04_一次函数/';
+const KEY='bnu8_ch04_state';
+let S=load();
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return{};}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const LESSONS=[
+ {id:'intro',t:'Intro',cn:'Start here · What this chapter covers',n:'🏠'},
+ {id:'k1',t:'What is a function?',cn:'Variables and the definition of a function',n:'4.1'},
+ {id:'k2',t:'Linear Functions',cn:'Linear and proportional functions',n:'4.2'},
+ {id:'k3',t:'Slope & Intercept',cn:'Graphs: slope and intercept',n:'4.3'},
+ {id:'k5',t:'Finding the Rule',cn:'Finding y = kx + b from given conditions',n:'4.4'},
+ {id:'k4',t:'Applications',cn:'Applications',n:'4.5'},
+ {id:'test',t:'Chapter check',cn:'Chapter check',n:''}
+];
+let cur='intro';
+function st(id){return S[id]||(S[id]={diag:null,prac:{ok:0,tot:0},vid:{},done:false});}
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(a){return a[ri(0,a.length-1)];}
+function L(a,b){ return '<span class="en">'+a+'</span><span class="zh">'+(b==null?a:b)+'</span>'; }
+
+/* ===== Video list (4 topics) ===== */
+const VIDEOS={
+k1:[
+ {f:'01_What is a function-.mp4',t:'What is a function?',c:'core'},
+ {f:'02_Relations and functions.mp4',t:'Relations and functions',c:'core'},
+ {f:'03_Graphical relations and functions.mp4',t:'Graphical relations & functions',c:'core'},
+ {f:'04_Does a vertical line represent a function-.mp4',t:'Vertical line test',c:'core'},
+ {f:'05_Evaluating functions given their formula.mp4',t:'Evaluating functions',c:'core'},
+ {f:'49_Worked example - Evaluating functions from equation.mp4',t:'Evaluating from equation',c:'core'},
+ {f:'50_Worked example - Evaluating functions from graph.mp4',t:'Evaluating from graph',c:'core'},
+ {f:'51_Function notation example.mp4',t:'Function notation f(x)',c:'core'},
+ {f:'54_Checking if an equation represents a function.mp4',t:'Equation → function?',c:'core'},
+ {f:'55_Recognizing functions from verbal description.mp4',t:'Functions from words',c:'core'},
+ {f:'56_Recognizing functions from verbal description word problems.mp4',t:'Functions from word problems',c:'core'},
+ {f:'33_Linear and nonlinear functions (example 1).mp4',t:'Linear vs nonlinear 1',c:'ext'},
+ {f:'34_Linear and nonlinear functions (example 2).mp4',t:'Linear vs nonlinear 2',c:'ext'},
+ {f:'35_Linear and nonlinear functions (example 3).mp4',t:'Linear vs nonlinear 3',c:'ext'},
+ {f:'36_Completing solutions to 2-variable equations.mp4',t:'Solutions of 2-var equations',c:'ext'},
+ {f:'37_Solutions to 2-variable equations.mp4',t:'Finding solutions',c:'ext'},
+ {f:'38_Worked example - solutions to 2-variable equations.mp4',t:'Worked: solutions',c:'ext'},
+ {f:'39_Intro to the coordinate plane.mp4',t:'Coordinate plane review',c:'ext'},
+],
+k2:[
+ {f:'06_Recognizing linear functions.mp4',t:'Recognizing linear functions',c:'core'},
+ {f:'07_Slope-intercept form from table.mp4',t:'Slope-intercept from a table',c:'core'},
+ {f:'09_Slope-intercept equation from slope and point.mp4',t:'From slope & point',c:'core'},
+ {f:'10_Slope-intercept equation from two solutions example.mp4',t:'From two points',c:'core'},
+ {f:'11_Converting linear equations to slope-intercept form.mp4',t:'Convert to slope-intercept',c:'core'},
+ {f:'17_Graphing proportional relationships example.mp4',t:'Proportional y=kx',c:'core'},
+ {f:'18_Graphing proportional relationships example 2.mp4',t:'Proportional example 2',c:'core'},
+ {f:'19_Graphing proportional relationships example 3.mp4',t:'Proportional example 3',c:'core'},
+ {f:'08_Slope-intercept equation from a graph examples.mp4',t:'Equation from a graph',c:'core'},
+ {f:'12_Graph from slope-intercept equation example.mp4',t:'Graph from equation',c:'core'},
+ {f:'26_Interpreting linear tables word problems example 2.mp4',t:'Tables: word problem 2',c:'ext'},
+ {f:'27_Comparing linear functions 1.mp4',t:'Comparing linear 1',c:'ext'},
+ {f:'28_Comparing linear functions 2.mp4',t:'Comparing linear 2',c:'ext'},
+ {f:'29_Comparing linear functions 3.mp4',t:'Comparing linear 3',c:'ext'},
+ {f:'30_Comparing linear functions word problems 1.mp4',t:'Compare: word problem 1',c:'ext'},
+ {f:'31_Comparing linear functions word problems 2.mp4',t:'Compare: word problem 2',c:'ext'},
+ {f:'32_Comparing linear functions word problems 3.mp4',t:'Compare: word problem 3',c:'ext'},
+],
+k3:[
+ {f:'13_Introduction to slope.mp4',t:'Intro to slope',c:'core'},
+ {f:'14_Slope of a line- negative slope.mp4',t:'Negative slope',c:'core'},
+ {f:'15_Similar triangles to prove slope is constant.mp4',t:'Proof: slope is constant',c:'core'},
+ {f:'16_Finding the slope of a line from its graph.mp4',t:'Slope from graph',c:'core'},
+ {f:'40_Intercepts from an equation.mp4',t:'Intercepts from equation',c:'core'},
+ {f:'41_Worked example - intercepts from an equation.mp4',t:'Worked: intercepts',c:'core'},
+ {f:'42_Intro to intercepts.mp4',t:'Intro to intercepts',c:'core'},
+ {f:'43_Slope & direction of a line.mp4',t:'Slope & direction',c:'core'},
+ {f:'44_Worked example - slope from graph.mp4',t:'Slope from graph: worked',c:'core'},
+ {f:'45_Slope of a horizontal line.mp4',t:'Slope of horizontal line',c:'core'},
+ {f:'46_Slope from equation.mp4',t:'Slope from equation',c:'core'},
+ {f:'47_Worked example - slope from two points.mp4',t:'Slope from two points',c:'core'},
+ {f:'48_Worked examples - slope-intercept intro.mp4',t:'Slope-intercept intro',c:'core'},
+],
+k5:[
+ {f:'07_Slope-intercept form from table.mp4',t:'The rule from a table',c:'core'},
+ {f:'08_Slope-intercept equation from a graph examples.mp4',t:'The rule from a graph',c:'core'},
+ {f:'09_Slope-intercept equation from slope and point.mp4',t:'Given k and one point',c:'core'},
+ {f:'10_Slope-intercept equation from two solutions example.mp4',t:'Given two points',c:'core'},
+ {f:'11_Converting linear equations to slope-intercept form.mp4',t:'Rearranging into y = kx + b',c:'ext'},
+],
+k4:[
+ {f:'20_Linear function example- spending money.mp4',t:'Spending money model',c:'core'},
+ {f:'21_Modeling with linear equations example 1.mp4',t:'Modeling 1',c:'core'},
+ {f:'22_Modeling with linear equations example 2.mp4',t:'Modeling 2',c:'core'},
+ {f:'23_Interpreting a graph exercise example.mp4',t:'Interpreting a graph',c:'core'},
+ {f:'24_Interpreting linear tables word problems example 1.mp4',t:'Tables: word problems',c:'core'},
+ {f:'25_Interpreting linear graphs word problems example 1.mp4',t:'Graphs: word problems',c:'core'},
+ {f:'52_Manipulating formulas - temperature.mp4',t:'Rearranging formulas',c:'ext'},
+ {f:'53_Fitting a line to data.mp4',t:'Fitting a line to data',c:'ext'},
+],
+};
+
+/* ============ Lesson K1: what is a function? ============ */
+function microK1(el){
+ el.innerHTML=`
+  <div class="step">What is a function?</div>
+  <div class="box">
+   <h3>Step 1 — A function is a one-to-one rule</h3>
+   <div class="cn">A function: each x gives exactly one y</div>
+   <p>Rule: every <b>input</b> x gives <b>exactly one</b> <b>output</b> y. If the same x could give two different y's, it's <b>not</b> a function.</p>
+   <p style="margin-top:6px">Example: <span class="num">y = 2x + 1</span> — for every x, there's exactly one y. ✓</p>
+   <p>Example: <span class="num">x² + y² = 1</span> — at x=0, y can be +1 or −1. ✗ Not a function.</p>
+  </div>
+  <div class="box">
+   <h3>Step 2 — The vertical line test</h3>
+   <div class="cn">The vertical line test</div>
+   <p>On a graph: if any <b>vertical line</b> crosses the curve at more than one point, it's not a function. (Why? Because that x-value would give multiple y-values.)</p>
+  </div>
+  <div class="box">
+   <h3>Step 3 — Function notation</h3>
+   <div class="cn">Function notation f(x)</div>
+   <p>Write <span class="num">f(x) = 2x + 1</span> instead of y. f(3) means "plug x=3 in": f(3) = 2·3+1 = 7.</p>
+   <p>The variable is just a placeholder — <span class="num">f(t) = 2t + 1</span> is the same function.</p>
+  </div>
+  <div class="note">y = kx + b with k ≠ 0 is called a linear function. But functions are broader than that — y = x² is one too.</div>`;
+}
+
+/* ============ Lesson K2: the interactive linear function ============ */
+function microK2(el){
+ let k=1,b=0;
+ const render=()=>{
+  const X=x=>400+x*30, Y=y=>320-y*30;
+  const xmin=-7,xmax=7;
+  const px1=xmin,py1=k*xmin+b,px2=xmax,py2=k*xmax+b;
+  el.innerHTML=`
+   <div class="step">Linear functions — drag and see</div>
+   <div class="box">
+    <p>Drag the two sliders and watch the graph move. <span class="num">k</span> is the slope (how steep), <span class="num">b</span> is the y-intercept (where it starts).</p>
+    <div class="controls">
+     <span>k = <span id="kv" class="num">${k.toFixed(1)}</span></span>
+     <input type="range" id="kSlider" min="-3" max="3" step="0.1" value="${k}" style="flex:1;min-width:160px">
+     <span style="margin-left:14px">b = <span id="bv" class="num">${b.toFixed(0)}</span></span>
+     <input type="range" id="bSlider" min="-4" max="4" step="0.5" value="${b}" style="flex:1;min-width:160px">
+    </div>
+    <svg viewBox="0 0 800 480" style="background:#fafafa;border-radius:8px" id="svgK2">
+     <defs><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#374151"/></marker></defs>
+     <line x1="40" y1="${Y(0)}" x2="760" y2="${Y(0)}" stroke="#374151" stroke-width="2" marker-end="url(#arr2)"/>
+     <line x1="${X(0)}" y1="440" x2="${X(0)}" y2="40" stroke="#374151" stroke-width="2" marker-end="url(#arr2)"/>
+     <text x="755" y="${Y(0)-6}" font-size="14" fill="#374151">x</text>
+     <text x="${X(0)+8}" y="40" font-size="14" fill="#374151">y</text>
+     ${[-6,-5,-4,-3,-2,-1,1,2,3,4,5,6].map(i=>`<line x1="${X(i)}" y1="${Y(0)-3}" x2="${X(i)}" y2="${Y(0)+3}" stroke="#9ca3af"/><text x="${X(i)-3}" y="${Y(0)+15}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     ${[-6,-5,-4,-3,-2,-1,1,2,3,4,5,6].map(i=>`<line x1="${X(0)-3}" y1="${Y(i)}" x2="${X(0)+3}" y2="${Y(i)}" stroke="#9ca3af"/><text x="${X(0)-15}" y="${Y(i)+4}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     <circle cx="${X(0)}" cy="${Y(b)}" r="6" fill="#b91c1c" stroke="#fff" stroke-width="2"/>
+     <text x="${X(0)+10}" y="${Y(b)-8}" font-size="13" font-weight="bold" fill="#b91c1c">(0, ${b})  y-axis intercept b</text>
+     <line x1="${X(px1)}" y1="${Y(py1)}" x2="${X(px2)}" y2="${Y(py2)}" stroke="#7c3aed" stroke-width="3" id="lineK"/>
+    </svg>
+    <div class="eq">y = ${k.toFixed(1)}x + ${b.toFixed(1)}</div>
+    <div class="box" style="background:#dbeafe">
+     <h3>What you see</h3>
+     <div style="font-size:14px">
+      <p>• When <b>k > 0</b>: line goes up-right. When <b>k < 0</b>: goes down-right.</p>
+      <p>• When <b>|k|</b> is larger: steeper. When <b>|k|</b> is smaller: flatter.</p>
+      <p>• <b>b</b> shifts the line up (b > 0) or down (b < 0) without changing slope.</p>
+      <p>• <b>k = 0</b>: horizontal line at y = b. Not a linear function in this textbook (but it IS a constant function).</p>
+     </div>
+    </div>
+   </div>`;
+  el.querySelector('#kSlider').oninput=e=>{k=parseFloat(e.target.value);render();};
+  el.querySelector('#bSlider').oninput=e=>{b=parseFloat(e.target.value);render();};
+ };
+ render();
+}
+
+/* ============ Lesson K3: the slope formula ============ */
+function microK3(el){
+ let p1x=-2,p1y=3,p2x=3,p2y=5,drag=null;
+ const render=()=>{
+  const X=x=>400+x*40, Y=y=>300-y*40;
+  const dx=p2x-p1x,dy=p2y-p1y;
+  const m=dx===0?Infinity:dy/dx;
+  const mStr=Math.abs(m)===Infinity?'undefined (vertical line)':m.toFixed(2);
+  const riseColor=m>=0?'#15803d':'#b91c1c';
+  el.innerHTML=`
+   <div class="step">★ The slope formula</div>
+   <div class="box">
+    <p>Slope describes how steep a line is, written <span class="num">k</span> (or m). It is defined as:</p>
+    <div class="eq">k = (y₂ − y₁) / (x₂ − x₁) = <span class="frac"><span class="num">rise, the change in y, Δy</span><span class="den">run, the change in x, Δx</span></span></div>
+    <p style="margin-top:6px">Drag P₁ and P₂ and watch how k changes.</p>
+    <svg viewBox="0 0 800 480" style="background:#fafafa;border-radius:8px;cursor:crosshair" id="svgK3">
+     <defs><marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#374151"/></marker></defs>
+     <line x1="40" y1="${Y(0)}" x2="760" y2="${Y(0)}" stroke="#374151" stroke-width="2" marker-end="url(#arr3)"/>
+     <line x1="${X(0)}" y1="440" x2="${X(0)}" y2="40" stroke="#374151" stroke-width="2" marker-end="url(#arr3)"/>
+     <text x="755" y="${Y(0)-6}" font-size="14" fill="#374151">x</text>
+     <text x="${X(0)+8}" y="40" font-size="14" fill="#374151">y</text>
+     ${[-5,-4,-3,-2,-1,1,2,3,4,5].map(i=>`<line x1="${X(i)}" y1="${Y(0)-3}" x2="${X(i)}" y2="${Y(0)+3}" stroke="#9ca3af"/><text x="${X(i)-3}" y="${Y(0)+15}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     ${[-5,-4,-3,-2,-1,1,2,3,4,5].map(i=>`<line x1="${X(0)-3}" y1="${Y(i)}" x2="${X(0)+3}" y2="${Y(i)}" stroke="#9ca3af"/><text x="${X(0)-15}" y="${Y(i)+4}" font-size="10" fill="#5b6472">${i}</text>`).join('')}
+     ${dx!==0?`<line x1="${X(p1x)}" y1="${Y(p1y)}" x2="${X(p2x)}" y2="${Y(p2y)}" stroke="#7c3aed" stroke-width="3"/>`:''}
+     ${dx!==0?`<path d="M${X(p1x)},${Y(p1y)} l${(X(p2x)-X(p1x))},0 l0,${(Y(p2y)-Y(p1y))}" fill="none" stroke="${riseColor}" stroke-width="2.5" stroke-dasharray="3 2"/>`:''}
+     <circle cx="${X(p1x)}" cy="${Y(p1y)}" r="10" fill="#b91c1c" stroke="#fff" stroke-width="2.5" id="dot1" style="cursor:grab"/>
+     <circle cx="${X(p2x)}" cy="${Y(p2y)}" r="10" fill="#7c3aed" stroke="#fff" stroke-width="2.5" id="dot2" style="cursor:grab"/>
+     <text x="${X(p1x)-12}" y="${Y(p1y)-15}" font-size="14" font-weight="bold" fill="#b91c1c">P₁(${p1x},${p1y})</text>
+     <text x="${X(p2x)+12}" y="${Y(p2y)-15}" font-size="14" font-weight="bold" fill="#7c3aed">P₂(${p2x},${p2y})</text>
+     ${dx!==0?`<text x="60" y="50" font-size="14" fill="${riseColor}" font-weight="bold">Δy = ${dy}  (rise)</text>`:''}
+     ${dx!==0?`<text x="60" y="70" font-size="14" fill="#2563eb" font-weight="bold">Δx = ${dx}  (run)</text>`:''}
+    </svg>
+    <div class="eq">
+     k = (y₂ − y₁) / (x₂ − x₁) = (${p2y} − ${p1y}) / (${p2x} − ${p1x}) = ${dy} / ${dx} = <span class="num" style="color:${riseColor}">${mStr}</span>
+    </div>
+    <div class="box" style="background:#dbeafe">
+     <h3>Understanding the slope</h3>
+     <div style="font-size:14px">
+      <p>• <b>Positive k</b> (green): line goes up-right. Negative k (red): down-right.</p>
+      <p>• <b>|k|</b> = how steep: |k|=1 is 45°; |k|=2 is twice as steep.</p>
+      <p>• <b>Δx = 0</b> (vertical line): k is undefined — not a function!</p>
+      <p>• <b>Same line, different points, same k</b>: try dragging P₁ and P₂ to opposite ends of the same line, k doesn't change. (Similar triangles prove this — there's a video on it.)</p>
+     </div>
+    </div>
+   </div>`;
+  const svg=el.querySelector('#svgK3');
+  function getPos(e){
+   const r=svg.getBoundingClientRect();
+   return {
+    x:Math.round(((e.clientX-r.left)/r.width*800-400)/40),
+    y:Math.round((300-(e.clientY-r.top)/r.height*480)/40)
+   };
+  }
+  function start(p){return e=>{drag=p;e.preventDefault();};}
+  function move(e){
+   if(!drag)return;
+   const p=getPos(e);
+   if(drag===1){p1x=Math.max(-5,Math.min(5,p.x));p1y=Math.max(-5,Math.min(5,p.y));}
+   else{p2x=Math.max(-5,Math.min(5,p.x));p2y=Math.max(-5,Math.min(5,p.y));}
+   render();
+  }
+  svg.onmousedown=start(drag||0);
+  svg.onmousemove=move;
+  svg.onmouseup=svg.onmouseleave=()=>drag=null;
+  svg.querySelector('#dot1').onmousedown=start(1);
+  svg.querySelector('#dot2').onmousedown=start(2);
+  el.querySelector('#dot1').onmousedown=start(1);
+  el.querySelector('#dot2').onmousedown=start(2);
+  svg.ontouchstart=e=>{const t=e.touches[0];const p=getPos(t);drag=Math.hypot(p.x-p1x,p.y-p1y)<Math.hypot(p.x-p2x,p.y-p2y)?1:2;e.preventDefault();};
+  svg.ontouchmove=e=>{move(e.touches[0]);e.preventDefault();};
+  svg.ontouchend=()=>drag=null;
+ };
+ render();
+}
+
+/* ============ Lesson K4: modelling example ============ */
+function microK4(el){
+ el.innerHTML=`
+  <div class="step">Modelling with a linear function</div>
+  <div class="box">
+   <h3>The four steps</h3>
+   <ol style="margin-left:20px;font-size:15px;line-height:1.8">
+    <li>Read it: pick out the <b>constants</b> (fixed) and the <b>variables</b> (changing).</li>
+    <li>Set up the relation in the form y = … (linear or proportional).</li>
+    <li>Find the parameters: substitute the given point to get k and b.</li>
+    <li>Answer: read off what was asked.</li>
+   </ol>
+  </div>
+  <div class="box">
+   <h3>Worked example</h3>
+   <p>A taxi charges a ¥8 flagfall (covering the first 3 km), then ¥2 per km. Write the fare y (¥) as a function of distance x (km, x ≥ 3).</p>
+   <p style="margin-top:8px"><b>Step 1</b>: constants are the ¥8 flagfall and ¥2 per extra km<br>
+   <b>Step 2</b>: something of the form y = kx + b<br>
+   <b>Step 3</b>: at x = 3 the fare is 8, so 8 = 2·3 + b → b = 2<br>
+   <b>Step 4</b>: <span class="num">y = 2x + 2</span> (x ≥ 3)</p>
+  </div>
+  Careful: the ¥8 flagfall is its own term (b) — do not fold it into the ¥2 per km.
+  <div class="box">
+   <h3>Look for these patterns in word problems</h3>
+   <ul style="margin-left:20px;font-size:14px;line-height:1.8">
+    <li>"per X yuan" or "per X km" → that is k</li>
+    <li>"flagfall", "base", "already" → that is b</li>
+    <li>"proportional", "¥5 each" → directly proportional, y = kx with b = 0</li>
+    <li>Asked for "how much was used"? Solve x = (y − b) / k</li>
+   </ul>
+  </div>`;
+}
+
+/* ============ Lesson K5: finding y = kx + b ============ */
+function microK5(el){
+ let mode=1;
+ function build(){
+  // mode 1: proportional, one point fixes k   |  mode 2: b known, one point fixes k
+  // mode 3: two points -> k from slope, then b
+  let k,b,x1,y1,x2,y2;
+  if(mode===1){ k=2; x1=3; y1=k*x1; b=0; }
+  else if(mode===2){ b=4; k=3; x1=2; y1=k*x1+b; }
+  else { k=2; b=-1; x1=1; y1=k*x1+b; x2=4; y2=k*x2+b; }
+  const rows=mode===3
+   ? `<div class="eq">k = (y₂ − y₁)/(x₂ − x₁) = (${y2} − ${y1})/(${x2} − ${x1}) = ${y2-y1}/${x2-x1} = <span class="num">${k}</span></div>
+      <div class="eq">then ${y1} = ${k}·${x1} + b &nbsp;→&nbsp; b = <span class="num">${b}</span></div>
+      <div class="eq">y = <span class="num">${k}x ${b<0?'− ':'- '}${Math.abs(b)}</span></div>`
+   : (mode===1
+     ? `<div class="eq">y = kx &nbsp;(goes through the origin, so b = 0)</div>
+        <div class="eq">${y1} = k·${x1} &nbsp;→&nbsp; k = <span class="num">${k}</span></div>
+        <div class="eq">y = <span class="num">${k}x</span></div>`
+     : `<div class="eq">y = kx + ${b} &nbsp;(b is given)</div>
+        <div class="eq">${y1} = k·${x1} + ${b} &nbsp;→&nbsp; k = <span class="num">${k}</span></div>
+        <div class="eq">y = <span class="num">${k}x + ${b}</span></div>`);
+  el.innerHTML=`
+   <div class="step">Finding y = kx + b</div>
+   <div class="box">
+    <h3>The idea</h3>
+    <p style="font-size:14px">Write the form down first, <b>then</b> put the numbers in. The letters you do not know are the unknowns; each point you are given turns into one equation.</p>
+   </div>
+   <div class="box">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+     <button class="stepbtn${mode===1?'':' ghost'}" id="m1">A · proportional, one point</button>
+     <button class="stepbtn${mode===2?'':' ghost'}" id="m2">B · b known, one point</button>
+     <button class="stepbtn${mode===3?'':' ghost'}" id="m3">C · two points</button>
+    </div>
+    <div class="box" style="background:#f8fafc">
+     <p style="font-size:15px">${mode===1?`A proportional function passes through (${x1}, ${y1}). Find its rule.`
+       :mode===2?`A linear function has b = ${b} and passes through (${x1}, ${y1}). Find its rule.`
+       :`A linear function passes through (${x1}, ${y1}) and (${x2}, ${y2}). Find its rule.`}</p>
+     ${rows}
+    </div>
+    <div class="box" style="background:#fffbeb">
+     <h3>Why this works</h3>
+     <p style="font-size:14px">${mode===3
+      ? 'Two unknowns (k and b) need two equations — that is why two points are enough. One point alone leaves a whole family of lines through it.'
+      : 'One unknown (k) needs one equation — one point is enough, because the other letter is already fixed.'}</p>
+    </div>
+   </div>`;
+  el.querySelector('#m1').onclick=()=>{mode=1;build();};
+  el.querySelector('#m2').onclick=()=>{mode=2;build();};
+  el.querySelector('#m3').onclick=()=>{mode=3;build();};
+ }
+ build();
+}
+
+/* ============ Quick check ============ */
+function diag(el,lessonId,generator){
+ el.innerHTML=`<div class="step"><span class="en">Quick check</span><span class="zh">小测一下</span></div><div class="box"><p style="font-size:14px;color:var(--muted)">3 questions, just to see where you stand. Pass 3/3 to skip the lesson; otherwise the lesson comes next.</p><div id="diagQ"></div></div>`;
+ const qEl=el.querySelector('#diagQ');
+ let ok=0;
+ const qs=Array.from({length:3},()=>generator('diag'));
+ let i=0;
+ const show=()=>{
+  if(i>=3){
+   st(lessonId).diag=ok;
+   if(ok===3){
+    qEl.innerHTML=`<div class="note" style="background:#dcfce7;border-color:var(--ok)"><strong>3/3:</strong> you already have this — skip the lesson and go to practice.</div><div style="margin-top:14px"><button id="skipMicro"><span class="en">Skip the lesson, go to practice →</span><span class="zh">跳过微课，去做练习 →</span></button></div>`;
+    qEl.querySelector('#skipMicro').onclick=()=>{cur=`prac-${lessonId}`;render();};
+   } else {
+    qEl.innerHTML=`<div class="note" style="background:#fef3c7;border-color:var(--warn)"><strong>${ok}/3:</strong> work through the lesson below to fill the gap.</div><div style="margin-top:14px"><button id="goMicro"><span class="en">Go to lesson →</span><span class="zh">去看微课 →</span></button></div>`;
+    qEl.querySelector('#goMicro').onclick=()=>{cur=`micro-${lessonId}`;render();};
+   }
+   save();renderNav();
+   return;
+  }
+  const q=qs[i];
+  qEl.innerHTML=`
+   <div class="q">
+    <div class="q-text">${i+1}. ${L(q.q,q.zhq)}</div>
+    
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+     <input type="text" id="da" autocomplete="off" placeholder="?"> <button id="sub"><span class="en">Submit</span><span class="zh">提交</span></button>
+    </div>
+    <div class="hint" id="ht"></div>
+    <div class="feedback" id="fb"></div>
+   </div>`;
+  const input=qEl.querySelector('#da'),fb=qEl.querySelector('#fb'),ht=qEl.querySelector('#ht');
+  input.focus();
+  qEl.querySelector('#sub').onclick=check;
+  input.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const ans=input.value.trim();
+   const correct=q.check(ans);
+   if(correct===true){ok++;fb.className='feedback show ok';fb.innerHTML=L('✓ Correct · correct','✓ 正确 · 对了');input.disabled=true;setTimeout(()=>{i++;show();},700);}
+   else if(correct==='hint'){ht.className='hint show';ht.innerHTML=L(q.hint||'Have another go.', q.zhh||'再试一次。');}
+   else{fb.className='feedback show err';fb.innerHTML=L('✗ Not right, try again.','✗ 不对，再试一次。');}
+  }
+ };
+ show();
+}
+
+/* ============ Practice generators (4 topics) ============ */
+const generators={
+k1:()=>{
+ const type=ri(1,3);
+ if(type===1){
+  const eq=ri(1,3);
+  const a=ri(1,5)*[1,-1][ri(0,1)],b=ri(1,5);
+  const ftype=['y='+a+'x+'+b,'y=x²','x='+ri(1,3)][eq%3];
+  const isFunc=eq%3!==0; // x=const not function
+  return {q:`Is ${ftype} a function? Answer "yes" or "no".`,
+   zhq:`${ftype} 是函数吗？回答 "yes" 或 "no"。`,
+   check:a=>{const ans=a.toLowerCase().trim();return (isFunc&&(ans==='yes'||ans==='y'||ans==='yes'))||(!isFunc&&(ans==='no'||ans==='n'||ans==='no'));},
+   ans:isFunc?'yes':'no',hint:'A vertical line x=const has one x with many y — not a function.',zhh:'竖直线 x=常数 时，一个 x 对应多个 y —— 不是函数。'};
+ } else if(type===2){
+  const a=ri(2,5),b=ri(-3,3);
+  const x=ri(1,4);
+  return {q:`If f(x) = ${a}x + ${b}, what is f(${x})?`,
+   zhq:`若 f(x) = ${a}x + ${b}，那么 f(${x}) 等于多少？`,
+   // NB: do NOT name the parameter `a` — it would shadow the coefficient above
+   // and the checker would compare against the child's own input.
+   check:v=>parseInt(v)===a*x+b,ans:String(a*x+b),hint:`f(${x}) = ${a}*${x} + ${b}`,zhh:`f(${x}) = ${a}*${x} + ${b}`};
+ } else {
+  // vertical line test
+  return {q:`Does the circle x²+y²=1 pass the vertical line test? Answer "yes" or "no".`,
+   zhq:`圆 x²+y²=1 是否通过竖直线检验？回答 "yes" 或 "no"。`,
+   check:a=>{const ans=a.toLowerCase().trim();return ans==='no'||ans==='n'||ans==='no';},
+   ans:'no',hint:'At x=0, y can be +1 or −1 — two outputs, not a function.',zhh:'在 x=0 处，y 可以是 +1 或 −1 —— 有两个输出值，所以不是函数。'};
+ }
+},
+k2:()=>{
+ const type=ri(1,2);
+ if(type===1){
+  const k=ri(-3,3),b=ri(-3,3);
+  const x=ri(-2,2);
+  return {q:`If y = ${k}x + ${b}, what is y when x = ${x}?`,
+   zhq:`若 y = ${k}x + ${b}，当 x = ${x} 时，y 是多少？`,
+   check:a=>parseInt(a)===k*x+b,ans:String(k*x+b),hint:`y = ${k}*${x} + ${b}`,zhh:`y = ${k}*${x} + ${b}`};
+ } else {
+  // which is linear
+  const isLinear=ri(0,1);
+  const eqsLinear=['y=2x+1','y=-x+3','y=5x'];
+  const eqsNotLinear=['y=x²','y=1/x','y=√x'];
+  const eq=isLinear?pick(eqsLinear):pick(eqsNotLinear);
+  return {q:`Is "${eq}" a linear function? Answer "yes" or "no".`,
+   zhq:`"${eq}" 是一次函数吗？回答 "yes" 或 "no"。`,
+   check:a=>{const ans=a.toLowerCase().trim();return (isLinear&&(ans==='yes'||ans==='y'||ans==='yes'))||(!isLinear&&(ans==='no'||ans==='n'||ans==='no'));},
+   ans:isLinear?'yes':'no',hint:'Linear = y = kx + b (k≠0). Anything with x², 1/x, √x is not.',zhh:'一次函数的形式是 y = kx + b（k≠0）。含 x²、1/x、√x 的都不是。'};
+ }
+},
+k3:()=>{
+ const type=ri(1,2);
+ if(type===1){
+  // compute slope from two points
+  const x1=ri(-2,2),y1=ri(-2,2),x2=x1+ri(1,3),y2=y1+ri(-3,3);
+  const m=(y2-y1)/(x2-x1);
+  return {q:`Find the slope of the line through (${x1},${y1}) and (${x2},${y2}).`,
+   zhq:`求经过 (${x1},${y1}) 和 (${x2},${y2}) 两点的直线的斜率。`,
+   check:a=>Math.abs(parseFloat(a)-m)<0.01,ans:String(m),
+   hint:`k = (y₂−y₁)/(x₂−x₁) = (${y2}-${y1})/(${x2}-${x1})`,
+   zhh:`k = (y₂−y₁)/(x₂−x₁) = (${y2}-${y1})/(${x2}-${x1})`};
+ } else {
+  // find y-intercept
+  const k=ri(-3,3),b=ri(-3,3);
+  return {q:`The line y = ${k}x + ${b} crosses the y-axis at what point?`,
+   zhq:`直线 y = ${k}x + ${b} 与 y 轴交于哪一点？`,
+   check:a=>parseInt(a)===b,ans:String(b),hint:'y-axis is x=0. Plug in x=0 → y=b.',zhh:'y 轴上 x=0。代入 x=0 → y=b。'};
+ }
+},
+k5:()=>{
+ // finding y = kx + b from given conditions
+ const type=ri(1,4);
+ if(type===1){
+  // proportional: one point fixes k
+  const k=ri(2,6),x=ri(2,6);
+  return {q:`A proportional function passes through (${x}, ${k*x}). What is k?`,
+   zhq:`一个正比例函数经过点 (${x}, ${k*x})。k 是多少？`,
+   check:v=>parseInt(v)===k,ans:String(k),
+   hint:`Proportional means y = kx with b = 0, so ${k*x} = k·${x}.`,
+   zhh:`正比例函数形如 y = kx（b = 0），所以 ${k*x} = k·${x}。`};
+ } else if(type===2){
+  // b given, one point fixes k
+  const b=ri(1,9),k=ri(2,6),x=ri(2,6);
+  return {q:`A linear function y = kx + ${b} passes through (${x}, ${k*x+b}). What is k?`,
+   zhq:`一次函数 y = kx + ${b} 经过点 (${x}, ${k*x+b})。k 是多少？`,
+   check:v=>parseInt(v)===k,ans:String(k),
+   hint:`Put the point in: ${k*x+b} = k·${x} + ${b}, so k·${x} = ${k*x}.`,
+   zhh:`把点代入：${k*x+b} = k·${x} + ${b}，所以 k·${x} = ${k*x}。`};
+ } else if(type===3){
+  // two points -> find k (integer slope)
+  const k=ri(2,5),b=ri(-4,4);
+  const x1=ri(-2,2),x2=x1+ri(1,3);
+  const y1=k*x1+b,y2=k*x2+b;
+  return {q:`A line passes through (${x1}, ${y1}) and (${x2}, ${y2}). What is k?`,
+   zhq:`一条直线经过 (${x1}, ${y1}) 和 (${x2}, ${y2})。k 是多少？`,
+   check:v=>parseInt(v)===k,ans:String(k),
+   hint:`k = (y₂ − y₁)/(x₂ − x₁) = (${y2} − ${y1})/(${x2} − ${x1}).`,
+   zhh:`k = (y₂ − y₁)/(x₂ − x₁) = (${y2} − ${y1})/(${x2} − ${x1})。`};
+ } else {
+  // two points -> find b
+  const k=ri(2,5),b=ri(-4,6);
+  const x1=ri(-2,2),x2=x1+ri(1,3);
+  const y1=k*x1+b,y2=k*x2+b;
+  return {q:`A line passes through (${x1}, ${y1}) and (${x2}, ${y2}). What is b?`,
+   zhq:`一条直线经过 (${x1}, ${y1}) 和 (${x2}, ${y2})。b 是多少？`,
+   check:v=>parseInt(v)===b,ans:String(b),
+   hint:`k = (${y2} − ${y1})/(${x2} − ${x1}) = ${k}, then ${y1} = ${k}·${x1} + b.`,
+   zhh:`k = (${y2} − ${y1})/(${x2} − ${x1}) = ${k}，再由 ${y1} = ${k}·${x1} + b 求 b。`};
+ }
+},
+k4:()=>{
+ // simple modeling
+ const k=ri(2,5),b=ri(1,5);
+  const x=ri(5,10);
+  return {q:`A taxi charges a ${b} yuan flagfall plus ${k} yuan per km. If you travel ${x} km, what is the fare?`,
+   zhq:`出租车起步价 ${b} 元，之后每公里 ${k} 元。行驶 ${x} 公里，车费是多少？`,
+   check:a=>parseInt(a)===k*x+b,ans:String(k*x+b),hint:`y = ${k}x + ${b}, plug x=${x}`,zhh:`y = ${k}x + ${b}，代入 x=${x}`};
+},
+};
+
+/* ============ Videos module ============ */
+function videos(el,lessonId){
+ const list=VIDEOS[lessonId]||[];
+ if(!list.length){el.innerHTML='<div class="note">No videos for this section.</div>';return;}
+ let html=`<div class="step"><span class="en">Videos</span><span class="zh">视频</span> · ${LESSONS.find(l=>l.id===lessonId).t}</div>`;
+ html+=`<div class="box"><p style="font-size:13px;color:var(--muted)"><span class="tag core">Watch first</span> watch first; <span class="tag ext">Optional</span> if you have time.</p></div>`;
+ list.forEach((v,i)=>{
+  const watched=st(lessonId).vid[i];
+  html+=`<div class="vid">
+   <div class="vid-h">
+    <span class="title">${L(v.t,(typeof VTZ!=='undefined'&&VTZ[v.t])||v.t)}</span>
+    
+    <span class="meta">
+     <span class="tag ${v.c}"><span class="en">${v.c==='core'?'Core':'Extra'}</span><span class="zh">${v.c==='core'?'核心':'拓展'}</span></span>
+     <span class="st ${watched?'ok':''}">${watched?'✓ watched':'Unwatched'}</span>
+     <button data-i="${i}">${watched?'<span class="en">▶ Replay</span><span class="zh">▶ 重播</span>':'<span class="en">▶ Play</span><span class="zh">▶ 播放</span>'}</button>
+    </span>
+   </div>
+   <div id="vc${i}" style="display:${watched?'block':'none'}">
+    <video controls preload="none" style="width:100%;background:#000" src="${encodeURI(VDIR+v.f)}"></video>
+   </div>
+  </div>`;
+ });
+ el.innerHTML=html;
+ el.querySelectorAll('[data-i]').forEach(b=>{
+  b.onclick=()=>{
+   const i=parseInt(b.dataset.i);
+   const slot=el.querySelector('#vc'+i);
+   const v=slot.querySelector('video');
+   if(slot.style.display==='none'){slot.style.display='block';v.play();}
+   else{v.pause();v.currentTime=0;slot.style.display='none';}
+   st(lessonId).vid[i]=true;save();renderNav();b.textContent='▶ Replay';
+   b.parentElement.querySelector('.st').className='st ok';
+   b.parentElement.querySelector('.st').textContent='✓ watched';
+  };
+ });
+}
+
+/* ============ Practice module ============ */
+function practice(el,lessonId){
+ const gen=generators[lessonId];
+ if(!gen){el.innerHTML='<div class="note">No practice for this.</div>';return;}
+ const s=st(lessonId);
+ let streak=0,need=5,q=null,tries=0;
+ const update=()=>{
+  el.innerHTML=`
+   <div class="step"><span class="en">Practice</span><span class="zh">练习</span> (${streak}/${need})</div>
+   <div class="info" style="font-size:13px;color:var(--muted);margin:8px 0">Correct: ${s.prac.ok}/${s.prac.tot} (streak ${streak})<button class="secondary" id="rs" style="margin-left:8px"><span class="en">Reset</span><span class="zh">重置</span></button></div>
+   <div class="progress"><div style="width:${(streak/need)*100}%"></div></div>
+   <div class="q">
+    <div class="q-text">${L(q.q,q.zhq)}</div>
+    
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+     <input type="text" id="pi" autocomplete="off" placeholder="?"> <button id="ps"><span class="en">Submit</span><span class="zh">提交</span></button>
+    </div>
+    <div class="hint" id="ph"></div>
+    <div class="feedback" id="pf"></div>
+   </div>`;
+  el.querySelector('#rs').onclick=()=>{s.prac={ok:0,tot:0};streak=0;save();update();renderNav();};
+
+  const syncTop=()=>{
+   const stp=el.querySelector('.step'); if(stp) stp.innerHTML='<span class="en">Practice</span><span class="zh">练习</span> ('+streak+'/'+need+')';
+   const pg=el.querySelector('.progress'); if(pg&&pg.firstElementChild) pg.firstElementChild.style.width=(streak/need)*100+'%';
+   const inf=el.querySelector('.info'); if(inf){const rb=inf.querySelector('#rs');inf.textContent='Correct: '+s.prac.ok+'/'+s.prac.tot+' (streak '+streak+') ';if(rb)inf.appendChild(rb);}
+  };
+  const inp=el.querySelector('#pi'),fb=el.querySelector('#pf'),ht=el.querySelector('#ph');
+  inp.focus();
+  el.querySelector('#ps').onclick=check;
+  inp.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const a=inp.value.trim();
+   const r=q.check(a);
+   if(r===true){
+    streak++;s.prac.ok++;s.prac.tot++;
+    fb.className='feedback show ok';fb.innerHTML=L('✓ correct!','✓ 对了！');
+    inp.disabled=true;
+    syncTop();
+    if(streak>=need){s.done=true;fb.innerHTML+='<br><strong>'+L('Section cleared ✓','本节过关 ✓')+'</strong>';save();renderNav();}
+    setTimeout(()=>{q=gen();tries=0;update();},900);
+   } else {
+    tries++;
+    if(tries===1){
+     ht.className='hint show';ht.innerHTML=L(q.hint||'Have another go.', q.zhh||'再试一次。');
+     fb.className='feedback show err';fb.innerHTML=L('✗ Try again. ','✗ 再试一次。');
+    } else if(tries===2){
+     fb.className='feedback show err';
+     fb.innerHTML=L('✗ Not quite. '+(q.sol?('Method: '+q.sol):(q.hint?('Hint: '+q.hint):'Work through it once more.')), '✗ 不太对。'+(q.zhs?('方法：'+q.zhs):(q.zhh?('提示：'+q.zhh):'再算一遍。')));
+    } else {
+     streak=0;s.prac.tot++;syncTop();
+     
+     fb.className='feedback show err';
+     fb.innerHTML=L('The answer is <b>'+q.ans+'</b>'+(q.sol?('. '+q.sol):'. '), '答案是 <b>'+q.ans+'</b>'+(q.zhs?('。'+q.zhs):'。'));
+     inp.disabled=true;save();renderNav();
+     setTimeout(()=>{q=gen();tries=0;update();},2400);
+    }
+   }
+   save();
+  }
+ };
+ q=gen();tries=0;update();
+}
+
+/* ============ Chapter check ============ */
+function chTest(el){
+ el.innerHTML=`<div class="step"><span class="en">Chapter check</span><span class="zh">章末自己测</span></div><div class="box"><p style="font-size:13px;color:var(--muted)">12 questions covering the 5 topics in this chapter.</p><div id="tq"></div></div>`;
+ const tq=el.querySelector('#tq');
+ const qs=[];
+ for(let i=0;i<3;i++)qs.push(generators.k1());
+ for(let i=0;i<2;i++)qs.push(generators.k2());
+ for(let i=0;i<3;i++)qs.push(generators.k3());
+ for(let i=0;i<2;i++)qs.push(generators.k5());
+ for(let i=0;i<2;i++)qs.push(generators.k4());
+ let i=0,ok=0;
+ const show=()=>{
+  if(i>=qs.length){
+   tq.innerHTML=`<div class="note" style="background:${ok>=8?'#dcfce7':'#fef3c7'};border-color:${ok>=8?'var(--ok)':'var(--warn)'}"><strong>${ok}/${qs.length}</strong> ${ok>=8?'Chapter passed! Go to Ch05':'Go back and review what you missed'}</div>`;
+   S.test={ok,tot:qs.length};save();renderNav();return;
+  }
+  const q=qs[i];
+  tq.innerHTML=`<div class="q"><div class="q-text">${i+1}/${qs.length}. ${L(q.q,q.zhq)}</div><div style="display:flex;gap:8px"><input id="ti" autocomplete="off"><button id="ts"><span class="en">Submit</span><span class="zh">提交</span></button></div><div class="hint" id="th"></div><div class="feedback" id="tf"></div></div>`;
+  const inp=tq.querySelector('#ti'),fb=tq.querySelector('#tf'),ht=tq.querySelector('#th');
+  inp.focus();tq.querySelector('#ts').onclick=check;inp.onkeydown=e=>{if(e.key==='Enter')check();};
+  function check(){
+   const r=q.check(inp.value.trim());
+   if(r===true){ok++;fb.className='feedback show ok';fb.textContent='✓';inp.disabled=true;setTimeout(()=>{i++;show();},600);}
+   else if(r==='hint'){ht.className='hint show';ht.innerHTML=L(q.hint||'', q.zhh||'');}
+   else{fb.className='feedback show err';fb.textContent='✗';setTimeout(()=>{i++;show();},900);}
+  }
+ };
+ show();
+}
+
+/* ============ Render ============ */
+
+/* ===== Chapter lobby: start here ===== */
+const GLOSS={k1:"函数",k2:"一次函数",k3:"斜率 / 截距",k5:"待定系数法",k4:"建模"};
+const USE_MICRO=true;
+const INTRO={why:"A phone plan costs ¥20 a month plus ¥5 for each extra GB: use x GB and you pay y = 20 + 5x. That is a linear function. Taxi fares, utility bills, distance-time graphs, how XP builds up in a game — all of them change at a steady rate. Learn it and you can graph any steady-rate situation, and read the slope as \"how much more you pay per extra unit\".",desc:{k1:"One quantity changes and another follows: variables, and what a function is",k2:"y = kx + b — the constant-rate relationship",k3:"Slope k sets how steep, intercept b sets where it starts",k5:"Write the form first, then let the given points fix k and b",k4:"Reading graphs and writing equations for real billing and travel problems"}};
+function goLesson(id){cur=USE_MICRO?('micro-'+id):id;render();}
+function introRender(main){
+  const pts=LESSONS.filter(l=>l.id!=='test'&&l.id!=='intro');
+  let h='<div class="intro-h"><span class="en">What this chapter covers</span><span class="zh">本章学什么</span></div>'
+    +'<div class="intro-sub"><span class="en">Skim the list to see where this chapter is going, then press the button at the bottom.</span><span class="zh">先扫一眼下面的清单，看本章去哪，然后按底部按钮开始。</span></div><div class="kp">';
+  pts.forEach(l=>{
+    const s=st(l.id);
+    const badge=s.done?' <span class="st ok">✓ done</span>':(s.prac.tot>0?' <span class="st">'+s.prac.ok+'/'+s.prac.tot+'</span>':'');
+    h+='<div class="kp-c"><div class="n">'+l.n+'</div><div class="t">'+l.t+(GLOSS[l.id]?' <span class="cn-tag">'+GLOSS[l.id]+'</span>':'')+'</div><div class="d">'+((INTRO.desc&&INTRO.desc[l.id])||'')+'</div>'+badge+'</div>';
+  });
+  h+='</div>';
+  h+='<div class="why"><b><span class="en">Where this shows up in real life</span><span class="zh">在真实生活里哪里会用到</span></b><br>'+INTRO.why+'</div>';
+  h+='<div class="box"><b><span class="en">How this chapter works</span><span class="zh">本章怎么学</span></b><div class="how">'
+    +'① <b><span class="en">Watch the lesson</span><span class="zh">看微课</span></b>: <span class="en">a few minutes to get what the section is about</span><span class="zh">花几分钟了解本节内容</span><br>'
+    +'② <b><span class="en">Practice</span><span class="zh">练一练</span></b>: <span class="en">5 correct in a row clears it; if you get stuck, hints walk you through</span><span class="zh">连对 5 题就算过关；卡住了就看提示</span><br>'
+    +'③ <b><span class="en">Next section</span><span class="zh">下一节</span></b>: <span class="en">on the left, </span><span class="zh">在左侧，</span>'+pts[0].n+', '+pts[1].n+'… open whichever you want, in any order'
+    +'</div></div>';
+  h+='<div class="big-start"><button id="startBtn">'+pts[0].n+' <span class="en">'+pts[0].t+'</span><span class="zh">开始 · '+NAVZH[pts[0].id]+'</span> →</button></div>';
+  main.innerHTML=h;
+  main.querySelector('#startBtn').onclick=()=>{goLesson(pts[0].id);};
+}
+const NAVZH={"intro":"概览","k1":"函数","k2":"一次函数","k3":"斜率与截距","k5":"求表达式","k4":"应用","test":"章末自己测"};
+const LKEY='bnu8_lang';
+function getLang(){return localStorage.getItem(LKEY)||'en';}
+function setLang(l){localStorage.setItem(LKEY,l);applyLang();}
+function applyLang(){const l=getLang();document.body.className=(' '+document.body.className+' ').replace(/\s+lang-(en|mix|zh)\b/g,' ').trim();if(l==='mix'||l==='zh')document.body.classList.add('lang-'+l);document.querySelectorAll('.langseg button').forEach(b=>{b.classList.toggle('on',b.dataset.lang===l);});}
+applyLang();
+
+
+function renderNav(){
+ const nav=document.getElementById('nav');
+ nav.innerHTML=LESSONS.map(l=>{
+  const s=st(l.id);
+  let stxt='';
+  if(s.done)stxt='<span class="st ok">✓</span>';
+  else if(s.prac.tot>0)stxt=`<span class="st ${s.prac.ok/s.prac.tot>0.6?'ok':'err'}">${s.prac.ok}/${s.prac.tot}</span>`;
+  return `<div class="nav-i ${l.id===cur||cur===`micro-${l.id}`||cur===`diag-${l.id}`||cur===`prac-${l.id}`?'on':''}" data-go="${l.id}">
+   <span><b>${l.n}</b> <span class="en">${l.t}</span><span class="zh">${NAVZH[l.id]||l.t}</span></span>${stxt}</div>`;
+ }).join('');
+ nav.querySelectorAll('[data-go]').forEach(n=>n.onclick=()=>{
+  const id=n.dataset.go;
+  cur = id==='test' ? 'test' : `micro-${id}`;
+  render();
+ });
+}
+
+function render(){
+ const main=document.getElementById('main');
+ renderNav();
+ if(cur==='intro'||cur==='micro-intro'){introRender(main);return;}
+ if(cur==='test'){chTest(main);return;}
+ const m=cur.match(/^(diag|micro|prac)-(\w+)$/);
+ if(m){
+  const phase=m[1],id=m[2];
+  const lesson=LESSONS.find(l=>l.id===id);
+  if(!lesson){main.innerHTML='<div class="note">Unknown lesson</div>';return;}
+  const titles={k1:'What is a function?',k2:'Linear and proportional functions',k3:'Slope and intercept',k5:'Finding the rule',k4:'Applications'};
+  main.innerHTML=`<div class="lesson-id">${lesson.n} · <span class="en">${titles[id]} · ${lesson.cn}</span><span class="zh">${NAVZH[id]||titles[id]}</span></div>`;
+  const c=document.createElement('div');main.appendChild(c);
+  if(phase==='diag'){
+   if(st(id).diag===3){cur=`micro-${id}`;render();return;}
+   diag(c,id,generators[id]);
+  } else if(phase==='micro'){
+   if(id==='k1')microK1(c);
+   else if(id==='k2')microK2(c);
+   else if(id==='k3')microK3(c);
+   else if(id==='k5')microK5(c);
+   else if(id==='k4')microK4(c);
+   const after=document.createElement('div');main.appendChild(after);
+   videos(after,id);
+   const btn=document.createElement('div');btn.style.marginTop='14px';
+   btn.innerHTML=`<button id="toPrac">Go to practice</button>`;
+   main.appendChild(btn);
+   btn.querySelector('#toPrac').onclick=()=>{cur=`prac-${id}`;render();};
+  } else if(phase==='prac'){
+   practice(c,id);
+  }
+ } else {
+  introRender(main);
+ }
+}
+render();
+</script>
+<script>
+(function(){try{if(new URLSearchParams(location.search).get('go')==='test'){cur='test';render();}}catch(e){}})();
+</script>
+<p style="text-align:center;font-size:11px;color:var(--muted);margin:26px 0 8px">
+ <span id="busuanzi_container_site_uv" style="display:none">
+  <span class="en">Visitors so far:&nbsp;</span><span class="zh">已经有&nbsp;</span>
+  <b id="busuanzi_value_site_uv">·</b><span class="zh">&nbsp;位访客来过这里</span>
+ </span>
+</p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body></body>
+</html>
