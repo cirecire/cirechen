@@ -105,6 +105,12 @@ video{width:100%;max-width:520px;border-radius:8px;background:#000;display:block
 .big-start button{font-size:16px;padding:13px 30px;border-radius:10px}
 .trytip{font-size:12px;color:var(--muted);margin:10px 0 2px}
 
+/* ===== Tutorial ↔ Formal-course boundary ===== */
+.nav-sep{display:flex;align-items:center;gap:8px;margin:10px 2px 8px;padding:0;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.nav-sep::before,.nav-sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.boundary{margin:18px 0 6px;padding-top:14px;border-top:2px dashed var(--line)}
+.boundary-rule{display:inline-block;font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.boundary-note{margin:4px 0 0;font-size:13px;color:var(--muted);line-height:1.7}
 /* ===== Language tiers (en / mix / zh) ===== */
 .zh{display:none}
 body.lang-en .zh{display:none}
@@ -251,7 +257,7 @@ html[data-theme="dark"] .bridge .bl{color:#3730a3!important}
   <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:8px 16px;font-size:13px;display:flex;gap:18px;align-items:center;position:sticky;top:0;z-index:99">
+<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:8px 12px;font-size:13px;display:flex;gap:6px 10px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:99">
  <a href="index.html" style="color:#b45309;text-decoration:none;font-weight:600"><span class="zh">← 主页</span><span class="en">← Home</span></a> <a href="home.html" style="color:#b45309;text-decoration:none;font-weight:600"><span class="en">← Overview</span><span class="zh">← 总览</span></a>
  <a href="unittests.html" style="color:#b45309;text-decoration:none;font-weight:600"><span class="en">Unit tests</span><span class="zh">单元测试</span></a>
 </div>
@@ -296,10 +302,10 @@ html[data-theme="dark"] .bridge .bl{color:#3730a3!important}
 const YT={"01_The Pythagorean theorem intro.mp4":"AA6RfgP-AHU","02_Pythagorean theorem.mp4":"AEIzy1kNRqo","03_Pythagorean theorem 1.mp4":"JVrkLIcA2qw","04_Pythagorean theorem 2.mp4":"O64YFlX1_aI","05_Pythagorean theorem 3.mp4":"T0IOrRETWhI","06_Bhaskara's proof of the Pythagorean theorem.mp4":"1ul8g55dYA4","07_Another Pythagorean theorem proof.mp4":"rcBaqkGp7CA","08_Garfield's proof of the Pythagorean theorem.mp4":"EINpkcphsPQ","09_Pythagorean theorem proof using similarity.mp4":"LrS5_l-gk94","10_Converse of Pythagoras Theorem.mp4":"9tXHcAbiNuI","12_Pythagorean theorem in 3D.mp4":"1UQ5IbihJNI","11_Distance formula.mp4":"nyZuite17Pc","13_Algebraic midpoint of a segment exercise.mp4":"E0TNh9uWesw"};
 function ytSrc(f){return (typeof YT!=='undefined'&&YT[f])?('https://www.youtube-nocookie.com/embed/'+YT[f]+'?rel=0'):null;}
 function vidHTML(v){var s=ytSrc(v.f);
- if(s){return '<iframe src="'+s+'" title="'+String(v.t||'').replace(/"/g,'&quot;')+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width:100%;aspect-ratio:16/9;border:0;display:block;background:#000"></iframe>';}
+ if(s){return '<div class="ytwrap"><iframe src="'+s+'&playsinline=1" title="'+String(v.t||'').replace(/"/g,'&quot;')+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>';}
  return '<div style="padding:14px;background:#f3f4f6;color:#0f172a;border-radius:10px">&#9654; <a href="https://www.youtube.com/watch?v='+(YT[v.f]||'')+'" target="_blank" rel="noopener">Watch on YouTube</a></div>';}
 function vidEl(v){var s=ytSrc(v.f);
- if(s){var f=document.createElement('iframe');f.className='ytv';f.src=s;f.setAttribute('frameborder','0');f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');f.setAttribute('allowfullscreen','');f.style.cssText='width:100%;aspect-ratio:16/9;border:0;display:block;background:#000';return f;}
+ if(s){var f=document.createElement('iframe');f.className='ytv';f.src=s+'&playsinline=1';f.setAttribute('frameborder','0');f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');f.setAttribute('allowfullscreen','');var w=document.createElement('div');w.className='ytwrap';w.appendChild(f);return w;}
  var a=document.createElement('a');a.href='https://www.youtube.com/watch?v='+(YT[v.f]||'');a.target='_blank';a.rel='noopener';a.textContent='Watch on YouTube';a.style.cssText='display:inline-block;padding:14px;background:#f3f4f6;color:#0f172a;border-radius:10px';return a;}
 
 const V = {
@@ -337,7 +343,7 @@ const LESSONS=[
   {id:'k2', t:'Is It Right? (Converse)', cn:'Is it a right triangle?', n:'1.2'},
   {id:'k3', t:'Applications', cn:'Applications', n:'1.3'},
   {id:'k4', t:'Strategy: Reflect', cn:'Strategy: reflect', n:'1.4'},
-  {id:'test', t:'Chapter check', cn:'Chapter check', n:''}
+  {id:'test', t:'Chapter self-test', cn:'Chapter self-test', n:''}
 ];
 let cur='intro';
 function st(id){ return S[id] || (S[id]={diag:null,prac:{ok:0,tot:0},vid:{},done:false}); }
@@ -763,9 +769,9 @@ function prac(el,id,types,need){
   next();
 }
 
-/* ============ Chapter check ============ */
+/* ============ Chapter self-test ============ */
 function chTest(el){
-  el.innerHTML=`<div class="step"><span class="en">Chapter check</span><span class="zh">章末自己测</span></div>
+  el.innerHTML=`<div class="step"><span class="en">Chapter self-test</span><span class="zh">章末自测</span></div>
     <div class="lead">8 questions covering the 4 topics in this chapter. Do them on your own, no hints.</div>
     <div id="tq"></div><div class="row"><button id="sub"><span class="en">Submit</span><span class="zh">提交</span></button></div><div id="res"></div>`;
   const box=el.querySelector('#tq');
@@ -822,11 +828,12 @@ function introRender(main){
     +'② <b><span class="en">Practice</span><span class="zh">练一练</span></b>: <span class="en">5 correct in a row clears it; if you get stuck, hints walk you through</span><span class="zh">连对 5 题就算过关；卡住了就看提示</span><br>'
     +'③ <b><span class="en">Next section</span><span class="zh">下一节</span></b>: <span class="en">on the left, </span><span class="zh">在左侧，</span>'+pts[0].n+', '+pts[1].n+'… open whichever you want, in any order'
     +'</div></div>';
+  h+='<div class="boundary"><span class="boundary-rule"><span class="en">Above: tutorial · Below: the real course</span><span class="zh">上面：导学（Tutorial）· 下面：正式课（Real course）</span></span><p class="boundary-note"><span class="en">The map above ("What this chapter covers") only shows what is coming and helps you pick where to start. The lessons below are where you actually learn, step by step, and practise.</span><span class="zh">上面「本章学什么」只是地图——告诉你接下来有什么、帮你决定从哪开始。点下面任意一节，才是真正一步步学、做练习的地方。</span></p></div>';
   h+='<div class="big-start"><button id="startBtn">'+pts[0].n+' <span class="en">'+pts[0].t+'</span><span class="zh">开始 · '+NAVZH[pts[0].id]+'</span> →</button></div>';
   main.innerHTML=h;
   main.querySelector('#startBtn').onclick=()=>{goLesson(pts[0].id);};
 }
-const NAVZH={"intro":"概览","k1":"勾股定理","k2":"勾股定理的逆定理","k3":"应用","k4":"策略·反思","test":"章末自己测"};
+const NAVZH={"intro":"概览","k1":"勾股定理","k2":"勾股定理的逆定理","k3":"应用","k4":"策略·反思","test":"章末自测"};
 const LKEY='bnu8_lang';
 function getLang(){return localStorage.getItem(LKEY)||'en';}
 function setLang(l){localStorage.setItem(LKEY,l);applyLang();}
@@ -849,6 +856,7 @@ function renderNav(){
     d.innerHTML=`<span><b>${l.n}</b> <span class="en">${l.t}</span><span class="zh">${NAVZH[l.id]||l.t}</span></span>${badge}`;
     d.onclick=()=>{ cur=l.id; render(); };
     n.appendChild(d);
+    if(l.id==='intro'){const sep=document.createElement('div');sep.className='nav-sep';sep.innerHTML='<span class="en">▼ Formal lessons</span><span class="zh">▼ 正式课</span>';n.appendChild(sep);}
   });
 }
 function render(){
