@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 .wrap{display:grid;grid-template-columns:240px 1fr;gap:18px;max-width:1200px;margin:0 auto;padding:18px}
-header{background:linear-gradient(135deg,#b45309,#d97706);color:#fff;padding:22px 26px;border-radius:14px;margin-bottom:14px;grid-column:1/-1}
+header{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;padding:22px 26px;border-radius:14px;margin-bottom:14px;grid-column:1/-1}
 header h1{font-size:22px;margin-bottom:4px}
 header p{opacity:.92;font-size:13px}
 nav{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;height:fit-content;position:sticky;top:14px}
@@ -462,6 +462,7 @@ function microK3(el){
     <div class="bl"><span class="en">Bridge</span><span class="zh">衔接补全</span></div>
     <h3><span class="en">Why is it legal to add two equations?</span><span class="zh">为什么把两个方程相加是合法的？</span></h3>
     <p><span class="en">An equation is a balance: if A = B and C = D, then A + C = B + D. Adding the left sides and adding the right sides keeps the balance — you are not inventing anything, just combining two true statements. That is the whole justification for elimination, and textbooks usually skip it.</span><span class="zh">方程是天平：若 A = B 且 C = D，则 A + C = B + D。把左边加左边、右边加右边，天平仍然平衡 —— 你并没有凭空造什么，只是把两个真命题合并了。这正是加减消元法的全部理由，而教材通常略过这一步。</span></p>
+    <p class="kwatch" style="margin-top:9px;font-size:14px"><span class="en">Watch it on Khan Academy:</span><span class="zh">看 Khan Academy 讲解：</span> <a href="https://www.youtube.com/watch?v=vA-55wZtLeE" target="_blank" rel="noopener" style="font-weight:600">Solving systems of equations by elimination</a></p>
    </div>
 `;
 }
