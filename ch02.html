@@ -7,13 +7,13 @@
 <style>
 :root{
   --bg:#f7f8fa; --card:#fff; --ink:#1c2430; --mute:#5b6472; --line:#e3e8ef;
-  --accent:#b45309; --accent2:#d97706; --ok:#15803d; --bad:#b91c1c; --warn:#b45309;
+  --accent:#b45309; --ok:#15803d; --bad:#b91c1c; --warn:#b45309;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,"PingFang SC","Helvetica Neue",Arial,sans-serif;
   background:var(--bg);color:var(--ink);line-height:1.6}
 .wrap{max-width:1180px;margin:0 auto;padding:20px}
-header{background:linear-gradient(135deg,#b45309,#d97706);color:#fff;padding:26px 20px;border-radius:14px;margin-bottom:18px}
+header{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;padding:26px 20px;border-radius:14px;margin-bottom:18px}
 header h1{font-size:24px;font-weight:700}
 header .sub{opacity:.92;font-size:14px;margin-top:4px}
 header .cn{font-size:13px;opacity:.85;margin-top:2px}
@@ -242,8 +242,8 @@ html[data-theme="dark"] .bridge .bl{color:#92400e!important}
 </head>
 <body>
 <div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:8px 12px;font-size:13px;display:flex;gap:6px 10px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:99">
- <a href="index.html" style="color:#b45309;text-decoration:none;font-weight:600"><span class="zh">← 主页</span><span class="en">← Home</span></a> <a href="home.html" style="color:#b45309;text-decoration:none;font-weight:600"><span class="en">← Overview</span><span class="zh">← 总览</span></a>
- <a href="unittests.html" style="color:#b45309;text-decoration:none;font-weight:600"><span class="en">Unit tests</span><span class="zh">单元测试</span></a>
+ <a href="index.html" style="color:var(--accent);text-decoration:none;font-weight:600"><span class="zh">← 主页</span><span class="en">← Home</span></a> <a href="home.html" style="color:var(--accent);text-decoration:none;font-weight:600"><span class="en">← Overview</span><span class="zh">← 总览</span></a>
+ <a href="unittests.html" style="color:var(--accent);text-decoration:none;font-weight:600"><span class="en">Unit tests</span><span class="zh">单元测试</span></a>
  <span style="font-size:11px;color:#5b6472"><span class="en">Content from Khan Academy · CC BY-NC-SA</span><span class="zh">内容来自 Khan Academy · CC BY-NC-SA</span></span>
 </div>
 
@@ -426,7 +426,7 @@ function microK1(el){
    <div class="bridge">
     <div class="bl"><span class="en">Bridge</span><span class="zh">衔接补全</span></div>
     <h3><span class="en">Why √2 proves fractions aren’t enough</span><span class="zh">为什么 √2 证明分数不够用</span></h3>
-    <p><span class="en">Every fraction a/b, squared, is still a fraction — so fractions can only land on rational squares. But a right isosceles triangle with legs 1 has hypotenuse √2, a real length no fraction equals. The classic proof: if √2 = a/b in lowest terms, then a² = 2b², so a is even, which forces b even too — contradicting "lowest terms". That contradiction is the bridge: it shows we must invent a new kind of number (irrational), and only with rationals do they fill every point on the line. That is why this chapter is called Real Numbers. Khan’s "Proof that square root of 2 is irrational" walks through it.</span><span class="zh">任意分数 a/b 平方后仍是分数，所以分数只能落在有理数平方上。但直角边都为 1 的等腰直角三角形，斜边是 √2 —— 一个没有分数等于它的真实长度。经典证法：若 √2 = a/b（最简分数），则 a² = 2b²，于是 a 是偶数，进而 b 也是偶数 —— 这与「最简」矛盾。这个矛盾就是桥梁：它说明我们必须发明一种新数（无理数），再和有理数合在一起，才能填满数轴上的每一点。这就是为什么本章叫「实数」。可汗的「√2 是无理数的证明」把全过程讲清楚。</span></p>
+    <p><span class="en">Every fraction a/b, squared, is still a fraction — so fractions can only land on rational squares. But a right isosceles triangle with legs 1 has hypotenuse √2, a real length no fraction equals. The classic proof: if √2 = a/b in lowest terms, then a² = 2b², so a is even, which forces b even too — contradicting "lowest terms". That contradiction is the bridge: it shows we must invent a new kind of number (irrational), and only with rationals do they fill every point on the line. That is why this chapter is called Real Numbers. Khan’s "Proof that square root of 2 is irrational" walks through it.</span><span class="zh">任意分数 a/b 平方后仍是分数，所以分数只能落在有理数平方上。但直角边都为 1 的等腰直角三角形，斜边是 √2 —— 一个没有分数等于它的真实长度。经典证法：若 √2 = a/b（最简分数），则 a² = 2b²，于是 a 是偶数，进而 b 也是偶数 —— 这与「最简」矛盾。这个矛盾就是桥梁：它说明我们必须发明一种新数（无理数），再和有理数合在一起，才能填满数轴上的每一点。所以本章叫「实数」。可汗的「√2 是无理数的证明」把全过程讲清楚。</span></p>
     <p class="kwatch" style="margin-top:9px;font-size:14px"><span class="en">Watch it on Khan Academy:</span><span class="zh">看 Khan Academy 讲解：</span> <a href="https://www.youtube.com/watch?v=mX91_3GQqLY" target="_blank" rel="noopener" style="font-weight:600">Proof that square root of 2 is irrational</a></p>
    </div>
 `;
