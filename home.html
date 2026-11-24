@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 .wrap{max-width:1180px;margin:0 auto;padding:18px}
-header{background:linear-gradient(135deg,#92400e,#b45309);color:#fff;padding:24px 28px;border-radius:14px;margin-bottom:16px}
+header{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;padding:24px 28px;border-radius:14px;margin-bottom:16px}
 header h1{font-size:20px;margin-bottom:4px}
 header .h1sub{font-size:22px;font-weight:700;letter-spacing:.06em;margin-bottom:10px;line-height:1.25}
 header p{opacity:.93;font-size:13px}
@@ -21,8 +21,8 @@ header p{opacity:.93;font-size:13px}
 .welcome{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:14px;padding:20px 24px;margin-bottom:16px;position:relative}
 .welcome-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:12px}
 .welcome .hi{font-size:20px;font-weight:700;color:#92400e;line-height:1.2}
-.welcome-close{background:transparent;color:#92400e;font-size:18px;padding:2px 8px;cursor:pointer;border:none;line-height:1;border-radius:6px}
-.welcome-close:hover{background:rgba(146,64,14,.12)}
+.welcome-close{background:transparent;color:var(--accent);font-size:18px;padding:2px 8px;cursor:pointer;border:none;line-height:1;border-radius:6px}
+.welcome-close:hover{background:var(--accent-soft2)}
 .welcome-lead{font-size:14px;color:#78350f;margin-bottom:14px;line-height:1.5}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
 .steps-h{font-size:12px;font-weight:700;color:var(--accent);margin:4px 0 8px;letter-spacing:.2px}
@@ -31,7 +31,7 @@ header p{opacity:.93;font-size:13px}
 .step-t{font-weight:600;font-size:13px;color:#1f2937;margin-bottom:3px}
 .step-d{font-size:12px;color:#5b6472;line-height:1.4}
 .welcome-cta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.welcome-cta .big{font-size:15px;padding:11px 20px;background:#b45309;color:#fff;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-family:inherit}
+.welcome-cta .big{font-size:15px;padding:11px 20px;background:var(--accent);color:#fff;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-family:inherit}
 .welcome-cta .big:hover{background:#92400e}
 .welcome-cta .skip{font-size:12px;color:#78350f;text-decoration:underline;cursor:pointer;background:transparent;border:none;padding:4px 6px;font-family:inherit}
 .show-guide{font-size:12px;color:#fff;opacity:.85;text-decoration:underline;margin-left:12px;cursor:pointer;background:transparent;border:none;padding:0;font-family:inherit;font-weight:400}
@@ -60,8 +60,8 @@ h2 small{font-size:12px;color:var(--muted);font-weight:400}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
 .summary{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:8px}
 @media(max-width:680px){.summary{grid-template-columns:1fr}}
-.big-prog{height:14px;background:#fef3e2;border-radius:7px;overflow:hidden;margin:10px 0}
-.big-prog div{height:100%;background:linear-gradient(90deg,#b45309,#d97706);transition:width .4s}
+.big-prog{height:14px;background:var(--accent-soft);border-radius:7px;overflow:hidden;margin:10px 0}
+.big-prog div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .4s}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat{background:#f9fafb;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
 .stat .v{font-size:19px;font-weight:700;color:var(--accent)}
@@ -328,10 +328,12 @@ html[data-theme="dark"] table th{color:var(--muted)}
 
 <h2><span class="en">Level-up challenges</span><span class="zh">闯关挑战</span> <small><span class="en">mixes sections from one chapter — pass it to unlock the next</span><span class="zh">把一章的内容混在一起考——通过才能解锁下一关</span></small></h2>
 <div class="card">
+ <div class="ut-scroll">
  <table id="ut">
   <thead><tr><th><span class="en">Challenge</span><span class="zh">挑战</span></th><th><span class="en">Questions</span><span class="zh">题数</span></th><th><span class="en">Status</span><span class="zh">状态</span></th><th><span class="en">Last</span><span class="zh">上次</span></th><th><span class="en">Best</span><span class="zh">最佳</span></th><th></th></tr></thead>
   <tbody></tbody>
  </table>
+ </div>
 <div style="margin-top:12px"><button onclick="location.href='unittests.html'"><span class="en">Go to the challenges →</span><span class="zh">去闯关挑战 →</span></button></div>
 </div>
 
